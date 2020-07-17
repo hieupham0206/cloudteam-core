@@ -1,0 +1,42 @@
+window.vueApp = new Vue({
+	el: '#app',
+})
+
+$(function() {
+    const $body = $('body')
+    const table{{ modelNameCap }} = $('#table_{{ route }}').DataTable({
+        'serverSide': true,
+        'paging': true,
+        'ajax': $.fn.dataTable.pipeline({
+            url: route('{{ route }}.table', {}, false),
+            data: function(q) {
+                q.filters = JSON.stringify($('#{{ route }}_search_form').serializeArray())
+            },
+        }),
+        'conditionalPaging': true
+    })
+    $body.on('click', '.btn-action-delete', function () {
+        table{{ modelNameCap }}.actionDelete({btnDelete: $(this)})
+    })
+
+    //note: Tìm kiếm
+    $('#{{ route }}_search_form').on('submit', function() {
+        table{{ modelNameCap }}.reloadTable()
+        return false
+    })
+    $('.btn-refresh-table, #btn_reset_filter').on('click', function(e) {
+        e.stopPropagation()
+
+        $('#{{ route }}_search_form').resetForm()
+        table{{ modelNameCap }}.reloadTable()
+    })
+
+    //note: thao tác nhanh, nếu có sử dụng checkbox thì uncomment
+    // $('#link_delete_selected_rows').on('click', function() {
+    //     let ids = $(".kt-checkbox--single > input[type='checkbox']:checked").getValues()
+    //
+    //     if (ids.length > 0) {
+    //         table{{ modelNameCap }}.actionDelete({btnDelete: $(this), params: {ids: ids}})
+    //     }
+    // })
+})

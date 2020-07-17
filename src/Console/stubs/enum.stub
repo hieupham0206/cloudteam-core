@@ -1,0 +1,15 @@
+<?php
+
+namespace App\Enums;
+
+final class DummyClass extends BaseEnum
+{
+	{$constOption}
+
+	public static function getDescription($value): string
+	{
+		{$constDescription}
+
+		return parent::getDescription($value);
+	}
+}

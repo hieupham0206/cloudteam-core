@@ -1,0 +1,2 @@
+<input class="form-control %%customClass%%" name="%%itemName%%" type="text" id="txt_%%itemName%%" value="{{ optional($%%crudNameSingular%%->%%itemName%%)->format('d-m-Y') ?? old('%%itemName%%')}}">
+<span class="form-text text-danger">{!! $errors->first('%%itemName%%') !!}</span>

@@ -1,0 +1,94 @@
+<?php
+
+namespace Tests\Feature;
+
+use App\Models\{{modelName}};
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\TestCase;
+
+class {{modelName}}Test extends TestCase {
+	private ${{crudNameSingular}};
+
+	use DatabaseMigrations;
+
+	protected function setUp(): void {
+		parent::setUp();
+
+		$this->{{crudNameSingular}} = factory( {{modelName}}::class )->create();
+	}
+
+	public function test_unauthorized_user_cannot_crud_{{crudNameSingular}}() {
+		$this->withExceptionHandling()->unauthorizedUserSignIn();
+
+		$this->get( route( '{{crudName}}.index' ) )->assertStatus( 403 );
+
+		$this->get( route( '{{crudName}}.create' ) )->assertStatus( 403 );
+
+		$this->get( route( '{{crudName}}.edit', $this->{{crudNameSingular}} ) )->assertStatus( 403 );
+
+		$this->post( route( '{{crudName}}.destroy', $this->{{crudNameSingular}} ), ['_method' => 'delete'] )->assertStatus( 403 );
+	}
+
+	public function test_authorized_user_can_read_{{crudNameSingular}}() {
+		$this->authorizedUserSignIn();
+
+		$this->get( route( '{{crudName}}.index' ) )->assertStatus( 200 );
+	}
+
+	public function test_authorized_user_can_create_{{crudNameSingular}}() {
+		$this->authorizedUserSignIn();
+
+		$this->get( route( '{{crudName}}.create' ) )->assertStatus( 200 );
+
+		${{crudNameSingular}} = make({{modelName}}::class);
+		$this->post( route( '{{crudName}}.store' ), ${{crudNameSingular}}->toArray() )->assertRedirect( route( '{{crudName}}.index') );
+	}
+
+	public function test_authorized_user_can_edit_{{crudNameSingular}}() {
+		$this->authorizedUserSignIn();
+
+		$this->get( route( '{{crudName}}.edit', $this->{{crudNameSingular}} ) )
+		     ->assertStatus( 200 )
+		     ->assertSee( $this->{{crudNameSingular}}->title );
+
+		${{crudNameSingular}} = create({{modelName}}::class);
+
+		$this->put( route( '{{crudName}}.update', ${{crudNameSingular}} ), ${{crudNameSingular}}->toArray())
+		    ->assertRedirect( route( '{{crudName}}.index') );
+
+		$this->assertDatabaseHas( '{{crudName}}', [
+			'id' => ${{crudNameSingular}}->id
+		] );
+	}
+
+	public function test_authorized_user_can_delete_{{crudNameSingular}}() {
+		$this->authorizedUserSignIn();
+
+		${{crudNameSingular}} = create( {{modelName}}::class );
+
+		$this->delete( route( '{{crudName}}.destroy', ${{crudNameSingular}} ))->assertStatus( 200 );
+
+		$this->assertSoftDeleted( '{{crudName}}', [
+			'id' => ${{crudNameSingular}}->id
+		] );
+	}
+
+	public function test_authorized_user_can_delete_multiple_{{crudNameSingular}}() {
+  		$this->authorizedUserSignIn();
+
+  		${{crudNameSingular}}1 = create( {{modelName}}::class);
+  		${{crudNameSingular}}2 = create( {{modelName}}::class);
+
+  		$this->delete( route( '{{crudName}}.destroys', [
+  			'ids' => [${{crudNameSingular}}1->id, ${{crudNameSingular}}2->id]
+  		] ) )->assertStatus( 200 );
+
+  		$this->assertSoftDeleted( '{{crudName}}', [
+  			'id' => ${{crudNameSingular}}1->id
+  		] );
+
+  		$this->assertSoftDeleted( '{{crudName}}', [
+  			'id' => ${{crudNameSingular}}2->id
+  		] );
+  	}
+}

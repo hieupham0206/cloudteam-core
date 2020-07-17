@@ -1,0 +1,14 @@
+<?php
+
+namespace DummyNamespace;
+
+/**
+ * @link https://laravel.com/docs/master/eloquent-mutators
+ */
+trait DummyClass
+{
+    public function getStateTextAttribute()
+    {
+        return $this->contextBadgeUnified($this->state_name, $this->state === 1 ? 'success' : 'danger');
+    }
+}

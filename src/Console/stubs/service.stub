@@ -1,0 +1,35 @@
+<?php
+
+namespace DummyNamespace;
+
+class DummyClass implements IBaseService
+{
+    /**
+     * @param array $datas
+     *
+     * @return mixed
+     */
+    public function store(array $datas)
+    {
+        // TODO: Implement store() functionality.
+    }
+
+    /**
+     * @param array $datas
+     * @param $model
+     *
+     * @return mixed
+     */
+    public function update(array $datas, $model)
+    {
+        // TODO: Implement update() functionality.
+    }
+
+    /**
+     * @param $model
+     */
+    public function delete($model)
+    {
+        // TODO: Implement delete() functionality.
+    }
+}

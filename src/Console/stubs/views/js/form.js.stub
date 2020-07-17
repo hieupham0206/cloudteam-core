@@ -1,0 +1,38 @@
+window.vueApp = new Vue({
+	el: '#app',
+})
+
+$(function() {
+	const ${{ modelNameUnCap }}Form = $('#{{ modelName }}_form')
+	const isConfirm = ${{ modelNameUnCap }}Form.data('confirm')
+	const isAjax = ${{ modelNameUnCap }}Form.data('ajax')
+
+    ${{ modelNameUnCap }}Form.validate({
+        submitHandler: isAjax && function(form, e) {
+            window.blockPage()
+            e.preventDefault()
+
+            function save() {
+                let formData = new FormData(form)
+
+                $(form).submitData({returnEarly: true, formData}).then(data => {
+                    let msg = data.message
+                    let redirectUrl = data.redirect_url
+                    if (redirectUrl !== undefined) {
+                        window.success({text: msg, callback: () => location.href = redirectUrl})
+                    }
+                })
+            }
+
+            if (isConfirm) {
+                $(form).swal(result => {
+                    if (result.value) {
+                        save()
+                    }
+                })
+            } else {
+                save()
+            }
+        },
+    })
+})

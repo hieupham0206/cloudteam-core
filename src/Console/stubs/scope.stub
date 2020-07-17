@@ -1,0 +1,16 @@
+<?php
+
+namespace DummyNamespace;
+
+use Illuminate\Database\Eloquent\Builder;
+
+/**
+ * @link https://laravel.com/docs/master/eloquent#query-scopes
+ */
+trait DummyClass
+{
+    public function scope(Builder $query): Builder
+    {
+        return $query;
+    }
+}

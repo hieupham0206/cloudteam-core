@@ -1,0 +1,31 @@
+@php /** @var \App\Models\%%modelNameCap%% $%%crudNameSingular%% */
+$breadcrumbs = ['breadcrumb' => '%%route%%.index'];
+@endphp
+
+@extends("$layout.app")
+
+@push('scripts')
+    <script src="{{ version('backend/js/%%viewTemplateDir%%/index.js') }}"></script>
+@endpush
+
+@section('title', $%%crudNameSingular%%->classLabel())
+
+@section('content')
+    <div class="kt-portlet kt-portlet--rounded kt-portlet--head-noborder">
+        @include('backend.layouts.partials.index._index_header', $headerConfigs)
+        <div class="kt-portlet__body">
+            @include('backend.layouts.partials.index._search', ['form' => view('backend.modules.%%userViewPath%%._search', ['%%crudNameSingular%%' => $%%crudNameSingular%%])])
+            <table class="table table-hover nowrap" id="table_%%crudName%%">
+                <thead>
+                    <tr>
+                        {{--<th style="width: 5%"><label class="kt-checkbox kt-checkbox--single kt-checkbox--all kt-checkbox--brand"><input type="checkbox"><span></span></label></th>--}}
+                        <th>@lang('No.')</th>
+                        %%formHeadingHtml%%
+                        <th>@lang('Actions')</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+@endsection

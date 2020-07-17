@@ -1,0 +1,81 @@
+<?php
+
+namespace DummyNamespace;
+
+use App\Models\{{modelName}};
+use Cloudteam\Core\Utils\HtmlAction;
+TableNamespace
+
+class {{modelName}}Table extends DataTable {
+    /**
+     * @throws \ReflectionException
+     * @throws \Exception
+     */
+	public function getData(): array {
+		$this->column = $this->getSortColumn();
+		${{crudNameSingular}}s       = $this->getModels();
+		$dataArray    = [];
+		$modelName    = (new {{modelName}})->classLabel(true);
+
+        [$canEdit{{modelName}}, $canDelete{{modelName}}] = cans(['edit_{{permissionName}}', 'delete_{{permissionName}}']);
+
+		/** @var {{modelName}}[] ${{crudNameSingular}}s */
+		foreach ( ${{crudNameSingular}}s as $key => ${{crudNameSingular}} ) {
+		    $htmlAction = $this->generateButton($modelName, ${{crudNameSingular}}, [$canEdit{{modelName}}, $canDelete{{modelName}}]);
+
+			$dataArray[] = [
+				//'<label class="kt-checkbox kt-checkbox--single kt-checkbox--brand"><input type="checkbox" value="'.${{crudNameSingular}}->id.'"><span></span></label>',
+				++$key + $this->start,
+				{{tableValue}}
+				$htmlAction
+			];
+		}
+
+		return $dataArray;
+	}
+
+	public function getSortColumn(): string {
+		$column  = $this->column;
+        $columns = ['{{crudName}}.id', {{tableSort}}];
+
+        return $columns[$column];
+	}
+
+	/**
+	 * @return {{modelName}}[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+	 */
+	public function getModels() {
+		${{crudNameSingular}}s = {{modelName}}::query();
+
+		$this->totalFilteredRecords = $this->totalRecords = ${{crudNameSingular}}s->count();
+
+        if ($this->isFilterNotEmpty) {
+            ${{crudNameSingular}}s->filters($this->filters);
+
+            $this->totalFilteredRecords = ${{crudNameSingular}}s->count();
+        }
+
+		return ${{crudNameSingular}}s->limit( $this->length )->offset( $this->start )
+		                 ->orderBy( $this->column, $this->direction )->get();
+	}
+
+	private function generateButton(string $modelName, {{modelName}} ${{crudNameSingular}}, array $permissions): string
+	{
+	    [$canEdit{{modelName}}, $canDelete{{modelName}}] = $permissions;
+
+	    $buttonDelete = '';
+
+        $buttonEdit = HtmlAction::generateButtonEdit(${{crudNameSingular}}->getEditLink());
+        if ($canEdit{{modelName}}) {
+            //$buttonChangeState = ${{crudNameSingular}}->generateButtonChangeStateActive($modelName);
+        }
+
+        if ($canDelete{{modelName}}) {
+            $buttonDelete = ${{crudNameSingular}}->generateButtonDelete($modelName);
+        }
+
+        //$buttonView = HtmlAction::generateButtonView(${{crudNameSingular}}->getViewLink());
+
+        return $buttonEdit . $buttonDelete;
+	}
+}

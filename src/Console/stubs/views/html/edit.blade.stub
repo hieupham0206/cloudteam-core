@@ -1,0 +1,17 @@
+@php /** @var \App\Models\%%modelNameCap%% $%%crudNameSingular%% */
+$breadcrumbs = ['breadcrumb' => '%%route%%.edit', 'model' => $%%crudNameSingular%%];
+@endphp
+
+@extends("$layout.app")
+
+@push('scripts')
+	<script src="{{ version('backend/js/%%viewTemplateDir%%/form.js') }}"></script>
+@endpush
+
+@section('title', __('Edit') . " $%%crudNameSingular%%->model_title")
+
+@section('content')
+    <div class="kt-portlet kt-portlet--rounded kt-portlet--head--noborder">
+        @include('backend.modules.%%userViewPath%%._form', ['caption' => __('action.Edit Model', ['model' => $%%crudNameSingular%%->classLabel(true)])])
+    </div>
+@endsection

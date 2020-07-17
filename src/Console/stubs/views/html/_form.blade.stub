@@ -1,0 +1,32 @@
+@php /** @var \App\Models\%%modelNameCap%% $%%crudNameSingular%% */ @endphp
+
+<form id="%%crudName%%_form" class="kt-form" method="post" action="{{ $action }}" autocomplete="off" data-confirm="false" data-ajax="true">
+    @csrf
+    @isset($method)
+        @method('put')
+    @endisset
+    <div class="kt-portlet__head">
+        <div class="kt-portlet__head-label">
+            <span class="kt-portlet__head-title text-capitalize">{{ $%%crudNameSingular%%->getFormTitle() }}</span>
+        </div>
+    </div>
+    <div class="kt-portlet__body">
+<x-accordion-section :icon="'fa fad-info'" :title="$%%crudNameSingular%%->label('info')" is-show="true">
+        <div class="form-group row">
+			%%formFieldsHtml%%
+		</div>
+</x-accordion-section>
+    </div>
+    <div class="kt-portlet__foot kt-portlet__foot--solid">
+        <div class="kt-form__actions kt-form__actions--right">
+            @if ($%%crudNameSingular%%->canBeSaved())
+                <button class="btn-main btn-wide"><span><i class="far fa-save"></i>
+                    <span>@lang('Save')</span></span>
+                </button>
+            @endif
+            <a href="{{ route('%%route%%.index') }}" class="btn-sub btn-wide" id="link_back" data-should-confirm="{{ ! $%%crudNameSingular%%->exists }}">
+                <span><i class="far fa-arrow-left"></i><span>@lang('Back')</span></span>
+            </a>
+        </div>
+    </div>
+</form>

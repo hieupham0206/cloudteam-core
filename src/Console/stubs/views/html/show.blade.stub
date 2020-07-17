@@ -1,0 +1,35 @@
+@php /** @var \App\Models\%%modelNameCap%% $%%crudNameSingular%% */
+$breadcrumbs = ['breadcrumb' => '%%route%%.show', 'model' => $%%crudNameSingular%%];
+@endphp
+
+@extends("$layout.app")
+
+@push('scripts')
+
+@endpush
+
+@section('title', __('action.View Model', ['model' => $%%crudNameSingular%%->classLabel(true)]))
+
+@section('content')
+    <div class="kt-content kt-form">
+        <div class="kt-portlet kt-portlet--rounded">
+            <div class="kt-portlet__body">
+                <div class="form-group">
+                    <table class="table table-bordered table-striped">
+                        <tbody>
+                        %%formBodyHtmlForShowView%%
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="kt-portlet__foot kt-portlet__foot--solid">
+                <div class="kt-form__actions kt-form__actions--right">
+                    @if ($%%crudNameSingular%%->can_be_edited)
+                        <a href="{{ route('%%route%%.edit', $%%crudNameSingular%%) }}" class="btn-main btn-wide"><span><i class="far fa-edit"></i><span>@lang('Edit')</span></span></a>
+                    @endif
+                    <a href="{{ route('%%route%%.index') }}" class="btn-sub btn-wide"><span><i class="far fa-arrow-left"></i><span>@lang('Back')</span></span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection

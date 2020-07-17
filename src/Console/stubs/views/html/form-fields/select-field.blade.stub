@@ -1,0 +1,4 @@
+<select name="%%itemName%%" class="form-control select" id="select_%%itemName%%" %%required%%>
+    %%options%%
+</select>
+<span class="form-text text-danger">{!! $errors->first('%%itemName%%') !!}</span>

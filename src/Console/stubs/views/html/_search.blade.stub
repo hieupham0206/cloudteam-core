@@ -1,0 +1,13 @@
+<form id="%%crudName%%_search_form" autocomplete="off">
+    <div class="form-group row">
+        %%formSearchHtml%%
+        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mt-6">
+            <button class="btn-main" id="btn_filter">
+                <span><i class="far fa-search"></i><span>@lang('Search')</span></span>
+            </button>
+            <button type="button" class="btn-sub" id="btn_reset_filter">
+                <span><i class="far fa-undo-alt"></i><span>@lang('Reset')</span></span>
+            </button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,4 @@
+<div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 form-group {{ $errors->has('%1$s') ? 'has-danger' : ''}}">
+    <label for="%2$s%1$s">{{ %3$s }}</label>
+    %4$s
+</div>
