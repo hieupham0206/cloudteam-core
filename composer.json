@@ -1,7 +1,7 @@
 {
     "name": "cloudteam/core",
     "description": "Cloudteam Core",
-    "license": "license",
+    "license": "MIT",
     "authors": [
         {
             "name": "Phạm Quang Hiếu",
