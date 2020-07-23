@@ -12,19 +12,20 @@ class HtmlAction
             $btnClass, $state, $message, $title, $url, $elementTitle, $icon);
     }
 
-    public static function generateButtonDelete(string $deleteLink, string $dataTitle, string $btnClass = 'btn-danger'): string
+    public static function generateButtonDelete(string $deleteLink, string $dataTitle, string $btnClass = 'btn-danger', $icon = 'far fa-sm fa-trash'): string
     {
-        return sprintf(" <button type='button' class='btn-action-delete %s' data-title='%s' data-url='%s' title='%s'><i class='far fa-trash'></i></button>", $btnClass, $dataTitle, $deleteLink, __('Delete'));
+        return sprintf(" <button type='button' class='btn-action-delete %s' data-title='%s' data-url='%s' title='%s'><i class='%s'></i></button>",
+            $btnClass, $dataTitle, $deleteLink, __('Delete'), $icon);
     }
 
-    public static function generateButtonEdit(string $editLink, string $btnClass = 'btn-primary'): string
+    public static function generateButtonEdit(string $editLink, string $btnClass = 'btn-primary', $icon = 'far fa-sm fa-edit'): string
     {
-        return sprintf(" <a href='%s' class='btn-action-edit %s' title='%s'><i class='far fa-edit'></i></a>", $editLink, $btnClass, __('Edit'));
+        return sprintf(" <a href='%s' class='btn-action-edit %s' title='%s'><i class='%s'></i></a>", $editLink, $btnClass, __('Edit'), $icon);
     }
 
-    public static function generateButtonView(string $viewLink, string $btnClass = 'btn-info'): string
+    public static function generateButtonView(string $viewLink, string $btnClass = 'btn-info', $icon = 'far fa-sm fa-eye'): string
     {
-        return sprintf(' <a href="%s" class="btn-action-view %s" title="%s"><i class="far fa-eye"></i></a>', $viewLink, $btnClass, __('View'));
+        return sprintf(' <a href="%s" class="btn-action-view %s" title="%s"><i class="%s"></i></a>', $viewLink, $btnClass, __('View'), $icon);
     }
 
     public static function generateCustomButton(array $params): string
