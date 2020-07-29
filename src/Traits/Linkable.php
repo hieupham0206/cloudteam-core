@@ -46,35 +46,21 @@ trait Linkable
         return route("{$this->getTable()}.destroy", $this, $absolute);
     }
 
-    /**
-     * @param string $text
-     * @param string $font
-     * @param bool $absolute
-     *
-     * @return string
-     */
-    public function getViewLinkText($text = null, $font = 'brand', $absolute = false): string
+    public function getViewLinkText($text = null, $className = '', $absolute = false): string
     {
         $modelValName = $text ?? $this->{$this->displayAttribute};
 
         $route = $this->getViewLink($absolute);
 
-        return "<a target='_blank' class='kt-link kt-font-bolder kt-font-{$font}' href='$route'>$modelValName</a>";
+        return "<a target='_blank' class='$className' href='$route'>$modelValName</a>";
     }
 
-    /**
-     * @param string $text
-     * @param string $font
-     * @param bool $absolute
-     *
-     * @return string
-     */
-    public function getEditLinkText($text = null, $font = 'brand', $absolute = false): string
+    public function getEditLinkText($text = null, $className = '', $absolute = false): string
     {
         $modelValName = $text ?? $this->{$this->displayAttribute};
 
         $route = $this->getEditLink($absolute);
 
-        return "<a target='_blank' class='kt-link kt-font-bolder kt-font-{$font}' href='$route'>$modelValName</a>";
+        return "<a target='_blank' class='$className' href='$route'>$modelValName</a>";
     }
 }

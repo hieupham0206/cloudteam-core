@@ -9,12 +9,6 @@ use function get_class;
 
 trait Labelable
 {
-    /**
-     * @param string $field
-     * @param bool $capitalize
-     *
-     * @return null|string
-     */
     public function label($field = '', $capitalize = false)
     {
         $modelName       = $this->table_name_singular;
@@ -42,89 +36,54 @@ trait Labelable
         return $labelFromModule;
     }
 
-    /**
-     * @param bool $lcfirst
-     *
-     * @return null|string
-     * @throws ReflectionException
-     */
     public function classLabel($lcfirst = false)
     {
-        $reflect = new ReflectionClass($this);
+        try {
+            $reflect = new ReflectionClass($this);
 
-        if (property_exists(get_class($this), 'logName')) {
-            $nameInModel = $reflect->getStaticPropertyValue('logName');
-            $tableName   = __($nameInModel);
+            if (property_exists(get_class($this), 'logName')) {
+                $nameInModel = $reflect->getStaticPropertyValue('logName');
+                $tableName   = __($nameInModel);
 
-            if (is_array($tableName)) {
-                $tableName = $nameInModel;
+                if (is_array($tableName)) {
+                    $tableName = $nameInModel;
+                }
+
+                return $lcfirst ? mb_strtolower($tableName) : $tableName;
             }
 
-            return $lcfirst ? mb_strtolower($tableName) : $tableName;
+            return __(ucfirst(camel2words(Str::studly($reflect->getShortName()))));
+        } catch (ReflectionException $e) {
+            return '';
         }
-
-        return __(ucfirst(camel2words(Str::studly($reflect->getShortName()))));
     }
 
-    /**
-     * @param string $text
-     * @param string $context
-     * @param string $size
-     *
-     * @return string
-     */
-    public function contextLabel($text, $context = 'success', $size = 'sm'): string
+    public function solidLabel($text, $context = 'success', $size = 'sm'): string
     {
-        return '<span class="font-weight-bold kt-font-' . $context . ' kt-badge--' . $size . '">' . $text . '</span>';
+        return '<span class="font-weight-bold label label-inline label-rounded label-' . $context . ' label-' . $size . '">' . $text . '</span>';
     }
 
-    /**
-     * @param string $text
-     * @param string $context
-     * @param string $size
-     *
-     * @return string
-     */
-    public function contextBadge($text, $context = 'success', $size = 'sm'): string
+    public function outlineLabel($text, $context = 'success', $size = 'sm'): string
     {
-        return '<span class="font-weight-bold kt-badge kt-badge--inline kt-badge--rounded kt-badge--' . $context . ' kt-badge--' . $size . '">' . $text . '</span>';
+        return '<span class="font-weight-bold label label-inline label-rounded label-outline-' . $context . ' label-' . $size . '">' . $text . '</span>';
     }
 
-    /**
-     * @param $text
-     * @param string $context
-     * @param string $size
-     *
-     * @return string
-     */
-    public function contextBadgeUnified($text, $context = 'success', $size = 'sm'): string
+    public function lightLabel($text, $context = 'success', $size = 'sm'): string
     {
-        return '<span class="font-weight-bold kt-badge kt-badge--inline kt-badge--rounded kt-badge--unified-' . $context . ' kt-badge--' . $size . '">' . $text . '</span>';
+        return '<span class="font-weight-bold label label-inline label-rounded label-light-' . $context . ' label-' . $size . '">' . $text . '</span>';
     }
 
-    /**
-     * @return string
-     */
-    public function getModelDisplayTextAttribute()
+    public function getModelDisplayTextAttribute(): string
     {
         $displayAttribute = $this->displayAttribute;
 
         return $this->{$displayAttribute};
     }
 
-    /**
-     * @return string|null
-     */
-    public function getModelTitleAttribute()
+    public function getModelTitleAttribute(): ?string
     {
         $displayText = $this->model_display_text;
 
-        try {
-            $displayText = $displayText ?: $this->classLabel(true);
-        } catch (\ReflectionException $e) {
-            $displayText = '';
-        }
-
-        return $displayText;
+        return $displayText ?: $this->classLabel(true);
     }
 }

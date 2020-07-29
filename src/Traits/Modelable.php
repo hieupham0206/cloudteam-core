@@ -6,7 +6,7 @@ use Illuminate\Support\Str;
 
 trait Modelable
 {
-    public function getTableNameSingularAttribute()
+    public function getTableNameSingularAttribute(): string
     {
         return Str::singular($this->getTable());
     }
@@ -64,6 +64,6 @@ trait Modelable
         $user     = auth()->user();
         $username = $user ? $user->username : 'admin';
 
-        return sprintf('%s %s%s %s. %s', __(ucfirst(static::$logName)), $displayText, __(" has been {$eventName} by "), $username, $this->logMessage);
+        return sprintf('%s %s%s %s. %s', $this->classLabel(true), $displayText, __(" has been {$eventName} by "), $username, $this->logMessage);
     }
 }

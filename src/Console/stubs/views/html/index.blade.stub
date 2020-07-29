@@ -4,21 +4,21 @@ $breadcrumbs = ['breadcrumb' => '%%route%%.index'];
 
 @extends("$layout.app")
 
-@push('scripts')
+@section('scripts')
     <script src="{{ version('backend/js/%%viewTemplateDir%%/index.js') }}"></script>
-@endpush
+@endsection
 
-@section('title', $%%crudNameSingular%%->classLabel())
+@section('pageTitle', $%%crudNameSingular%%->classLabel())
 
 @section('content')
-    <div class="kt-portlet kt-portlet--rounded kt-portlet--head-noborder">
+    <div class="card card-custom">
         @include('backend.layouts.partials.index._index_header', $headerConfigs)
-        <div class="kt-portlet__body">
+        <div class="card-body">
             @include('backend.layouts.partials.index._search', ['form' => view('backend.modules.%%userViewPath%%._search', ['%%crudNameSingular%%' => $%%crudNameSingular%%])])
-            <table class="table table-hover nowrap" id="table_%%crudName%%">
+            <table class="table table-hover table-head-custom table-head-bg table-vertical-center nowrap" id="table_%%crudName%%">
                 <thead>
                     <tr>
-                        {{--<th style="width: 5%"><label class="kt-checkbox kt-checkbox--single kt-checkbox--all kt-checkbox--brand"><input type="checkbox"><span></span></label></th>--}}
+                        {{--<th style="width: 5%"><label class="checkbox checkbox-single checkbox-all"><input type="checkbox"><span></span></label></th>--}}
                         <th>@lang('No.')</th>
                         %%formHeadingHtml%%
                         <th>@lang('Actions')</th>
