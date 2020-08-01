@@ -29,7 +29,7 @@ class MakeEnumCommand extends GeneratorCommand
 				$optionDesc = ucfirst(camel2words($option));
 
 				$constOption      .= "public const $option = $value;" . "\n";
-				$constDescription .= "if (self::$option === ".'$value'.") {
+				$constDescription .= "if (self::$option === ".'(int) $value'.") {
 										return __('{$optionDesc}');
 									}" . "\n";
 			}

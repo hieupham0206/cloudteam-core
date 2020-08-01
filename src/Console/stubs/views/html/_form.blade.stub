@@ -19,7 +19,7 @@
     </div>
     <div class="card-footer text-right bg-gray-100 border-top-0">
         @if ($%%crudNameSingular%%->canBeSaved())
-            <button class="btn-main btn-wide"><span>
+            <button class="btn-main btn-wide mr-2"><span>
                 <i class="far fa-save"></i>
                 <span>@lang('Save')</span></span>
             </button>
