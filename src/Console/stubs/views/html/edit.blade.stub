@@ -5,13 +5,13 @@ $breadcrumbs = ['breadcrumb' => '%%route%%.edit', 'model' => $%%crudNameSingular
 @extends("$layout.app")
 
 @section('scripts')
-	<script src="{{ version('backend/js/%%viewTemplateDir%%/form.js') }}"></script>
+	<script src="{{ version('js/%%viewTemplateDir%%/form.js') }}"></script>
 @endsection
 
 @section('pageTitle', __('Edit') . " $%%crudNameSingular%%->model_title")
 
 @section('content')
     <div class="card card-custom">
-        @include('backend.modules.%%userViewPath%%._form', ['caption' => __('action.Edit Model', ['model' => $%%crudNameSingular%%->classLabel(true)])])
+        @include('modules.%%userViewPath%%._form', ['caption' => __('action.Edit Model', ['model' => $%%crudNameSingular%%->classLabel(true)])])
     </div>
 @endsection

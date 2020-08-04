@@ -272,7 +272,7 @@ class CrudViewCommand extends Command
         $this->primaryKey = $this->option('pk');
         $this->viewName   = $this->route;
 
-        $viewDirectory = config('view.paths')[0] . '/backend/modules/';
+        $viewDirectory = config('view.paths')[0] . '/modules/';
         $path          = $viewDirectory . $this->viewName . '/';
         if ($this->option('view-path')) {
             $this->userViewPath = lcfirst($this->option('view-path'));

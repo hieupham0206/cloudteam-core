@@ -40,7 +40,7 @@ class CrudControllerCommand extends GeneratorCommand
 
     protected $modelName = '';
 
-    protected $namespace = 'App\\Http\\Controllers\\Modules\\Backend\\';
+    protected $namespace = 'App\\Http\\Controllers\\Modules\\';
 
     protected $crudName = '';
 
@@ -67,7 +67,7 @@ class CrudControllerCommand extends GeneratorCommand
 
         if ($namespace !== '') {
             $controllerNamespace .= $namespace;
-            $viewName            = 'backend.modules.' . strtolower($namespace) . ".$viewName";
+            $viewName            = 'modules.' . strtolower($namespace) . ".$viewName";
         }
 
         $validations = rtrim($this->option('validations'), ';');

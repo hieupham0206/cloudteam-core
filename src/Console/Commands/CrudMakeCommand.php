@@ -271,9 +271,9 @@ class CrudMakeCommand extends Command
      */
     private function makeJs($crud, $namespace, $route, $model): void
     {
-        $jsPath = resource_path('backend/js/') . $route;
+        $jsPath = resource_path('js/') . $route;
         if ($namespace !== '') {
-            $jsPath = resource_path('backend/js/modules/') . lcfirst($namespace) . '/' . $route;
+            $jsPath = resource_path('js/modules/') . lcfirst($namespace) . '/' . $route;
         }
         $jsPath = str_replace('\\', '/', $jsPath);
         $file   = new Filesystem();
