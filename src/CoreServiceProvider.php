@@ -2,6 +2,20 @@
 
 namespace Cloudteam\Core;
 
+use Cloudteam\{Core\Console\Commands\CleanJsCacheCommand,
+    Core\Console\Commands\CrudControllerCommand,
+    Core\Console\Commands\CrudMakeCommand,
+    Core\Console\Commands\CrudTableCommand,
+    Core\Console\Commands\CrudTestCommand,
+    Core\Console\Commands\CrudViewCommand,
+    Core\Console\Commands\MakeEnumCommand,
+    Core\Console\Commands\MakeLocalScopeCommand,
+    Core\Console\Commands\MakeModelAttributeCommand,
+    Core\Console\Commands\MakeModelMethodCommand,
+    Core\Console\Commands\MakeModelRelationshipCommand,
+    Core\Console\Commands\MakeModelServiceCommand,
+    Core\Console\Commands\MakeMultipleMigration,
+    Core\Console\Commands\MakeMultipleModel};
 use Illuminate\Support\ServiceProvider;
 
 class CoreServiceProvider extends ServiceProvider
@@ -48,7 +62,7 @@ class CoreServiceProvider extends ServiceProvider
     {
         return ['core'];
     }
-    
+
     /**
      * Console-specific booting.
      *
@@ -77,6 +91,24 @@ class CoreServiceProvider extends ServiceProvider
         ], 'core.views');*/
 
         // Registering package commands.
-        // $this->commands([]);
+        $this->commands([
+            CrudMakeCommand::class,
+            CrudControllerCommand::class,
+            CrudTableCommand::class,
+            CrudViewCommand::class,
+            CrudTestCommand::class,
+
+            MakeLocalScopeCommand::class,
+            MakeModelMethodCommand::class,
+            MakeModelAttributeCommand::class,
+            MakeModelRelationshipCommand::class,
+            MakeModelServiceCommand::class,
+            MakeEnumCommand::class,
+
+            MakeMultipleMigration::class,
+            MakeMultipleModel::class,
+
+            CleanJsCacheCommand::class,
+        ]);
     }
 }
