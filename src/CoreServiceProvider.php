@@ -3,11 +3,14 @@
 namespace Cloudteam\Core;
 
 use Cloudteam\{Core\Console\Commands\CleanJsCacheCommand,
+    Core\Console\Commands\CreateMultipleMigration,
     Core\Console\Commands\CrudControllerCommand,
     Core\Console\Commands\CrudMakeCommand,
     Core\Console\Commands\CrudTableCommand,
     Core\Console\Commands\CrudTestCommand,
     Core\Console\Commands\CrudViewCommand,
+    Core\Console\Commands\GenerateMultipleModel,
+    Core\Console\Commands\InstallHooks,
     Core\Console\Commands\MakeEnumCommand,
     Core\Console\Commands\MakeLocalScopeCommand,
     Core\Console\Commands\MakeModelAttributeCommand,
@@ -15,7 +18,8 @@ use Cloudteam\{Core\Console\Commands\CleanJsCacheCommand,
     Core\Console\Commands\MakeModelRelationshipCommand,
     Core\Console\Commands\MakeModelServiceCommand,
     Core\Console\Commands\MakeMultipleMigration,
-    Core\Console\Commands\MakeMultipleModel};
+    Core\Console\Commands\MakeMultipleModel,
+    Core\Console\Commands\PreCommitHook};
 use Illuminate\Support\ServiceProvider;
 
 class CoreServiceProvider extends ServiceProvider
@@ -109,6 +113,12 @@ class CoreServiceProvider extends ServiceProvider
             MakeMultipleModel::class,
 
             CleanJsCacheCommand::class,
+
+            CreateMultipleMigration::class,
+            GenerateMultipleModel::class,
+
+            PreCommitHook::class,
+            InstallHooks::class,
         ]);
     }
 }
