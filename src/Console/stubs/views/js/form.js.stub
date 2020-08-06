@@ -4,35 +4,59 @@ window.vueApp = new Vue({
 
 $(function() {
 	const ${{ modelNameUnCap }}Form = $('#{{ modelName }}_form')
+	const form = ${{ modelNameUnCap }}Form[0]
 	const isConfirm = ${{ modelNameUnCap }}Form.data('confirm')
-	const isAjax = ${{ modelNameUnCap }}Form.data('ajax')
 
-    ${{ modelNameUnCap }}Form.validate({
-        submitHandler: isAjax && function(form, e) {
-            window.blockPage()
-            e.preventDefault()
-
-            function save() {
-                let formData = new FormData(form)
-
-                $(form).submitData({returnEarly: true, formData}).then(data => {
-                    let msg = data.message
-                    let redirectUrl = data.redirect_url
-                    if (redirectUrl !== undefined) {
-                        window.success({text: msg, callback: () => location.href = redirectUrl})
-                    }
-                })
-            }
-
-            if (isConfirm) {
-                $(form).swal(result => {
-                    if (result.value) {
-                        save()
-                    }
-                })
-            } else {
-                save()
-            }
+    let validation = FormValidation.formValidation(form,
+        {
+            locale: 'vi_VN',
+            localization: FormValidation.locales.vi_VN,
+            fields: {
+                name: {
+                    validators: {
+                        notEmpty: {},
+                    },
+                },
+            },
+            plugins: {
+                trigger: new FormValidation.plugins.Trigger(),
+                submitButton: new FormValidation.plugins.SubmitButton(),
+                autoFocus: new FormValidation.plugins.AutoFocus(),
+                //defaultSubmit: new FormValidation.plugins.DefaultSubmit(), // Uncomment this line to enable normal button submit after form validation
+                bootstrap: new FormValidation.plugins.Bootstrap(),
+            },
         },
+    )
+
+    $('#{{ modelName }}_form').on('submit', function() {
+        validation.validate().then(function(status) {
+            console.log(status)
+            if (status === 'Valid') {
+
+                window.blockPage()
+
+                function save() {
+                    let formData = new FormData(form)
+
+                    $(form).submitData({returnEarly: true, formData}).then(data => {
+                        let msg = data.message
+                        let redirectUrl = data.redirect_url
+                        if (redirectUrl !== undefined) {
+                            window.success({text: msg, callback: () => location.href = redirectUrl})
+                        }
+                    })
+                }
+
+                if (isConfirm) {
+                    $(form).swal(result => {
+                        if (result.value) {
+                            save()
+                        }
+                    })
+                } else {
+                    save()
+                }
+            }
+        })
     })
 })

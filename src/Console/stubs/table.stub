@@ -5,10 +5,10 @@ namespace DummyNamespace;
 use App\Models\{{modelName}};
 use Cloudteam\Core\Utils\HtmlAction;
 TableNamespace
+use Illuminate\Database\Eloquent\{Builder, Collection};
 
 class {{modelName}}Table extends DataTable {
     /**
-     * @throws \ReflectionException
      * @throws \Exception
      */
 	public function getData(): array {
