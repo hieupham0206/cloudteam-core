@@ -2,7 +2,7 @@
 $breadcrumbs = ['breadcrumb' => '%%route%%.show', 'model' => $%%crudNameSingular%%];
 @endphp
 
-@extends("$layout.app")
+@extends("layout.default")
 
 @section('scripts')
 

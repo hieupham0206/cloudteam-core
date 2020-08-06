@@ -2,7 +2,7 @@
 $breadcrumbs = ['breadcrumb' => '%%route%%.create', 'model' => $%%crudNameSingular%%];
 @endphp
 
-@extends("$layout.app")
+@extends("layout.default")
 
 @section('scripts')
 	<script src="{{ version('js/%%viewTemplateDir%%/form.js') }}"></script>

@@ -30,13 +30,4 @@ $(function() {
         $('#{{ route }}_search_form').resetForm()
         table{{ modelNameCap }}.reloadTable()
     })
-
-    //note: thao tác nhanh, nếu có sử dụng checkbox thì uncomment
-    // $('#link_delete_selected_rows').on('click', function() {
-    //     let ids = $(".kt-checkbox--single > input[type='checkbox']:checked").getValues()
-    //
-    //     if (ids.length > 0) {
-    //         table{{ modelNameCap }}.actionDelete({btnDelete: $(this), params: {ids: ids}})
-    //     }
-    // })
 })
