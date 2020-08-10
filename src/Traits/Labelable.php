@@ -73,17 +73,8 @@ trait Labelable
         return '<span class="font-weight-bold label label-inline label-rounded label-light-' . $context . ' label-' . $size . '">' . $text . '</span>';
     }
 
-    public function getModelDisplayTextAttribute(): string
-    {
-        $displayAttribute = $this->displayAttribute;
-
-        return $this->{$displayAttribute};
-    }
-
     public function getModelTitleAttribute(): ?string
     {
-        $displayText = $this->model_display_text;
-
-        return $displayText ?: $this->classLabel(true);
+        return $this->classLabel(true);
     }
 }
