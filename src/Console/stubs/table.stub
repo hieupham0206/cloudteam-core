@@ -3,9 +3,7 @@
 namespace DummyNamespace;
 
 use App\Models\{{modelName}};
-use Cloudteam\Core\Utils\HtmlAction;
 TableNamespace
-use Illuminate\Database\Eloquent\{Builder, Collection};
 
 class {{modelName}}Table extends DataTable {
     /**
@@ -65,7 +63,7 @@ class {{modelName}}Table extends DataTable {
 
 	    $buttonDelete = '';
 
-        $buttonEdit = HtmlAction::generateButtonEdit(${{crudNameSingular}}->getEditLink());
+		$buttonEdit = ${{crudNameSingular}}->generateButtonEdit();
         if ($canEdit{{modelName}}) {
             //$buttonChangeState = ${{crudNameSingular}}->generateButtonChangeStateActive($modelName);
         }

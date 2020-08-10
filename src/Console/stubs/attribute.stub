@@ -9,6 +9,6 @@ trait DummyClass
 {
     public function getStateTextAttribute()
     {
-        return $this->contextBadgeUnified($this->state_name, $this->state === 1 ? 'success' : 'danger');
+        return $this->solidLabel($this->state_name, $this->state === 1 ? 'success' : 'danger', 'lg');
     }
 }

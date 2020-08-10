@@ -15,6 +15,16 @@ $(function() {
         }),
         'conditionalPaging': true
     })
+    $body.on('click', '.btn-action-change-state', function() {
+        let message = $(this).data('message')
+        table{{ modelNameCap }}.actionEdit({
+            btnEdit: $(this),
+            params: {
+                state: $(this).data('state'),
+            },
+            message,
+        })
+    })
     $body.on('click', '.btn-action-delete', function () {
         table{{ modelNameCap }}.actionDelete({btnDelete: $(this)})
     })
@@ -27,7 +37,7 @@ $(function() {
     $('.btn-refresh-table, #btn_reset_filter').on('click', function(e) {
         e.stopPropagation()
 
-        $('#{{ route }}_search_form').resetForm()
+        $('#{{ route }}_search_form').clearData()
         table{{ modelNameCap }}.reloadTable()
     })
 })
