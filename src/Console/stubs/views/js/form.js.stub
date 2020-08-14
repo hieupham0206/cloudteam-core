@@ -50,6 +50,8 @@ $(function() {
                 if (isConfirm) {
                     $(form).swal(result => {
                         if (result.value) {
+                            window.blockPage()
+
                             save()
                         }
                     })

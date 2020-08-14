@@ -506,7 +506,7 @@ class CrudViewCommand extends Command
 
         $required = $item['required'] ? 'required' : '';
 
-        $customClass = ' text-string';
+        $customClass = 'text-alphanum';
 
         if ($item['type'] === 'number') {
             $customClass = ' text-numeric';
