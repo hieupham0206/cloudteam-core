@@ -139,25 +139,12 @@ class DummyClass extends Controller
         }
     }
 
-    public function destroys(): JsonResponse
-    {
-        try {
-            $ids = \request()->get( 'ids' );
-            {{modelName}}::destroy( $ids );
-
-            return $this->asJson( [
-                'message' => __( 'Data deleted successfully' )
-            ] );
-        } catch ( \Exception $e ) {
-			return $this->errorResponse($e);
-        }
-    }
-
     public function {{crudName}}(): JsonResponse
     {
         $modelFilter = new ModelFilter({{modelName}}::query());
 
-        ${{crudName}} = $modelFilter->filter()->selectRaw('id, name');
+		${{crudNameSingular}}Builder = $modelFilter->filter();
+        ${{crudName}} = ${{crudNameSingular}}Builder->selectRaw('id, name');
 
         $totalCount = ${{crudName}}->count();
         ${{crudName}}  = $modelFilter->getData(${{crudName}});

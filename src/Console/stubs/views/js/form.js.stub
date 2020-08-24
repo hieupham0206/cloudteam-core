@@ -30,7 +30,6 @@ $(function() {
 
     $('#{{ modelName }}_form').on('submit', function() {
         validation.validate().then(function(status) {
-            console.log(status)
             if (status === 'Valid') {
 
                 window.blockPage()

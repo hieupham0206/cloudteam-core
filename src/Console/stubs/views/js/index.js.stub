@@ -1,4 +1,4 @@
-window.vueApp = new Vue({
+let vueApp = new Vue({
 	el: '#app',
 })
 
