@@ -460,7 +460,7 @@ class CrudViewCommand extends Command
     {
         $formGroup = File::get($this->viewDirectoryPath . 'form-fields/wrap-field.blade.stub');
 
-        $labelText = sprintf("$%s->label('%s')", $this->crudNameSingular, $item['name']);
+        $labelText = sprintf("$%s->label('%s')", $this->crudNameSingular, str_replace('_id', '', $item['name']));
 
         return sprintf($formGroup, $item['name'], $prefix, $labelText, $field);
     }
@@ -506,7 +506,7 @@ class CrudViewCommand extends Command
 
         $required = $item['required'] ? 'required' : '';
 
-        $customClass = 'text-alphanum';
+        $customClass = ' text-alphanum';
 
         if ($item['type'] === 'number') {
             $customClass = ' text-numeric';
