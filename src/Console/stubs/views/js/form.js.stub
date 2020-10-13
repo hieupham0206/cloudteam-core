@@ -1,4 +1,4 @@
-let vueApp = new Vue({
+new Vue({
 	el: '#app',
 })
 
@@ -22,8 +22,10 @@ $(function() {
                 trigger: new FormValidation.plugins.Trigger(),
                 submitButton: new FormValidation.plugins.SubmitButton(),
                 autoFocus: new FormValidation.plugins.AutoFocus(),
-                //defaultSubmit: new FormValidation.plugins.DefaultSubmit(), // Uncomment this line to enable normal button submit after form validation
                 bootstrap: new FormValidation.plugins.Bootstrap(),
+
+				//declarative: new FormValidation.plugins.Declarative()
+                //defaultSubmit: new FormValidation.plugins.DefaultSubmit(), // Uncomment this line to enable normal button submit after form validation
             },
         },
     )
