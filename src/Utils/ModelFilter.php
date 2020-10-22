@@ -43,6 +43,9 @@ class ModelFilter
 
         $this->prepareConfig();
 
+	    $this->excludeIds = array_filter($this->excludeIds);
+	    $this->includeIds = array_filter($this->includeIds);
+
         $this->offset = ($this->page - 1) * $this->limit;
     }
 
@@ -58,7 +61,13 @@ class ModelFilter
 
     public function filter()
     {
-        $this->builder->exclude($this->excludeIds)->include($this->includeIds);
+    	if ($this->excludeIds) {
+		    $this->builder->exclude($this->excludeIds);
+	    }
+
+    	if ($this->includeIds) {
+		    $this->builder->include($this->includeIds);
+	    }
 
         $query   = $this->query;
         $queryBy = $this->queryBy;
