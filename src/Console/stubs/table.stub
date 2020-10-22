@@ -57,6 +57,14 @@ class {{modelName}}Table extends DataTable {
 		                 ->orderBy( $this->column, $this->direction )->get();
 	}
 
+	/**
+     * @param string $modelName
+     * @param {{modelName}} ${{crudNameSingular}}
+     * @param array $permissions
+     *
+     * @return string
+     * @SuppressWarnings(PHPMD)
+     */
 	private function generateButton(string $modelName, {{modelName}} ${{crudNameSingular}}, array $permissions): string
 	{
 	    [$canEdit{{modelName}}, $canDelete{{modelName}}] = $permissions;

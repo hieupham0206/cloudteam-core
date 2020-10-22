@@ -72,23 +72,4 @@ class {{modelName}}Test extends TestCase {
 			'id' => ${{crudNameSingular}}->id
 		] );
 	}
-
-	public function test_authorized_user_can_delete_multiple_{{crudNameSingular}}() {
-  		$this->authorizedUserSignIn();
-
-  		${{crudNameSingular}}1 = create( {{modelName}}::class);
-  		${{crudNameSingular}}2 = create( {{modelName}}::class);
-
-  		$this->delete( route( '{{crudName}}.destroys', [
-  			'ids' => [${{crudNameSingular}}1->id, ${{crudNameSingular}}2->id]
-  		] ) )->assertStatus( 200 );
-
-  		$this->assertSoftDeleted( '{{crudName}}', [
-  			'id' => ${{crudNameSingular}}1->id
-  		] );
-
-  		$this->assertSoftDeleted( '{{crudName}}', [
-  			'id' => ${{crudNameSingular}}2->id
-  		] );
-  	}
 }
