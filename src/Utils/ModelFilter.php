@@ -3,6 +3,7 @@
 namespace Cloudteam\Core\Utils;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 class ModelFilter
@@ -43,8 +44,8 @@ class ModelFilter
 
         $this->prepareConfig();
 
-	    $this->excludeIds = array_filter($this->excludeIds);
-	    $this->includeIds = array_filter($this->includeIds);
+	    $this->excludeIds = array_filter(Arr::wrap($this->excludeIds));
+	    $this->includeIds = array_filter(Arr::wrap($this->includeIds));
 
         $this->offset = ($this->page - 1) * $this->limit;
     }
