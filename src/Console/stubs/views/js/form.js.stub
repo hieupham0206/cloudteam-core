@@ -23,8 +23,7 @@ $(function() {
                 submitButton: new FormValidation.plugins.SubmitButton(),
                 autoFocus: new FormValidation.plugins.AutoFocus(),
                 bootstrap: new FormValidation.plugins.Bootstrap(),
-
-				//declarative: new FormValidation.plugins.Declarative()
+				declarative: new FormValidation.plugins.Declarative()
                 //defaultSubmit: new FormValidation.plugins.DefaultSubmit(), // Uncomment this line to enable normal button submit after form validation
             },
         },
