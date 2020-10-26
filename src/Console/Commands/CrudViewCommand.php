@@ -504,7 +504,7 @@ class CrudViewCommand extends Command
     {
         [$start, $end] = $this->delimiter;
 
-        $required = $item['required'] ? 'required' : '';
+        $required = $item['required'] ? 'data-fv-not-empty="true"' : '';
 
         $customClass = ' text-alphanum';
 

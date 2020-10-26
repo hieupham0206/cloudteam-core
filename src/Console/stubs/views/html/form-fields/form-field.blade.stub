@@ -1,2 +1,2 @@
-<input class="form-control%%customClass%%" name="%%itemName%%" type="%%fieldType%%" id="txt_%%itemName%%" value="{{ $%%crudNameSingular%%->%%itemName%% ?? old('%%itemName%%')}}" required>
+<input class="form-control%%customClass%%" name="%%itemName%%" type="%%fieldType%%" id="txt_%%itemName%%" value="{{ $%%crudNameSingular%%->%%itemName%% ?? old('%%itemName%%')}}" data-fv-not-empty="true">
 <span class="form-text text-danger">{!! $errors->first('%%itemName%%') !!}</span>
