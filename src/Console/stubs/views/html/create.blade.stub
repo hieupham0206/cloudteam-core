@@ -5,7 +5,7 @@ $breadcrumbs = ['breadcrumb' => '%%route%%.create', 'model' => $%%crudNameSingul
 @extends("layout.default")
 
 @section('scripts')
-	<script src="{{ version('js/%%viewTemplateDir%%/form.js') }}"></script>
+	<script src="{{ mix('js/%%viewTemplateDir%%/form.js') }}"></script>
 @endsection
 
 @section('pageTitle', __('action.Add new Model', ['model' => $%%crudNameSingular%%->classLabel(true)]))

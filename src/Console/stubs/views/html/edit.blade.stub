@@ -5,7 +5,7 @@ $breadcrumbs = ['breadcrumb' => '%%route%%.edit', 'model' => $%%crudNameSingular
 @extends("layout.default")
 
 @section('scripts')
-	<script src="{{ version('js/%%viewTemplateDir%%/form.js') }}"></script>
+	<script src="{{ mix('js/%%viewTemplateDir%%/form.js') }}"></script>
 @endsection
 
 @section('pageTitle', __('Edit') . " $%%crudNameSingular%%->model_title")

@@ -5,7 +5,7 @@ $breadcrumbs = ['breadcrumb' => '%%route%%.index'];
 @extends("layout.default")
 
 @section('scripts')
-    <script src="{{ version('js/%%viewTemplateDir%%/index.js') }}"></script>
+    <script src="{{ mix('js/%%viewTemplateDir%%/index.js') }}"></script>
 @endsection
 
 @section('pageTitle', $%%crudNameSingular%%->classLabel())
