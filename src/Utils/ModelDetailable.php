@@ -23,13 +23,13 @@ trait ModelDetailable
             $deletedIds = $currentModelDetailIds->diff(collect($detailDatas)->pluck('id')->toArray());
 
             foreach ($detailDatas as $detailData) {
-                $modelDetailid = $detailData['id'] ?? '';
-                if ( ! $modelDetailid) {
+                $modelDetailId = $detailData['id'] ?? '';
+                if ( ! $modelDetailId) {
                     $modelDetail = array_merge($detailData, $extraDatas);
 
                     $detailModel::create($modelDetail);
                 } else {
-                    $detailModel::query()->whereKey($modelDetailid)->update($detailData);
+	                $detailModel::find($modelDetailId)->update($detailData);
                 }
             }
         }
