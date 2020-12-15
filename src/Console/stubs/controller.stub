@@ -56,10 +56,11 @@ class DummyClass extends Controller
     {
         {{validationRules}}
 
+        $requestDatas = $request->all();
+
         try {
             \DB::beginTransaction();
 
-            $requestDatas = $request->all();
             {{modelName}}::create($requestDatas);
 
             \DB::commit();
@@ -105,10 +106,10 @@ class DummyClass extends Controller
     {
         {{validationRules}}
 
+        $requestDatas = $request->all();
+
         try {
             \DB::beginTransaction();
-
-            $requestDatas = $request->all();
             ${{crudNameSingular}}->update($requestDatas);
 
             \DB::commit();

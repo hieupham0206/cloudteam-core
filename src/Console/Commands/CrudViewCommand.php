@@ -55,7 +55,7 @@ class CrudViewCommand extends Command
         'text'     => 'textarea',
         'password' => 'password',
         'email'    => 'email',
-        'number'   => 'number',
+        'number'   => 'text',
         'date'     => 'date',
         'datetime' => 'datetime-local',
         'time'     => 'time',
