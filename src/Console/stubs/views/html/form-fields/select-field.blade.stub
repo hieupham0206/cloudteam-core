@@ -1,4 +1,3 @@
-<select name="%%itemName%%" class="form-control select2" id="select_%%itemName%%" %%required%%>
+<select name="%%itemName%%" class="form-control select2" id="select_%%itemName%%" data-fv-not-empty="true">
     %%options%%
 </select>
-<span class="form-text text-danger">{!! $errors->first('%%itemName%%') !!}</span>
