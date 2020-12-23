@@ -33,8 +33,6 @@ $(function() {
         validation.validate().then(function(status) {
             if (status === 'Valid') {
                 function save() {
-                    window.blockPage()
-
                     let formData = new FormData(form)
 
                     $(form).submitData({returnEarly: true, formData}).then(data => {
@@ -49,10 +47,16 @@ $(function() {
                 if (isConfirm) {
                     $(form).swal(result => {
                         if (result.value) {
+                            setTimeout(() => {
+                                window.blockPage()
+                            }, 0)
+
                             save()
                         }
                     })
                 } else {
+                    window.blockPage()
+
                     save()
                 }
             }
