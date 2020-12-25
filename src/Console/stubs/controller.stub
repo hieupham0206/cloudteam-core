@@ -7,7 +7,7 @@ use App\Models\{{modelName}};
 use Cloudteam\Core\{Tables\TableFacade, Utils\ModelFilter};
 use App\Http\Actions\ChangeModelState;
 TableNamespace
-use Illuminate\{View\View, Http\Request, Http\JsonResponse, Http\RedirectResponse};
+use Illuminate\{View\View, Http\Request, Http\JsonResponse, Http\RedirectResponse, Routing\Redirector};
 
 class DummyClass extends Controller
 {
@@ -47,7 +47,9 @@ class DummyClass extends Controller
 
     /**
      * @param \Illuminate\Http\Request $request
-     * @return RedirectResponse|JsonResponse
+     *
+     * @return RedirectResponse|JsonResponse|Redirector
+     *
      * @throws \Illuminate\Validation\ValidationException
      * @throws \Exception
      * @throws \Throwable
@@ -97,7 +99,9 @@ class DummyClass extends Controller
     /**
 	 * @param Request $request
      * @param  {{modelName}} ${{crudNameSingular}}
-     * @return RedirectResponse|JsonResponse
+     *
+     * @return RedirectResponse|JsonResponse|Redirector
+     *
      * @throws \Illuminate\Validation\ValidationException
      * @throws \Exception
      * @throws \Throwable
