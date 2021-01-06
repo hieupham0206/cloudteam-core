@@ -1,6 +1,5 @@
 <?php
 //STRING HELPER
-use Illuminate\Support\Facades\Cache;
 
 if ( ! function_exists('camel2words')) {
     /**
@@ -414,44 +413,6 @@ if ( ! function_exists('decreaseByPercentage')) {
     }
 }
 //END NUMBER HELPER
-
-if ( ! function_exists('setEnvValue')) {
-    /**
-     * Thay đổi giá trị config trong file .env
-     *
-     * @param $envKey
-     * @param $envValue
-     */
-    function setEnvValue($envKey, $envValue)
-    {
-        $envFile = app()->environmentFilePath();
-        $str     = file_get_contents($envFile);
-
-        $oldValue = env($envKey);
-
-        $str = str_replace("{$envKey}={$oldValue}", "{$envKey}={$envValue}", $str);
-
-        $fopen = fopen($envFile, 'wb');
-        fwrite($fopen, $str);
-        fclose($fopen);
-    }
-}
-
-if ( ! function_exists('version')) {
-    /**
-     * Load asset có cache version
-     *
-     * @param $url
-     *
-     * @return string
-     */
-    function version($url)
-    {
-        $timestamp = Cache::get('asset_version');
-
-        return asset($url . "?v={$timestamp}");
-    }
-}
 
 if ( ! function_exists('user')) {
     /**

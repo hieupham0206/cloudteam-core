@@ -2,7 +2,7 @@
 
 namespace Cloudteam\Core;
 
-use Cloudteam\{Core\Console\Commands\CleanJsCacheCommand,
+use Cloudteam\{
     Core\Console\Commands\CreateMultipleMigration,
     Core\Console\Commands\CrudControllerCommand,
     Core\Console\Commands\CrudMakeCommand,
@@ -111,8 +111,6 @@ class CoreServiceProvider extends ServiceProvider
 
             MakeMultipleMigration::class,
             MakeMultipleModel::class,
-
-            CleanJsCacheCommand::class,
 
             CreateMultipleMigration::class,
             GenerateMultipleModel::class,
