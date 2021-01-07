@@ -425,3 +425,31 @@ if ( ! function_exists('user')) {
         return auth()->user();
     }
 }
+
+if (! function_exists('normalizeSerializeArray')) {
+	/**
+	 * @param $queryDatas
+	 *
+	 * @return array
+	 */
+	function normalizeSerializeArray($queryDatas)
+	{
+		$filters       = json_decode($queryDatas, JSON_FORCE_OBJECT);
+		$finalFilters = [];
+		foreach ($filters as $filter) {
+			if (isset($finalFilters[$filter['name']])) {
+				$currentVal = is_array($finalFilters[$filter['name']]) ? $finalFilters[$filter['name']] : [$finalFilters[$filter['name']]];
+				if (is_string($currentVal)) {
+					$currentVal = trim($currentVal);
+				}
+				$finalFilters[$filter['name']] = array_merge([
+					$filter['value']
+				], $currentVal);
+			} else {
+				$finalFilters[$filter['name']] = trim($filter['value']);
+			}
+		}
+
+		return $finalFilters;
+	}
+}

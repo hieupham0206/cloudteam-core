@@ -45,22 +45,7 @@ abstract class DataTable
             $this->direction = $arguments['order'][0]['dir'];
         }
         if (array_key_exists('filters', $arguments)) {
-            $filters       = json_decode($arguments['filters'], JSON_FORCE_OBJECT);
-            $finalFilters = [];
-            foreach ($filters as $filter) {
-                if (isset($finalFilters[$filter['name']])) {
-                    $currentVal = is_array($finalFilters[$filter['name']]) ? $finalFilters[$filter['name']] : [$finalFilters[$filter['name']]];
-                    if (is_string($currentVal)) {
-                        $currentVal = trim($currentVal);
-                    }
-                    $finalFilters[$filter['name']] = array_merge([
-                        $filter['value']
-                    ], $currentVal);
-                } else {
-                    $finalFilters[$filter['name']] = trim($filter['value']);
-                }
-            }
-            $this->filters = $finalFilters;
+            $this->filters = normalizeSerializeArray($arguments['filters']);
         }
 
         $this->isFilterNotEmpty = collect($this->filters)->filter(static function($value) {
