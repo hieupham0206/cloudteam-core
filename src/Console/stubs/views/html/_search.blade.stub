@@ -10,10 +10,10 @@
 			<input class="form-control text-datepicker" name="to_date" id="txt_to_date" value="{{ date('d-m-Y') }}">
 		</div>
         <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mt-6">
-            <button class="btn-main" id="btn_filter">
+            <button class="btn btn-brand" id="btn_filter">
                 <span><i class="far fa-search"></i><span>@lang('Search')</span></span>
             </button>
-            <button type="button" class="btn-sub" id="btn_reset_filter">
+            <button type="button" class="btn btn-brand btn-hover-transparent-brand" id="btn_reset_filter">
                 <span><i class="far fa-undo-alt"></i><span>@lang('Reset')</span></span>
             </button>
         </div>

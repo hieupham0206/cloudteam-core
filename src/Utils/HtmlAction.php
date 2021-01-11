@@ -8,31 +8,31 @@ class HtmlAction
     {
         [$state, $message, $title, $url, $elementTitle, $icon] = $params;
 
-        return sprintf(' <button type="button" class="btn-action-change-state %s" data-state="%s" data-message="%s" data-title="%s" data-url="%s" title="%s"><i class="%s"></i></button>',
+        return sprintf(' <button type="button" class="btn btn-sm btn--icon btn-action-change-state %s" data-state="%s" data-message="%s" data-title="%s" data-url="%s" title="%s"><i class="%s"></i></button>',
             $btnClass, $state, $message, $title, $url, $elementTitle, $icon);
     }
 
     public static function generateButtonDelete(string $deleteLink, string $dataTitle, string $btnClass = 'btn-danger', $icon = 'far fa-sm fa-trash'): string
     {
-        return sprintf(" <button type='button' class='btn-action-delete %s' data-title='%s' data-url='%s' title='%s'><i class='%s'></i></button>",
+        return sprintf(" <button type='button' class='btn btn-sm btn--icon btn-action-delete %s' data-title='%s' data-url='%s' title='%s'><i class='%s'></i></button>",
             $btnClass, $dataTitle, $deleteLink, __('Delete'), $icon);
     }
 
     public static function generateButtonEdit(string $editLink, string $btnClass = 'btn-primary', $icon = 'far fa-sm fa-edit'): string
     {
-        return sprintf(" <a href='%s' class='btn-action-edit %s' title='%s'><i class='%s'></i></a>", $editLink, $btnClass, __('Edit'), $icon);
+        return sprintf(" <a href='%s' class='btn btn-sm btn--icon btn-action-edit %s' title='%s'><i class='%s'></i></a>", $editLink, $btnClass, __('Edit'), $icon);
     }
 
     public static function generateButtonView(string $viewLink, string $btnClass = 'btn-info', $icon = 'far fa-sm fa-eye'): string
     {
-        return sprintf(' <a href="%s" class="btn-action-view %s" title="%s"><i class="%s"></i></a>', $viewLink, $btnClass, __('View'), $icon);
+        return sprintf(' <a href="%s" class="btn btn-sm btn--icon btn-action-view %s" title="%s"><i class="%s"></i></a>', $viewLink, $btnClass, __('View'), $icon);
     }
 
     public static function generateCustomButton(array $params): string
     {
         [$cssClass, $dataTitle, $link, $title, $icon] = $params;
 
-        return sprintf(' <button type="button" class="btn-action %s" data-title="%s" data-url="%s" title="%s"><i class="%s"></i></button>'
+        return sprintf(' <button type="button" class="btn btn-sm btn--icon btn-action %s" data-title="%s" data-url="%s" title="%s"><i class="%s"></i></button>'
             , $cssClass, $dataTitle, $link, $title, $icon);
     }
 

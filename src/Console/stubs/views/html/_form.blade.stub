@@ -19,12 +19,12 @@
     </div>
     <div class="card-footer text-right bg-gray-100 border-top-0">
         @if ($%%crudNameSingular%%->canBeSaved())
-            <button class="btn-main btn-wide mr-2"><span>
+            <button class="btn btn-brand btn-wide mr-2"><span>
                 <i class="far fa-save"></i>
                 <span>@lang('Save')</span></span>
             </button>
         @endif
-        <a href="{{ route('%%route%%.index') }}" class="btn-sub btn-wide" id="link_back" data-should-confirm="{{ ! $%%crudNameSingular%%->exists }}">
+        <a href="{{ route('%%route%%.index') }}" class="btn btn-brand btn-hover-transparent-brand btn-wide" id="link_back" data-should-confirm="{{ ! $%%crudNameSingular%%->exists }}">
             <span><i class="far fa-arrow-left"></i><span>@lang('Back')</span></span>
         </a>
     </div>

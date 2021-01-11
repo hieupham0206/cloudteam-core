@@ -24,9 +24,9 @@ $breadcrumbs = ['breadcrumb' => '%%route%%.show', 'model' => $%%crudNameSingular
 
         <div class="card-footer text-right bg-gray-100 border-top-0">
             @if ($%%crudNameSingular%%->can_be_edited)
-                <a href="{{ route('%%route%%.edit', $%%crudNameSingular%%) }}" class="btn-main btn-wide"><span><i class="far fa-edit"></i><span>@lang('Edit')</span></span></a>
+                <a href="{{ route('%%route%%.edit', $%%crudNameSingular%%) }}" class="btn btn-brand btn-wide"><span><i class="far fa-edit"></i><span>@lang('Edit')</span></span></a>
             @endif
-            <a href="{{ route('%%route%%.index') }}" class="btn-sub btn-wide"><span><i class="far fa-arrow-left"></i><span>@lang('Back')</span></span></a>
+            <a href="{{ route('%%route%%.index') }}" class="btn btn-brand btn-hover-transparent-brand btn-wide"><span><i class="far fa-arrow-left"></i><span>@lang('Back')</span></span></a>
         </div>
     </div>
 @endsection
