@@ -56,13 +56,13 @@ trait Modelable
 
     public function getDescriptionEvent(string $eventName): string
     {
-        $displayText = $this->model_title;
+        $displayText = $this->{$this->displayAttribute};
 
         if ($this->logAction) {
             $eventName = $this->logAction;
         }
         $user     = auth()->user();
-        $username = $user ? $user->username : 'admin';
+        $username = $user->username ?? 'admin';
 
         return sprintf('%s %s%s %s. %s', $this->classLabel(true), $displayText, __(" has been {$eventName} by "), $username, $this->logMessage);
     }
