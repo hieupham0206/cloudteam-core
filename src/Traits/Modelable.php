@@ -64,6 +64,6 @@ trait Modelable
         $user     = auth()->user();
         $username = $user->username ?? 'admin';
 
-        return sprintf('%s %s%s %s. %s', $this->classLabel(true), $displayText, __(" has been {$eventName} by "), $username, $this->logMessage);
+        return sprintf('%s %s%s %s. %s', $this->classLabel(), $displayText, __(" has been {$eventName} by "), $username, $this->logMessage);
     }
 }
