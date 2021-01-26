@@ -326,7 +326,7 @@ if ( ! function_exists('numberToWord')) {
 //END STRING HELPER
 
 //NUMBER HELPER
-if ( ! function_exists('normalizeNUmber')) {
+if ( ! function_exists('normalizeNumber')) {
     /**
      * Normalizes a user-submitted number for use in code and/or to be saved into the database.
      *
@@ -336,7 +336,7 @@ if ( ! function_exists('normalizeNUmber')) {
      *
      * @return mixed
      */
-    function normalizeNUmber($number, $groupSymbol = ',', $decimalSymbol = '.')
+    function normalizeNumber($number, $groupSymbol = ',', $decimalSymbol = '.')
     {
         if (is_string($number)) {
             // Remove any group symbols and use a period for the decimal symbol
