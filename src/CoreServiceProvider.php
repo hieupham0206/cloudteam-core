@@ -2,24 +2,25 @@
 
 namespace Cloudteam\Core;
 
-use Cloudteam\{
-    Core\Console\Commands\CreateMultipleMigration,
-    Core\Console\Commands\CrudControllerCommand,
-    Core\Console\Commands\CrudMakeCommand,
-    Core\Console\Commands\CrudTableCommand,
-    Core\Console\Commands\CrudTestCommand,
-    Core\Console\Commands\CrudViewCommand,
-    Core\Console\Commands\GenerateMultipleModel,
-    Core\Console\Commands\InstallHooks,
-    Core\Console\Commands\MakeEnumCommand,
-    Core\Console\Commands\MakeLocalScopeCommand,
-    Core\Console\Commands\MakeModelAttributeCommand,
-    Core\Console\Commands\MakeModelMethodCommand,
-    Core\Console\Commands\MakeModelRelationshipCommand,
-    Core\Console\Commands\MakeModelServiceCommand,
-    Core\Console\Commands\MakeMultipleMigration,
-    Core\Console\Commands\MakeMultipleModel,
-    Core\Console\Commands\PreCommitHook};
+use Cloudteam\{Core\Console\Commands\CreateMultipleMigration,
+	Core\Console\Commands\CrudControllerCommand,
+	Core\Console\Commands\CrudMakeCommand,
+	Core\Console\Commands\CrudTableCommand,
+	Core\Console\Commands\CrudTestCommand,
+	Core\Console\Commands\CrudViewCommand,
+	Core\Console\Commands\GenerateMultipleModel,
+	Core\Console\Commands\InstallHooks,
+	Core\Console\Commands\MakeEnumCommand,
+	Core\Console\Commands\MakeLocalScopeCommand,
+	Core\Console\Commands\MakeModelAttributeCommand,
+	Core\Console\Commands\MakeModelMethodCommand,
+	Core\Console\Commands\MakeModelRelationshipCommand,
+	Core\Console\Commands\MakeModelServiceCommand,
+	Core\Console\Commands\MakeMultipleMigration,
+	Core\Console\Commands\MakeMultipleModel,
+	Core\Console\Commands\PreCommitHook,
+	Core\Console\Commands\RegisterService,
+	Core\Console\Commands\StartServer};
 use Illuminate\Support\ServiceProvider;
 
 class CoreServiceProvider extends ServiceProvider
@@ -117,6 +118,9 @@ class CoreServiceProvider extends ServiceProvider
 
             PreCommitHook::class,
             InstallHooks::class,
+
+            RegisterService::class,
+            StartServer::class,
         ]);
     }
 }

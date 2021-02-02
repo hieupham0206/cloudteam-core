@@ -453,3 +453,33 @@ if (! function_exists('normalizeSerializeArray')) {
 		return $finalFilters;
 	}
 }
+
+if (! function_exists('logToFile')) {
+	/**
+	 * Log hành động theo file tương ứng.
+	 *
+	 * @param $channel
+	 * @param $api
+	 * @param $request
+	 * @param $response
+	 * @param array $times
+	 */
+	function logToFile($channel, $api, $request, $response, $times = [])
+	{
+		if (! $times) {
+			$requestedAt = $responsedAt = date('d-m-Y H:i:s');
+		} else {
+			[$requestedAt, $responsedAt] = $times;
+		}
+
+		if (is_array($request)) {
+			$request = json_encode($request);
+		}
+
+		if (is_array($response)) {
+			$response = json_encode($response);
+		}
+
+		Log::channel($channel)->info("\r\n================$api================= \r\n-Request: $requestedAt\r\n$request \r\n-Response: $responsedAt\r\n$response \r\n");
+	}
+}
