@@ -51,6 +51,7 @@ class CoreServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__.'/../config/core.php', 'core');
+        $this->mergeConfigFrom(__DIR__.'/../config/consul.php', 'consul');
 
         // Register the service the package provides.
         $this->app->singleton('core', function ($app) {
@@ -65,7 +66,7 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return ['core'];
+        return ['core', 'consul'];
     }
 
     /**
@@ -79,6 +80,11 @@ class CoreServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../config/core.php' => config_path('core.php'),
         ], 'core.config');
+
+        // Publishing the configuration file.
+        $this->publishes([
+            __DIR__.'/../config/consul.php' => config_path('consul.php'),
+        ], 'consul.config');
 
         // Publishing the views.
         /*$this->publishes([

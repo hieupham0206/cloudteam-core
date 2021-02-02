@@ -4,12 +4,12 @@ namespace Cloudteam\Core\Utils;
 
 class ConsulClient
 {
-	public static function register($name, $address, $port, $weight = 10, $tags_arr = [])
+	public static function register($name, $address, $port, $weight = 10, $tags_arr = [], $schema = 'http')
 	{
 		$tags_arr         = array_merge($tags_arr, [
 			"name"   => $name,
 			"weight" => $weight,
-			"url"    => "https://$address/" . config('consul.root_prefix'),
+			"url"    => "$schema://$address" . (in_array($port, ['80', '443'], true) ? '' : ":$port") . "/" . config('consul.root_prefix'),
 		]);
 		$array['service'] = [
 			'id'      => $name . '-' . self::quickRandom(8),
@@ -44,13 +44,13 @@ class ConsulClient
 
 		$url = 'http://' . config('consul.host') . ':' . config('consul.port') . '/v1/health/service/' . $name . '?passing=true';
 
-		$services = json_decode(self::curlGet($url), true);
+		$services = json_decode(self::curl_get($url), true);
 		//var_dump($services[0]['Service']);die;
 		if (empty($services)) {
 			return false;
 		}
 		$service = $services[random_int(0, count($services) - 1)];
-		$tags    = json_encode($service['Service']['Tags']);
+		$tags    = json_decode($service['Service']['Tags'][0], true);
 		if (empty($tags['url'])) {
 			return 'http://' . $service['Service']['Address'] . ':' . $service['Service']['Port'] . '/' . config('consul.root_prefix');
 		}
@@ -58,7 +58,12 @@ class ConsulClient
 		return $tags['url'];
 	}
 
-	public static function curlGet($url)
+	/**
+	 * @param $url
+	 *
+	 * @return bool|string
+	 */
+	public static function curl_get($url)
 	{
 		$curl = curl_init();
 		curl_setopt_array($curl, [
