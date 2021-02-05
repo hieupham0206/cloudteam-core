@@ -55,9 +55,31 @@ class OnepayProvider extends AbstractBaseProvider
 		return null;
 	}
 
-	public function queryTransaction()
+	public function queryTransaction($params = [])
 	{
-		// TODO: Implement queryTransaction() method.
+		if ( ! $this->serviceUrl) {
+			return null;
+		}
+
+		$requestedAt = date('d-m-Y H:i:s');
+		$token       = $this->getToken();
+
+		$response = Http::withHeaders([
+			'Accept'        => 'application/json',
+			'Authorization' => $token,
+		])->get($this->serviceUrl . '/query-transaction', $params);
+		$body     = $response->body();
+
+		$responsedAt = date('d-m-Y H:i:s');
+		logToFile('onepay', 'queryTransaction', $params, $body, [$requestedAt, $responsedAt]);
+
+		if ($response->ok()) {
+			$datas = json_decode($body, true);
+
+			return $datas['providerDatas'];
+		}
+
+		return null;
 	}
 
 	public function refund()

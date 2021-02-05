@@ -23,22 +23,22 @@ class PaymentProvider
 		$this->provider = $provider;
 	}
 
-	public function purchase($model)
+	public function purchase($model, $bankCode = null)
 	{
 		if (! $this->provider) {
 			return null;
 		}
 
-		return $this->provider->purchase($model);
+		return $this->provider->purchase($model, $bankCode);
 	}
 
-	public function queryTransaction()
+	public function queryTransaction($params = [])
 	{
 		if (! $this->provider) {
 			return null;
 		}
 
-		return $this->provider->queryTransaction();
+		return $this->provider->queryTransaction($params);
 	}
 
 	public function refund()

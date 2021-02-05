@@ -19,7 +19,7 @@ abstract class AbstractBaseProvider
 
 	abstract public function purchase($model, $bankCode = null);
 
-	abstract public function queryTransaction();
+	abstract public function queryTransaction($params = []);
 
 	abstract public function refund();
 
