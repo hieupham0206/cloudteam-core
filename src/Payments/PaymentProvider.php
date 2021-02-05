@@ -2,8 +2,6 @@
 
 namespace Cloudteam\Core\Payments;
 
-use App\Models\Order;
-
 class PaymentProvider
 {
 	public $provider;
@@ -27,16 +25,26 @@ class PaymentProvider
 
 	public function purchase($model)
 	{
+		if (! $this->provider) {
+			return null;
+		}
+
 		return $this->provider->purchase($model);
 	}
 
 	public function queryTransaction()
 	{
+		if (! $this->provider) {
+			return null;
+		}
+
 		return $this->provider->queryTransaction();
 	}
 
 	public function refund()
 	{
-
+		if (! $this->provider) {
+			return null;
+		}
 	}
 }
