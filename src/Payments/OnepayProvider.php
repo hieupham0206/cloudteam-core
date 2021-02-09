@@ -21,7 +21,7 @@ class OnepayProvider extends AbstractBaseProvider
 		$this->verifySignatureEndpoint .= "/$type";
 	}
 
-	public function purchase($model, $bankCode = null)
+	public function purchase($model, $bankCode = null, $extraDatas = [])
 	{
 		if (! $this->serviceUrl) {
 			return null;
@@ -34,6 +34,8 @@ class OnepayProvider extends AbstractBaseProvider
 			'orderInfo' => 'Thanh toan: ' . $model->total_payment,
 			'txnRef'    => $model->code,
 		];
+		$params      = is_array($extraDatas) ? array_merge($params, $extraDatas) : $params;
+
 		$requestedAt = date('d-m-Y H:i:s');
 		$token       = $this->getToken();
 

@@ -16,7 +16,7 @@ class PayooProvider extends AbstractBaseProvider
 		$this->classChannel = 'payoo';
 	}
 
-	public function purchase($model, $bankCode = null)
+	public function purchase($model, $bankCode = null, $extraDatas = [])
 	{
 		if (! $this->serviceUrl) {
 			return null;
@@ -35,6 +35,7 @@ class PayooProvider extends AbstractBaseProvider
 				'email'   => $model->email,
 			],
 		];
+		$params      = is_array($extraDatas) ? array_merge($params, $extraDatas) : $params;
 
 		$requestedAt = date('d-m-Y H:i:s');
 		$token       = $this->getToken();

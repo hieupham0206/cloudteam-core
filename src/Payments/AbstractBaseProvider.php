@@ -17,7 +17,7 @@ abstract class AbstractBaseProvider
 
 	protected $classChannel;
 
-	abstract public function purchase($model, $bankCode = null);
+	abstract public function purchase($model, $bankCode = null, $extraDatas = []);
 
 	abstract public function queryTransaction($params = []);
 

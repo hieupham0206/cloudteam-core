@@ -22,7 +22,7 @@ class ZaloPayProvider extends AbstractBaseProvider
 	 *
 	 * @return mixed|null
 	 */
-	public function purchase($model, $bankCode = null)
+	public function purchase($model, $bankCode = null, $extraDatas = [])
 	{
 		if (! $this->serviceUrl) {
 			return null;
@@ -35,6 +35,7 @@ class ZaloPayProvider extends AbstractBaseProvider
 			'txnRef'    => $model->code,
 			'bankCode'  => $bankCode,
 		];
+		$params      = is_array($extraDatas) ? array_merge($params, $extraDatas) : $params;
 
 		$requestedAt = date('d-m-Y H:i:s');
 		$token       = $this->getToken();
