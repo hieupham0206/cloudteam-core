@@ -29,7 +29,7 @@ class PaymentProvider
 			return null;
 		}
 
-		return $this->provider->purchase($model, $bankCode, $extraDatas);
+		return $this->provider->purchase($model, $bankCode, $extraDatas, $extraHeaders);
 	}
 
 	public function queryTransaction($params = [], $extraHeaders = [])
@@ -38,7 +38,7 @@ class PaymentProvider
 			return null;
 		}
 
-		return $this->provider->queryTransaction($params);
+		return $this->provider->queryTransaction($params, $extraHeaders);
 	}
 
 	public function refund()
