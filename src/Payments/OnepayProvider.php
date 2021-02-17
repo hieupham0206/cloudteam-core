@@ -3,7 +3,6 @@
 namespace Cloudteam\Core\Payments;
 
 use Cloudteam\Core\Utils\ConsulClient;
-use Illuminate\Support\Facades\Http;
 
 class OnepayProvider extends AbstractBaseProvider
 {
@@ -21,29 +20,31 @@ class OnepayProvider extends AbstractBaseProvider
 		$this->verifySignatureEndpoint .= "/$type";
 	}
 
-	public function purchase($model, $bankCode = null, $extraDatas = [])
+	public function purchase($model, $bankCode = null, $extraDatas = [], $extraHeaders = [])
 	{
-		if (! $this->serviceUrl) {
+		if ( ! $this->serviceUrl) {
 			return null;
 		}
 
-		$params      = [
+		$token  = $this->getToken();
+		$params = [
 			'amount'    => $model->total_payment,
 			'returnUrl' => $this->returnUrl,
 			'againLink' => $this->returnUrl,
 			'orderInfo' => 'Thanh toan: ' . $model->total_payment,
 			'txnRef'    => $model->code,
 		];
-		$params      = is_array($extraDatas) ? array_merge($params, $extraDatas) : $params;
 
-		$requestedAt = date('d-m-Y H:i:s');
-		$token       = $this->getToken();
-
-		$response = Http::withHeaders([
+		$headers = [
 			'Accept'        => 'application/json',
 			'Authorization' => $token,
-		])->post($this->serviceUrl . "/purchase/{$this->type}", $params);
-		$body     = $response->body();
+		];
+		$headers = is_array($extraHeaders) ? array_merge($headers, $extraHeaders) : $headers;
+		$params  = is_array($extraDatas) ? array_merge($params, $extraDatas) : $params;
+
+		$requestedAt = date('d-m-Y H:i:s');
+		$response    = $this->sendPostRequest($this->serviceUrl . '/purchase', $params, $headers);
+		$body        = $response->body();
 
 		$responsedAt = date('d-m-Y H:i:s');
 		logToFile('onepay', 'purchase', $params, $body, [$requestedAt, $responsedAt]);
@@ -57,7 +58,7 @@ class OnepayProvider extends AbstractBaseProvider
 		return null;
 	}
 
-	public function queryTransaction($params = [])
+	public function queryTransaction($params = [], $extraHeaders = [])
 	{
 		if ( ! $this->serviceUrl) {
 			return null;
@@ -66,10 +67,12 @@ class OnepayProvider extends AbstractBaseProvider
 		$requestedAt = date('d-m-Y H:i:s');
 		$token       = $this->getToken();
 
-		$response = Http::withHeaders([
+		$headers  = [
 			'Accept'        => 'application/json',
 			'Authorization' => $token,
-		])->get($this->serviceUrl . '/query-transaction', $params);
+		];
+		$headers  = is_array($extraHeaders) ? array_merge($headers, $extraHeaders) : $headers;
+		$response = $this->sendGetRequest($this->serviceUrl . '/query-transaction', $params, $headers);
 		$body     = $response->body();
 
 		$responsedAt = date('d-m-Y H:i:s');

@@ -17,9 +17,9 @@ abstract class AbstractBaseProvider
 
 	protected $classChannel;
 
-	abstract public function purchase($model, $bankCode = null, $extraDatas = []);
+	abstract public function purchase($model, $bankCode = null, $extraDatas = [], $extraHeaders = []);
 
-	abstract public function queryTransaction($params = []);
+	abstract public function queryTransaction($params = [], $extraHeaders = []);
 
 	abstract public function refund();
 
@@ -67,5 +67,15 @@ abstract class AbstractBaseProvider
 		}
 
 		return false;
+	}
+
+	public function sendPostRequest($link, $params, $headers)
+	{
+		return Http::withHeaders($headers)->post($link, $params);
+	}
+
+	public function sendGetRequest($link, $params, $headers)
+	{
+		return Http::withHeaders($headers)->get($link, $params);
 	}
 }

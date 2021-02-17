@@ -23,7 +23,7 @@ class PaymentProvider
 		$this->provider = $provider;
 	}
 
-	public function purchase($model, $bankCode = null, $extraDatas = [])
+	public function purchase($model, $bankCode = null, $extraDatas = [], $extraHeaders = [])
 	{
 		if (! $this->provider) {
 			return null;
@@ -32,7 +32,7 @@ class PaymentProvider
 		return $this->provider->purchase($model, $bankCode, $extraDatas);
 	}
 
-	public function queryTransaction($params = [])
+	public function queryTransaction($params = [], $extraHeaders = [])
 	{
 		if (! $this->provider) {
 			return null;
