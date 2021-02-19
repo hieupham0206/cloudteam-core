@@ -6,11 +6,13 @@ class ConsulClient
 {
 	public static function register($name, $address, $port, $weight = 10, $tags_arr = [], $schema = 'http')
 	{
-		$tags_arr         = array_merge($tags_arr, [
-			"name"   => $name,
-			"weight" => $weight,
-			"url"    => "$schema://$address" . (in_array($port, ['80', '443'], true) ? '' : ":$port") . "/" . config('consul.root_prefix'),
-		]);
+		$url = "$schema://$address" . (in_array($port, ['80', '443'], true) ? '' : ":$port") . "/" . config('consul.root_prefix');
+
+		if (substr($url, -1) == '/') {
+			$url = substr($url, 0, -1);
+		}
+
+		$tags_arr         = array_merge($tags_arr, ["name" => $name, "weight" => $weight, "url" => $url]);
 		$array['service'] = [
 			'id'      => $name . '-' . self::quickRandom(8),
 			'name'    => $name,
