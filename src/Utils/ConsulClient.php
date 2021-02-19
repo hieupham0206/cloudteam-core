@@ -1,6 +1,6 @@
 <?php
 
-namespace Cloudteam\Core\Utils;
+namespace App\Console\Commands;
 
 class ConsulClient
 {
@@ -12,7 +12,12 @@ class ConsulClient
 			$url = substr($url, 0, -1);
 		}
 
-		$tags_arr         = array_merge($tags_arr, ["name" => $name, "weight" => $weight, "url" => $url]);
+		$tags_arr = array_merge($tags_arr, [
+			"name"   => $name,
+			"weight" => $weight,
+			"url"    => $url,
+		]);
+
 		$array['service'] = [
 			'id'      => $name . '-' . self::quickRandom(8),
 			'name'    => $name,
@@ -47,17 +52,23 @@ class ConsulClient
 		$url = 'http://' . config('consul.host') . ':' . config('consul.port') . '/v1/health/service/' . $name . '?passing=true';
 
 		$services = json_decode(self::curl_get($url), true);
-		//var_dump($services[0]['Service']);die;
+
 		if (empty($services)) {
 			return false;
 		}
-		$service = $services[random_int(0, count($services) - 1)];
-		$tags    = json_decode($service['Service']['Tags'][0], true);
+		$service    = $services[random_int(0, count($services) - 1)];
+		$tags       = json_decode($service['Service']['Tags'][0], true);
+		$urlService = $tags['url'];
 		if (empty($tags['url'])) {
-			return 'http://' . $service['Service']['Address'] . ':' . $service['Service']['Port'] . '/' . config('consul.root_prefix');
+			$urlService = 'http://' . $service['Service']['Address'] . ':' . $service['Service']['Port'] . '/' . config('consul.root_prefix');
 		}
 
-		return $tags['url'];
+		if (substr($urlService, -1) == '/') {
+			$urlService = substr($urlService, 0, -1);
+		}
+
+		return $urlService;
+
 	}
 
 	/**
