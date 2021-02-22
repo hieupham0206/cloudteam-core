@@ -48,9 +48,7 @@ $(function() {
                 if (isConfirm) {
                     $(form).swal(result => {
                         if (result.value) {
-                            setTimeout(() => {
-                                window.blockPage()
-                            }, 0)
+                            window.blockPage()
 
                             save()
                         }
@@ -60,6 +58,8 @@ $(function() {
 
                     save()
                 }
+            } else {
+                flash({message: __('Please enter information for the required fields'), level: 'danger'})
             }
         })
     })
