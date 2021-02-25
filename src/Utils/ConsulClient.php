@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace Cloudteam\Core\Utils;
 
 class ConsulClient
 {
