@@ -4,7 +4,7 @@ namespace Cloudteam\Core\Payments;
 
 use Cloudteam\Core\Utils\ConsulClient;
 
-class ZaloPayProvider extends AbstractBaseProvider
+class ZaloPayProvider extends AbstractBasePaymentProvider
 {
 	public function __construct()
 	{
@@ -19,6 +19,7 @@ class ZaloPayProvider extends AbstractBaseProvider
 	 * @param $model
 	 * @param null $bankCode : zalopayapp, CC, null
 	 * @param array $extraDatas
+	 * @param array $extraHeaders
 	 *
 	 * @return mixed|null
 	 */

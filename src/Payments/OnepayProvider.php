@@ -4,7 +4,7 @@ namespace Cloudteam\Core\Payments;
 
 use Cloudteam\Core\Utils\ConsulClient;
 
-class OnepayProvider extends AbstractBaseProvider
+class OnepayProvider extends AbstractBasePaymentProvider
 {
 	private $type;
 

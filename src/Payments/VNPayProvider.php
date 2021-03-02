@@ -4,7 +4,7 @@ namespace Cloudteam\Core\Payments;
 
 use Cloudteam\Core\Utils\ConsulClient;
 
-class VNPayProvider extends AbstractBaseProvider
+class VNPayProvider extends AbstractBasePaymentProvider
 {
 	public function __construct()
 	{

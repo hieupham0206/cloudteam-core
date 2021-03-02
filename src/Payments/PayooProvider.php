@@ -4,7 +4,7 @@ namespace Cloudteam\Core\Payments;
 
 use Cloudteam\Core\Utils\ConsulClient;
 
-class PayooProvider extends AbstractBaseProvider
+class PayooProvider extends AbstractBasePaymentProvider
 {
 	public function __construct()
 	{
