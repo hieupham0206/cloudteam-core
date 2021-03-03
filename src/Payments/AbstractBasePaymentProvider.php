@@ -16,7 +16,7 @@ abstract class AbstractBasePaymentProvider
 	protected $verifySignatureEndpoint = '/verify-signature';
 	protected $classChannel;
 
-	abstract public function purchase($model, $bankCode = null, $extraDatas = [], $extraHeaders = []);
+	abstract public function purchase($params, $bankCode = null, $extraDatas = [], $extraHeaders = []);
 
 	abstract public function queryTransaction($params = [], $extraHeaders = []);
 

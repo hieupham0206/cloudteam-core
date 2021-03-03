@@ -20,34 +20,34 @@ class OnepayProvider extends AbstractBasePaymentProvider
 		$this->verifySignatureEndpoint .= "/$type";
 	}
 
-	public function purchase($model, $bankCode = null, $extraDatas = [], $extraHeaders = [])
+	public function purchase($params, $bankCode = null, $extraDatas = [], $extraHeaders = [])
 	{
 		if ( ! $this->serviceUrl) {
 			return null;
 		}
 
-		$token  = $this->getToken();
-		$params = [
-			'amount'    => $model->total_payment,
+		$token       = $this->getToken();
+		$finalParams = [
+			'amount'    => $params['amount'],
 			'returnUrl' => $this->returnUrl,
 			'againLink' => $this->returnUrl,
-			'orderInfo' => 'Thanh toan: ' . $model->total_payment,
-			'txnRef'    => $model->code,
+			'orderInfo' => 'Thanh toan: ' . $params['amount'],
+			'txnRef'    => $params['code'],
 		];
 
-		$headers = [
+		$headers     = [
 			'Accept'        => 'application/json',
 			'Authorization' => $token,
 		];
-		$headers = is_array($extraHeaders) ? array_merge($headers, $extraHeaders) : $headers;
-		$params  = is_array($extraDatas) ? array_merge($params, $extraDatas) : $params;
+		$headers     = is_array($extraHeaders) ? array_merge($headers, $extraHeaders) : $headers;
+		$finalParams = is_array($extraDatas) ? array_merge($finalParams, $extraDatas) : $finalParams;
 
 		$requestedAt = date('d-m-Y H:i:s');
-		$response    = $this->sendPostRequest($this->serviceUrl . '/purchase', $params, $headers);
+		$response    = $this->sendPostRequest($this->serviceUrl . '/purchase', $finalParams, $headers);
 		$body        = $response->body();
 
 		$responsedAt = date('d-m-Y H:i:s');
-		logToFile('onepay', 'purchase', $params, $body, [$requestedAt, $responsedAt]);
+		logToFile('onepay', 'purchase', $finalParams, $body, [$requestedAt, $responsedAt]);
 
 		if ($response->ok()) {
 			$datas = json_decode($body, true);

@@ -23,13 +23,13 @@ class PaymentProvider
 		$this->provider = $provider;
 	}
 
-	public function purchase($model, $bankCode = null, $extraDatas = [], $extraHeaders = [])
+	public function purchase($params, $bankCode = null, $extraDatas = [], $extraHeaders = [])
 	{
 		if (! $this->provider) {
 			return null;
 		}
 
-		return $this->provider->purchase($model, $bankCode, $extraDatas, $extraHeaders);
+		return $this->provider->purchase($params, $bankCode, $extraDatas, $extraHeaders);
 	}
 
 	public function queryTransaction($params = [], $extraHeaders = [])

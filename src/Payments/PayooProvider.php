@@ -15,24 +15,24 @@ class PayooProvider extends AbstractBasePaymentProvider
 		$this->classChannel = 'payoo';
 	}
 
-	public function purchase($model, $bankCode = null, $extraDatas = [], $extraHeaders = [])
+	public function purchase($params, $bankCode = null, $extraDatas = [], $extraHeaders = [])
 	{
 		if ( ! $this->serviceUrl) {
 			return null;
 		}
 
 		$token   = $this->getToken();
-		$params  = [
-			'amount'    => $model->total_payment,
-			'orderInfo' => 'Thanh toan: ' . $model->total_payment,
+		$finalParams  = [
+			'amount'    => $params['amount'],
+			'orderInfo' => 'Thanh toan: ' . $params['amount'],
 			'returnUrl' => $this->returnUrl,
-			'txnRef'    => $model->code,
+			'txnRef'    => $params['code'],
 			'customer'  => [
-				'name'    => $model->name,
-				'phone'   => $model->phone,
-				'address' => $model->address,
-				'city'    => $model->city->name,
-				'email'   => $model->email,
+				'name'    => $params['customer_name'],
+				'phone'   => $params['customer_phone'],
+				'address' => $params['customer_address'],
+				'city'    => $params['customer_city'],
+				'email'   => $params['customer_email'],
 			],
 		];
 		$headers = [
@@ -40,15 +40,15 @@ class PayooProvider extends AbstractBasePaymentProvider
 			'Authorization' => $token,
 		];
 		$headers = is_array($extraHeaders) ? array_merge($headers, $extraHeaders) : $headers;
-		$params  = is_array($extraDatas) ? array_merge($params, $extraDatas) : $params;
+		$finalParams  = is_array($extraDatas) ? array_merge($finalParams, $extraDatas) : $finalParams;
 
 		$requestedAt = date('d-m-Y H:i:s');
 
-		$response = $this->sendPostRequest($this->serviceUrl . '/purchase', $params, $headers);
+		$response = $this->sendPostRequest($this->serviceUrl . '/purchase', $finalParams, $headers);
 		$body     = $response->body();
 
 		$responsedAt = date('d-m-Y H:i:s');
-		logToFile('payoo', 'purchase', $params, $body, [$requestedAt, $responsedAt]);
+		logToFile('payoo', 'purchase', $finalParams, $body, [$requestedAt, $responsedAt]);
 
 		if ($response->ok()) {
 			$datas = json_decode($body, true);
