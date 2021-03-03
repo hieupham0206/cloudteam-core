@@ -1,6 +1,6 @@
 <?php
 
-namespace Cloudteam\Core\Payments;
+namespace Cloudteam\Core\Shippings;
 
 class ShippingProvider
 {
@@ -11,7 +11,7 @@ class ShippingProvider
 		$provider = null;
 
 		if ($providerName === 'GHN') {
-			$provider = new VNPayProvider();
+			$provider = new GhnProvider();
 		}
 
 		$this->provider = $provider;

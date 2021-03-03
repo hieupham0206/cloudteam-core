@@ -1,6 +1,6 @@
 <?php
 
-namespace Cloudteam\Core\Payments;
+namespace Cloudteam\Core\Shippings;
 
 use Cloudteam\Core\Utils\ConsulClient;
 
