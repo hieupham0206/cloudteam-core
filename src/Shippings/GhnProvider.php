@@ -74,7 +74,7 @@ class GhnProvider extends AbstractBaseShippingProvider
 		return null;
 	}
 
-	public function getOrderInfo($orderCode, $extraDatas = [], $extraHeaders = [])
+	public function getOrderInfo($params, $extraDatas = [], $extraHeaders = [])
 	{
 		if ( ! $this->serviceUrl) {
 			return null;
@@ -85,7 +85,7 @@ class GhnProvider extends AbstractBaseShippingProvider
 			'Accept'        => 'application/json',
 			'Authorization' => $token,
 		];
-		$params  = ['orderCode' => $orderCode];
+		$params  = ['orderCode' => $params['orderCode'], 'shopId' => $params['shopId']];
 		$params  = is_array($extraDatas) ? array_merge($params, $extraDatas) : $params;
 		$headers = is_array($extraHeaders) ? array_merge($headers, $extraHeaders) : $headers;
 
@@ -97,11 +97,7 @@ class GhnProvider extends AbstractBaseShippingProvider
 		logToFile('ghn', 'getOrderInfo', $params, $body, [$requestedAt, $responsedAt]);
 
 		if ($response->ok()) {
-			$datas = json_decode($body, true);
-
-			return response()->json([
-				'data' => $datas
-			]);
+			return json_decode($body, true);
 		}
 
 		return null;

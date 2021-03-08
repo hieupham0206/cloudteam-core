@@ -17,5 +17,5 @@ abstract class AbstractBaseShippingProvider
 
 	abstract public function createOrder($params, $extraDatas = [], $extraHeaders = []);
 
-	abstract public function getOrderInfo($orderCode, $extraDatas = [], $extraHeaders = []);
+	abstract public function getOrderInfo($params, $extraDatas = [], $extraHeaders = []);
 }
