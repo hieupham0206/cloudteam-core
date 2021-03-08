@@ -35,7 +35,7 @@ class ShippingProvider
 		return $this->provider->createOrder($params, $extraDatas, $extraHeaders);
 	}
 
-	public function getOrderInfo($params, $extraDatas = [], $extraHeaders = []): ?\Illuminate\Http\JsonResponse
+	public function getOrderInfo($params, $extraDatas = [], $extraHeaders = [])
 	{
 		if (! $this->provider) {
 			return null;

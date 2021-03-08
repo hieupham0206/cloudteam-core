@@ -90,7 +90,7 @@ class GhnProvider extends AbstractBaseShippingProvider
 		$headers = is_array($extraHeaders) ? array_merge($headers, $extraHeaders) : $headers;
 
 		$requestedAt = date('d-m-Y H:i:s');
-		$response    = $this->sendPostRequest($this->serviceUrl . '/get-order-info', $params, $headers);
+		$response    = $this->sendGetRequest($this->serviceUrl . '/get-order-info', $params, $headers);
 		$body        = $response->body();
 
 		$responsedAt = date('d-m-Y H:i:s');
