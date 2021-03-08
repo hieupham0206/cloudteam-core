@@ -53,6 +53,7 @@ class CoreServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/../config/core.php', 'core');
         $this->mergeConfigFrom(__DIR__.'/../config/consul.php', 'consul');
         $this->mergeConfigFrom(__DIR__.'/../config/payment.php', 'payment');
+        $this->mergeConfigFrom(__DIR__.'/../config/shipping.php', 'shipping');
 
         // Register the service the package provides.
         $this->app->singleton('core', function ($app) {
@@ -67,7 +68,7 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return ['core', 'consul', 'payment'];
+        return ['core', 'consul', 'payment', 'shipping'];
     }
 
     /**
