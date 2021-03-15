@@ -14,7 +14,7 @@ class GhnProvider extends AbstractBaseShippingProvider
 		$this->classChannel = 'ghn';
 	}
 
-	public function calculateFee($params, $extraDatas = [], $extraHeaders = [])
+	public function calculateFee($params, $extraDatas = [], $extraHeaders = []): ?array
 	{
 		if ( ! $this->serviceUrl) {
 			return null;
@@ -35,16 +35,21 @@ class GhnProvider extends AbstractBaseShippingProvider
 		$responsedAt = date('d-m-Y H:i:s');
 		logToFile('ghn', 'calculateFee', $params, $body, [$requestedAt, $responsedAt]);
 
+		$datas = json_decode($body, true);
 		if ($response->ok()) {
-			$datas = json_decode($body, true);
-
-			return $datas['total'];
+			return [
+				'message' => 'OK',
+				'data'    => $datas['total'],
+			];
 		}
 
-		return null;
+		return [
+			'message' => 'Failed',
+			'data'    => $datas,
+		];
 	}
 
-	public function createOrder($params, $extraDatas = [], $extraHeaders = [])
+	public function createOrder($params, $extraDatas = [], $extraHeaders = []): ?array
 	{
 		if ( ! $this->serviceUrl) {
 			return null;
@@ -65,16 +70,21 @@ class GhnProvider extends AbstractBaseShippingProvider
 		$responsedAt = date('d-m-Y H:i:s');
 		logToFile('ghn', 'createOrder', $params, $body, [$requestedAt, $responsedAt]);
 
+		$datas = json_decode($body, true);
 		if ($response->ok()) {
-			$datas = json_decode($body, true);
-
-			return $datas['total'];
+			return [
+				'message' => 'OK',
+				'data'    => $datas,
+			];
 		}
 
-		return null;
+		return [
+			'message' => 'Failed',
+			'data'    => $datas,
+		];
 	}
 
-	public function getOrderInfo($params, $extraDatas = [], $extraHeaders = [])
+	public function getOrderInfo($params, $extraDatas = [], $extraHeaders = []): ?array
 	{
 		if ( ! $this->serviceUrl) {
 			return null;
@@ -96,10 +106,17 @@ class GhnProvider extends AbstractBaseShippingProvider
 		$responsedAt = date('d-m-Y H:i:s');
 		logToFile('ghn', 'getOrderInfo', $params, $body, [$requestedAt, $responsedAt]);
 
+		$datas = json_decode($body, true);
 		if ($response->ok()) {
-			return json_decode($body, true);
+			return [
+				'message' => 'OK',
+				'data'    => $datas,
+			];
 		}
 
-		return null;
+		return [
+			'message' => 'Failed',
+			'data'    => $datas,
+		];
 	}
 }
