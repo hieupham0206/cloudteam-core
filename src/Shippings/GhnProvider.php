@@ -74,7 +74,7 @@ class GhnProvider extends AbstractBaseShippingProvider
 		if ($response->ok()) {
 			return [
 				'message' => 'OK',
-				'data'    => $datas,
+				'data'    => $datas['data'],
 			];
 		}
 
