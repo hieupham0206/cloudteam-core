@@ -63,11 +63,11 @@ class DummyClass extends Controller
         try {
             \DB::beginTransaction();
 
-            {{modelName}}::create($requestDatas);
+            ${{crudNameSingular}} = {{modelName}}::create($requestDatas);
 
             \DB::commit();
 
-			$redirectUrl = route('{{routeName}}.index');
+			$redirectUrl = route('{{routeName}}.edit', ${{crudNameSingular}});
 
             return $this->redirectResponse([
                 'message'      => __('Data created successfully'),
@@ -118,7 +118,7 @@ class DummyClass extends Controller
 
             \DB::commit();
 
-			$redirectUrl = route('{{routeName}}.index');
+			$redirectUrl = route('{{routeName}}.edit', ${{crudNameSingular}});
 
             return $this->redirectResponse([
                 'message'      => __('Data edited successfully'),
