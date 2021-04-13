@@ -28,11 +28,11 @@ class PayooProvider extends AbstractBasePaymentProvider
 			'returnUrl' => $this->returnUrl,
 			'txnRef'    => $params['code'],
 			'customer'  => [
-				'name'    => $params['customer_name'],
-				'phone'   => $params['customer_phone'],
-				'address' => $params['customer_address'],
-				'city'    => $params['customer_city'],
-				'email'   => $params['customer_email'],
+				'name'    => $params['customer_name'] ?? '',
+				'phone'   => $params['customer_phone'] ?? '',
+				'address' => $params['customer_address'] ?? '',
+				'city'    => $params['customer_city'] ?? '',
+				'email'   => $params['customer_email'] ?? '',
 			],
 		];
 		$headers = [
