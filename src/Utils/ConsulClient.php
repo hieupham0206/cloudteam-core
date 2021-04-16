@@ -3,6 +3,7 @@
 namespace Cloudteam\Core\Utils;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class ConsulClient
 {
