@@ -33,7 +33,7 @@ class VNPayProvider extends AbstractBasePaymentProvider
 			'Accept'        => 'application/json',
 			'Authorization' => $token,
 		];
-		$finalParams      = is_array($extraDatas) ? array_merge($finalParams, $extraDatas) : $finalParams;
+		$finalParams = is_array($extraDatas) ? array_merge($finalParams, $extraDatas) : $finalParams;
 		$headers     = is_array($extraHeaders) ? array_merge($headers, $extraHeaders) : $headers;
 
 		$requestedAt = date('d-m-Y H:i:s');
