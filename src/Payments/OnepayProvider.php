@@ -43,7 +43,7 @@ class OnepayProvider extends AbstractBasePaymentProvider
 		$finalParams = is_array($extraDatas) ? array_merge($finalParams, $extraDatas) : $finalParams;
 
 		$requestedAt = date('d-m-Y H:i:s');
-		$response    = $this->sendPostRequest($this->serviceUrl . '/purchase', $finalParams, $headers);
+		$response    = $this->sendPostRequest($this->serviceUrl . "/purchase/{$this->type}", $finalParams, $headers);
 		$body        = $response->body();
 
 		$responsedAt = date('d-m-Y H:i:s');
@@ -72,7 +72,7 @@ class OnepayProvider extends AbstractBasePaymentProvider
 			'Authorization' => $token,
 		];
 		$headers  = is_array($extraHeaders) ? array_merge($headers, $extraHeaders) : $headers;
-		$response = $this->sendGetRequest($this->serviceUrl . '/query-transaction', $params, $headers);
+		$response = $this->sendGetRequest($this->serviceUrl . "/query-transaction/{$this->type}", $params, $headers);
 		$body     = $response->body();
 
 		$responsedAt = date('d-m-Y H:i:s');
@@ -82,6 +82,35 @@ class OnepayProvider extends AbstractBasePaymentProvider
 			$datas = json_decode($body, true);
 
 			return $datas['providerDatas'];
+		}
+
+		return null;
+	}
+
+	public function checkConnection($params = [], $extraHeaders = [])
+	{
+		if ( ! $this->serviceUrl) {
+			return null;
+		}
+
+		$requestedAt = date('d-m-Y H:i:s');
+		$token       = $this->getToken();
+
+		$headers  = [
+			'Accept'        => 'application/json',
+			'Authorization' => $token,
+		];
+		$headers  = is_array($extraHeaders) ? array_merge($headers, $extraHeaders) : $headers;
+		$response = $this->sendGetRequest($this->serviceUrl . "/check-transaction/{$this->type}", $params, $headers);
+		$body     = $response->body();
+
+		$responsedAt = date('d-m-Y H:i:s');
+		logToFile('onepay', 'checkConnection', $params, $body, [$requestedAt, $responsedAt]);
+
+		if ($response->ok()) {
+			$datas = json_decode($body, true);
+
+			return $datas['message'];
 		}
 
 		return null;

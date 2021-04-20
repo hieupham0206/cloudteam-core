@@ -47,7 +47,7 @@ $(function() {
 
                 if (isConfirm) {
                     $(form).swal(result => {
-                        if (result.value) {
+                        if (result.isConfirmed) {
                             window.blockPage()
 
                             save()

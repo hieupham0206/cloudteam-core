@@ -152,4 +152,33 @@ class GhnProvider extends AbstractBaseShippingProvider
 			];
 		}
 	}
+
+	public function checkConnection($params = [], $extraHeaders = [])
+	{
+		if ( ! $this->serviceUrl) {
+			return null;
+		}
+
+		$requestedAt = date('d-m-Y H:i:s');
+		$token       = $this->getToken();
+
+		$headers  = [
+			'Accept'        => 'application/json',
+			'Authorization' => $token,
+		];
+		$headers  = is_array($extraHeaders) ? array_merge($headers, $extraHeaders) : $headers;
+		$response = $this->sendGetRequest($this->serviceUrl . '/check-transaction', $params, $headers);
+		$body     = $response->body();
+
+		$responsedAt = date('d-m-Y H:i:s');
+		logToFile('ghn', 'checkConnection', $params, $body, [$requestedAt, $responsedAt]);
+
+		if ($response->ok()) {
+			$datas = json_decode($body, true);
+
+			return $datas['message'];
+		}
+
+		return null;
+	}
 }

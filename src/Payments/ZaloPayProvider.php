@@ -89,6 +89,35 @@ class ZaloPayProvider extends AbstractBasePaymentProvider
 		return null;
 	}
 
+	public function checkConnection($params = [], $extraHeaders = [])
+	{
+		if ( ! $this->serviceUrl) {
+			return null;
+		}
+
+		$requestedAt = date('d-m-Y H:i:s');
+		$token       = $this->getToken();
+
+		$headers  = [
+			'Accept'        => 'application/json',
+			'Authorization' => $token,
+		];
+		$headers  = is_array($extraHeaders) ? array_merge($headers, $extraHeaders) : $headers;
+		$response = $this->sendGetRequest($this->serviceUrl . '/check-transaction', $params, $headers);
+		$body     = $response->body();
+
+		$responsedAt = date('d-m-Y H:i:s');
+		logToFile('zalopay', 'checkConnection', $params, $body, [$requestedAt, $responsedAt]);
+
+		if ($response->ok()) {
+			$datas = json_decode($body, true);
+
+			return $datas['message'];
+		}
+
+		return null;
+	}
+
 	public function refund()
 	{
 		// TODO: Implement refund() method.
