@@ -102,7 +102,7 @@ class PayooProvider extends AbstractBasePaymentProvider
 			'Authorization' => $token,
 		];
 		$headers  = is_array($extraHeaders) ? array_merge($headers, $extraHeaders) : $headers;
-		$response = $this->sendGetRequest($this->serviceUrl . '/check-transaction', $params, $headers);
+		$response = $this->sendGetRequest($this->serviceUrl . '/check-connection', $params, $headers);
 		$body     = $response->body();
 
 		$responsedAt = date('d-m-Y H:i:s');

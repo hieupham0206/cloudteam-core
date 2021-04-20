@@ -101,7 +101,7 @@ class OnepayProvider extends AbstractBasePaymentProvider
 			'Authorization' => $token,
 		];
 		$headers  = is_array($extraHeaders) ? array_merge($headers, $extraHeaders) : $headers;
-		$response = $this->sendGetRequest($this->serviceUrl . "/check-transaction/{$this->type}", $params, $headers);
+		$response = $this->sendGetRequest($this->serviceUrl . "/check-connection/{$this->type}", $params, $headers);
 		$body     = $response->body();
 
 		$responsedAt = date('d-m-Y H:i:s');
