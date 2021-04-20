@@ -41,6 +41,15 @@ class PaymentProvider
 		return $this->provider->queryTransaction($params, $extraHeaders);
 	}
 
+	public function checkConnection($params = [], $extraHeaders = [])
+	{
+		if (! $this->provider) {
+			return null;
+		}
+
+		return $this->provider->checkConnection($params, $extraHeaders);
+	}
+
 	public function refund()
 	{
 		if (! $this->provider) {
