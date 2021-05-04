@@ -2,9 +2,12 @@
 
 namespace Cloudteam\Core\Shippings;
 
+use Illuminate\Support\Facades\Log;
+
 class ShippingProvider
 {
 	public $provider;
+	public $providerName = '';
 
 	public function __construct($providerName)
 	{
@@ -14,12 +17,15 @@ class ShippingProvider
 			$provider = new GhnProvider();
 		}
 
-		$this->provider = $provider;
+		$this->provider     = $provider;
+		$this->providerName = $providerName;
 	}
 
 	public function calculateFee($params, $extraDatas = [], $extraHeaders = [])
 	{
-		if (! $this->provider) {
+		if ( ! $this->provider) {
+			Log::error("Không tìm thấy class cho {$this->providerName}");
+
 			return null;
 		}
 
@@ -28,7 +34,9 @@ class ShippingProvider
 
 	public function createOrder($params, $extraDatas = [], $extraHeaders = [])
 	{
-		if (! $this->provider) {
+		if ( ! $this->provider) {
+			Log::error("Không tìm thấy class cho {$this->providerName}");
+
 			return null;
 		}
 
@@ -37,7 +45,9 @@ class ShippingProvider
 
 	public function getOrderInfo($params, $extraDatas = [], $extraHeaders = [])
 	{
-		if (! $this->provider) {
+		if ( ! $this->provider) {
+			Log::error("Không tìm thấy class cho {$this->providerName}");
+
 			return null;
 		}
 

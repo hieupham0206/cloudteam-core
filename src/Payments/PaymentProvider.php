@@ -2,9 +2,12 @@
 
 namespace Cloudteam\Core\Payments;
 
+use Illuminate\Support\Facades\Log;
+
 class PaymentProvider
 {
 	public $provider;
+	public $providerName;
 
 	public function __construct($providerName)
 	{
@@ -20,12 +23,15 @@ class PaymentProvider
 			$provider = new ZaloPayProvider();
 		}
 
-		$this->provider = $provider;
+		$this->provider     = $provider;
+		$this->providerName = $providerName;
 	}
 
 	public function purchase($params, $bankCode = null, $extraDatas = [], $extraHeaders = [])
 	{
-		if (! $this->provider) {
+		if ( ! $this->provider) {
+			Log::error("Không tìm thấy class cho {$this->providerName}");
+
 			return null;
 		}
 
@@ -34,7 +40,9 @@ class PaymentProvider
 
 	public function queryTransaction($params = [], $extraHeaders = [])
 	{
-		if (! $this->provider) {
+		if ( ! $this->provider) {
+			Log::error("Không tìm thấy class cho {$this->providerName}");
+
 			return null;
 		}
 
@@ -43,7 +51,7 @@ class PaymentProvider
 
 	public function checkConnection($params = [], $extraHeaders = [])
 	{
-		if (! $this->provider) {
+		if ( ! $this->provider) {
 			return null;
 		}
 
@@ -52,7 +60,9 @@ class PaymentProvider
 
 	public function refund()
 	{
-		if (! $this->provider) {
+		if ( ! $this->provider) {
+			Log::error("Không tìm thấy class cho {$this->providerName}");
+
 			return null;
 		}
 	}

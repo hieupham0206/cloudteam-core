@@ -17,6 +17,8 @@ class GhnProvider extends AbstractBaseShippingProvider
 	public function calculateFee($params, $extraDatas = [], $extraHeaders = []): ?array
 	{
 		if ( ! $this->serviceUrl) {
+			logToFile('ghn', 'calculateFee-error', $params, "Không tìm thấy service url cho GHN");
+
 			return null;
 		}
 		$requestedAt = date('d-m-Y H:i:s');
@@ -63,6 +65,8 @@ class GhnProvider extends AbstractBaseShippingProvider
 	public function createOrder($params, $extraDatas = [], $extraHeaders = []): ?array
 	{
 		if ( ! $this->serviceUrl) {
+			logToFile('ghn', 'createOrder-error', $params, "Không tìm thấy service url cho GHN");
+
 			return null;
 		}
 		$requestedAt = date('d-m-Y H:i:s');
@@ -109,6 +113,8 @@ class GhnProvider extends AbstractBaseShippingProvider
 	public function getOrderInfo($params, $extraDatas = [], $extraHeaders = []): ?array
 	{
 		if ( ! $this->serviceUrl) {
+			logToFile('ghn', 'getOrderInfo-error', $params, "Không tìm thấy service url cho GHN");
+
 			return null;
 		}
 		$requestedAt = date('d-m-Y H:i:s');
