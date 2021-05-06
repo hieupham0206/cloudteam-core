@@ -497,6 +497,7 @@ if ( ! function_exists('logToFile')) {
 				'app_url'     => config('app.url'),
 				'app_name'    => config('logging.elasticsearch_name'),
 				'log_channel' => $channel,
+				'log_group'   => config('consul.name'),
 			];
 			Log::channel('elasticsearch')->info("\r\n-Request: $api - $uuid - At $requestedAt\r\n$request \r\n-Response: $responsedAt\r\n$response \r\n", $context);
 		}

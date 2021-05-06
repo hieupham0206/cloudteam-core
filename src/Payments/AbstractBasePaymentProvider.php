@@ -27,9 +27,15 @@ abstract class AbstractBasePaymentProvider
 		$params = [
 			'query' => $query,
 		];
+		$token       = $this->getToken();
+
+		$headers  = [
+			'Accept'        => 'application/json',
+			'Authorization' => $token,
+		];
 
 		$requestedAt = date('d-m-Y H:i:s');
-		$response    = Http::post($this->serviceUrl . $this->verifySignatureEndpoint, $params);
+		$response    = Http::withHeaders($headers)->post($this->serviceUrl . $this->verifySignatureEndpoint, $params);
 		$body        = $response->body();
 
 		$responsedAt = date('d-m-Y H:i:s');
