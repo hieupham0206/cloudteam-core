@@ -465,7 +465,7 @@ if ( ! function_exists('logToFile')) {
 	 * @param array $times
 	 * @param null $requestUuid
 	 */
-	function logToFile($channel, $api, $request, $response, $times = [], $requestUuid = null)
+	function logToFile(string $channel, $api, $request, $response, $times = [], $requestUuid = null)
 	{
 		if ( ! $times) {
 			$requestedAt = $responsedAt = date('d-m-Y H:i:s');

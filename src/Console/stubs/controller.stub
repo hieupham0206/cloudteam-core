@@ -162,7 +162,11 @@ class DummyClass extends Controller
 
     public function changeState(Request $request, ChangeModelState $action, {{modelName}} ${{crudNameSingular}}): JsonResponse
     {
-        $state = $request->post('state');
+		$this->validate($request, [
+			'state' => 'numeric'
+		]);
+
+        $state = $request->input('state');
 
         $result = $action->execute(${{crudNameSingular}}, $state);
 
