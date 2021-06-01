@@ -16,7 +16,7 @@ class ZaloPayProvider extends AbstractBasePaymentProvider
 	}
 
 	/**
-	 * @param $model
+	 * @param $params
 	 * @param null $bankCode : zalopayapp, CC, null
 	 * @param array $extraDatas
 	 * @param array $extraHeaders

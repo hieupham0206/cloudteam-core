@@ -15,6 +15,14 @@ class PayooProvider extends AbstractBasePaymentProvider
 		$this->classChannel = 'payoo';
 	}
 
+	/**
+	 * @param $params
+	 * @param null $bankCode
+	 * @param array $extraDatas
+	 * @param array $extraHeaders
+	 *
+	 * @return mixed|null
+	 */
 	public function purchase($params, $bankCode = null, $extraDatas = [], $extraHeaders = [])
 	{
 		if ( ! $this->serviceUrl) {
@@ -24,7 +32,7 @@ class PayooProvider extends AbstractBasePaymentProvider
 		$token   = $this->getToken();
 		$finalParams  = [
 			'amount'    => $params['amount'],
-			'orderInfo' => 'Thanh toan: ' . $params['amount'],
+			'orderInfo' => $params['note'],
 			'returnUrl' => $this->returnUrl,
 			'txnRef'    => $params['code'],
 			'customer'  => [
