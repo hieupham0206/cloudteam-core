@@ -21,7 +21,7 @@ class PayooProvider extends AbstractBasePaymentProvider
 	 * @param array $extraDatas
 	 * @param array $extraHeaders
 	 *
-	 * @return mixed|null
+	 * @return array|null
 	 */
 	public function purchase($params, $bankCode = null, $extraDatas = [], $extraHeaders = [])
 	{
@@ -29,8 +29,8 @@ class PayooProvider extends AbstractBasePaymentProvider
 			return null;
 		}
 
-		$token   = $this->getToken();
-		$finalParams  = [
+		$token       = $this->getToken();
+		$finalParams = [
 			'amount'    => $params['amount'],
 			'orderInfo' => $params['note'],
 			'returnUrl' => $this->returnUrl,
@@ -43,12 +43,12 @@ class PayooProvider extends AbstractBasePaymentProvider
 				'email'   => $params['customer_email'] ?? '',
 			],
 		];
-		$headers = [
+		$headers     = [
 			'Accept'        => 'application/json',
 			'Authorization' => $token,
 		];
-		$headers = is_array($extraHeaders) ? array_merge($headers, $extraHeaders) : $headers;
-		$finalParams  = is_array($extraDatas) ? array_merge($finalParams, $extraDatas) : $finalParams;
+		$headers     = is_array($extraHeaders) ? array_merge($headers, $extraHeaders) : $headers;
+		$finalParams = is_array($extraDatas) ? array_merge($finalParams, $extraDatas) : $finalParams;
 
 		$requestedAt = date('d-m-Y H:i:s');
 
@@ -61,7 +61,10 @@ class PayooProvider extends AbstractBasePaymentProvider
 		if ($response->ok()) {
 			$datas = json_decode($body, true);
 
-			return $datas['redirect_url'];
+			return [
+				'redirect_url' => $datas['redirect_url'],
+				'billing_code' => $datas['billing_code'],
+			];
 		}
 
 		return null;
