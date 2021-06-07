@@ -21,6 +21,8 @@ class PaymentProvider
 			$provider = new PayooProvider();
 		} elseif ($providerName === 'ZaloPay') {
 			$provider = new ZaloPayProvider();
+		} elseif ($providerName === 'PayPal') {
+			$provider = new PayPalProvider();
 		}
 
 		$this->provider     = $provider;

@@ -12,6 +12,7 @@ abstract class AbstractBasePaymentProvider
 	public $apiUrl;
 	public $serviceUrl;
 	public $returnUrl;
+	public $cancelUrl;
 	public $tokenKeyName = '_payment_service_token';
 	protected $verifySignatureEndpoint = '/verify-signature';
 	protected $classChannel;
