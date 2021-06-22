@@ -9,7 +9,6 @@ use Cloudteam\{Core\Console\Commands\CreateMultipleMigration,
 	Core\Console\Commands\CrudTestCommand,
 	Core\Console\Commands\CrudViewCommand,
 	Core\Console\Commands\GenerateMultipleModel,
-	Core\Console\Commands\InstallHooks,
 	Core\Console\Commands\MakeEnumCommand,
 	Core\Console\Commands\MakeLocalScopeCommand,
 	Core\Console\Commands\MakeModelAttributeCommand,
@@ -18,7 +17,6 @@ use Cloudteam\{Core\Console\Commands\CreateMultipleMigration,
 	Core\Console\Commands\MakeModelServiceCommand,
 	Core\Console\Commands\MakeMultipleMigration,
 	Core\Console\Commands\MakeMultipleModel,
-	Core\Console\Commands\PreCommitHook,
 	Core\Console\Commands\RegisterService,
 	Core\Console\Commands\StartServer};
 use Illuminate\Support\ServiceProvider;
@@ -123,9 +121,6 @@ class CoreServiceProvider extends ServiceProvider
 
             CreateMultipleMigration::class,
             GenerateMultipleModel::class,
-
-            PreCommitHook::class,
-            InstallHooks::class,
 
             RegisterService::class,
             StartServer::class,
