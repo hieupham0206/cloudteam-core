@@ -54,16 +54,18 @@ trait Modelable
         return optional($this->updated_at)->format(config('basecore.datetime_format', 'd-m-Y H:i:s'));
     }
 
-    public function getDescriptionEvent(string $eventName): string
-    {
-        $displayText = $this->{$this->displayAttribute};
+	public function getDescriptionEvent(string $eventName): string
+	{
+		$displayText = $this->{$this->displayAttribute};
 
-        if ($this->logAction) {
-            $eventName = $this->logAction;
-        }
-        $user     = auth()->user();
-        $username = $user->username ?? 'admin';
+		if ($this->logAction) {
+			$eventName = $this->logAction;
+		}
+		$user     = auth()->user();
+		$username = $user->username ?? 'System';
+		$dateTime = now()->toDateTimeString();
+		$ip       = request()->getClientIp();
 
-        return sprintf('%s %s%s %s. %s', $this->classLabel(), $displayText, __(" has been {$eventName} by "), $username, $this->logMessage);
-    }
+		return sprintf('%s %s%s %s %s %s', $this->classLabel(), $displayText, __(" has been {$eventName} by "), $username, " vào lúc $dateTime từ địa chỉ IP $ip.", $this->logMessage);
+	}
 }
