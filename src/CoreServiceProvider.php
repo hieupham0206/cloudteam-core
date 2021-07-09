@@ -20,7 +20,6 @@ use Cloudteam\{Core\Console\Commands\CreateMultipleMigration,
 	Core\Console\Commands\RegisterService,
 	Core\Console\Commands\StartServer
 };
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\ServiceProvider;
 
 class CoreServiceProvider extends ServiceProvider
@@ -35,7 +34,7 @@ class CoreServiceProvider extends ServiceProvider
 //		 $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'cloudteam');
 		 $this->loadJsonTranslationsFrom(__DIR__.'/../resources/lang');
 		// $this->loadViewsFrom(__DIR__.'/../resources/views', 'cloudteam');
-		// $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+		 $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 		// $this->loadRoutesFrom(__DIR__.'/routes.php');
 
 		// Publishing is only necessary when using the CLI.
@@ -64,16 +63,7 @@ class CoreServiceProvider extends ServiceProvider
 			}
 		);
 
-		//note: custom macros
-		Builder::macro(
-			'withWhereHas',
-			fn($relation, $constraint) => $this->whereHas($relation, $constraint)->with([$relation => $constraint])
-		);
-
-		Builder::macro(
-			'limitOffset',
-			fn($limit, $offset) => $this->limit($limit)->offset($offset)
-		);
+		//custom macros
 	}
 
 	/**

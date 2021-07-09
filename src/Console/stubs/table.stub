@@ -53,8 +53,9 @@ class {{modelName}}Table extends DataTable {
             $this->totalFilteredRecords = ${{crudNameSingular}}s->count();
         }
 
-		return ${{crudNameSingular}}s->limit( $this->length )->offset( $this->start )
-		                 ->orderBy( $this->column, $this->direction )->get();
+		return ${{crudNameSingular}}s
+		                 ->orderBy( $this->column, $this->direction )
+		                 ->limitOffset($this->length, $this->start)->get();
 	}
 
 	/**

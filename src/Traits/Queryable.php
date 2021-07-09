@@ -151,4 +151,14 @@ trait Queryable
 
 		return $this->build($query);
 	}
+
+	public function scopeLimitOffset($query, $limit, $offset)
+	{
+		return $query->limit($limit)->offset($offset);
+	}
+
+	public function scopeWithWhereHas($query, $relation, $constraint)
+	{
+		return $query->whereHas($relation, $constraint)->with([$relation => $constraint]);
+	}
 }
