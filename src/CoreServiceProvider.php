@@ -18,112 +18,137 @@ use Cloudteam\{Core\Console\Commands\CreateMultipleMigration,
 	Core\Console\Commands\MakeMultipleMigration,
 	Core\Console\Commands\MakeMultipleModel,
 	Core\Console\Commands\RegisterService,
-	Core\Console\Commands\StartServer};
+	Core\Console\Commands\StartServer
+};
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\ServiceProvider;
 
 class CoreServiceProvider extends ServiceProvider
 {
-    /**
-     * Perform post-registration booting of services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'cloudteam');
-        // $this->loadViewsFrom(__DIR__.'/../resources/views', 'cloudteam');
-        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        // $this->loadRoutesFrom(__DIR__.'/routes.php');
+	/**
+	 * Perform post-registration booting of services.
+	 *
+	 * @return void
+	 */
+	public function boot()
+	{
+//		 $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'cloudteam');
+		 $this->loadJsonTranslationsFrom(__DIR__.'/../resources/lang');
+		// $this->loadViewsFrom(__DIR__.'/../resources/views', 'cloudteam');
+		// $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+		// $this->loadRoutesFrom(__DIR__.'/routes.php');
 
-        // Publishing is only necessary when using the CLI.
-        if ($this->app->runningInConsole()) {
-            $this->bootForConsole();
-        }
-    }
+		// Publishing is only necessary when using the CLI.
+		if ($this->app->runningInConsole()) {
+			$this->bootForConsole();
+		}
+	}
 
-    /**
-     * Register any package services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        $this->mergeConfigFrom(__DIR__.'/../config/core.php', 'core');
-        $this->mergeConfigFrom(__DIR__.'/../config/consul.php', 'consul');
-        $this->mergeConfigFrom(__DIR__.'/../config/payment.php', 'payment');
-        $this->mergeConfigFrom(__DIR__.'/../config/shipping.php', 'shipping');
+	/**
+	 * Register any package services.
+	 *
+	 * @return void
+	 */
+	public function register()
+	{
+		$this->mergeConfigFrom(__DIR__ . '/../config/core.php', 'core');
+		$this->mergeConfigFrom(__DIR__ . '/../config/consul.php', 'consul');
+		$this->mergeConfigFrom(__DIR__ . '/../config/payment.php', 'payment');
+		$this->mergeConfigFrom(__DIR__ . '/../config/shipping.php', 'shipping');
 
-        // Register the service the package provides.
-        $this->app->singleton('core', function ($app) {
-            return new Core;
-        });
-    }
+		// Register the service the package provides.
+		$this->app->singleton(
+			'core',
+			function ($app) {
+				return new Core;
+			}
+		);
 
-    /**
-     * Get the services provided by the provider.
-     *
-     * @return array
-     */
-    public function provides()
-    {
-        return ['core', 'consul', 'payment', 'shipping'];
-    }
+		//note: custom macros
+		Builder::macro(
+			'withWhereHas',
+			fn($relation, $constraint) => $this->whereHas($relation, $constraint)->with([$relation => $constraint])
+		);
 
-    /**
-     * Console-specific booting.
-     *
-     * @return void
-     */
-    protected function bootForConsole()
-    {
-        // Publishing the configuration file.
-        $this->publishes([
-            __DIR__.'/../config/core.php' => config_path('core.php'),
-        ], 'core.config');
+		Builder::macro(
+			'limitOffset',
+			fn($limit, $offset) => $this->limit($limit)->offset($offset)
+		);
+	}
 
-        // Publishing the configuration file.
-        $this->publishes([
-            __DIR__.'/../config/consul.php' => config_path('consul.php'),
-        ], 'consul.config');
+	/**
+	 * Get the services provided by the provider.
+	 *
+	 * @return array
+	 */
+	public function provides()
+	{
+		return ['core', 'consul', 'payment', 'shipping'];
+	}
 
-        // Publishing the views.
-        /*$this->publishes([
-            __DIR__.'/../resources/views' => base_path('resources/views/vendor/cloudteam'),
-        ], 'core.views');*/
+	/**
+	 * Console-specific booting.
+	 *
+	 * @return void
+	 */
+	protected function bootForConsole()
+	{
+		// Publishing the configuration file.
+		$this->publishes(
+			[
+				__DIR__ . '/../config/core.php' => config_path('core.php'),
+			],
+			'core.config'
+		);
 
-        // Publishing assets.
-        /*$this->publishes([
-            __DIR__.'/../resources/assets' => public_path('vendor/cloudteam'),
-        ], 'core.views');*/
+		// Publishing the configuration file.
+		$this->publishes(
+			[
+				__DIR__ . '/../config/consul.php' => config_path('consul.php'),
+			],
+			'consul.config'
+		);
 
-        // Publishing the translation files.
-        /*$this->publishes([
-            __DIR__.'/../resources/lang' => resource_path('lang/vendor/cloudteam'),
-        ], 'core.views');*/
+		// Publishing the views.
+		/*$this->publishes([
+			__DIR__.'/../resources/views' => base_path('resources/views/vendor/cloudteam'),
+		], 'core.views');*/
 
-        // Registering package commands.
-        $this->commands([
-            CrudMakeCommand::class,
-            CrudControllerCommand::class,
-            CrudTableCommand::class,
-            CrudViewCommand::class,
-            CrudTestCommand::class,
+		// Publishing assets.
+		/*$this->publishes([
+			__DIR__.'/../resources/assets' => public_path('vendor/cloudteam'),
+		], 'core.views');*/
 
-            MakeLocalScopeCommand::class,
-            MakeModelMethodCommand::class,
-            MakeModelAttributeCommand::class,
-            MakeModelRelationshipCommand::class,
-            MakeModelServiceCommand::class,
-            MakeEnumCommand::class,
+		// Publishing the translation files.
+		/*$this->publishes([
+			__DIR__.'/../resources/lang' => resource_path('lang/vendor/cloudteam'),
+		], 'core.views');*/
 
-            MakeMultipleMigration::class,
-            MakeMultipleModel::class,
+		// Registering package commands.
+		$this->commands(
+			[
+				CrudMakeCommand::class,
+				CrudControllerCommand::class,
+				CrudTableCommand::class,
+				CrudViewCommand::class,
+				CrudTestCommand::class,
 
-            CreateMultipleMigration::class,
-            GenerateMultipleModel::class,
+				MakeLocalScopeCommand::class,
+				MakeModelMethodCommand::class,
+				MakeModelAttributeCommand::class,
+				MakeModelRelationshipCommand::class,
+				MakeModelServiceCommand::class,
+				MakeEnumCommand::class,
 
-            RegisterService::class,
-            StartServer::class,
-        ]);
-    }
+				MakeMultipleMigration::class,
+				MakeMultipleModel::class,
+
+				CreateMultipleMigration::class,
+				GenerateMultipleModel::class,
+
+				RegisterService::class,
+				StartServer::class,
+			]
+		);
+	}
 }
