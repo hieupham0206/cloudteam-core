@@ -22,7 +22,7 @@ trait Enumerable
      *
      * @return mixed
      */
-    public function getAttributeValue($key)
+    public function getEnumAttributeValue($key)
     {
         if ($this->isEnumAttribute($key)) {
             $class = $this->getEnumClass($this->enumAttribute);
@@ -34,7 +34,7 @@ trait Enumerable
             return $class::toSelectArray();
         }
 
-        return parent::getAttributeValue($key);
+        return parent::getEnumAttributeValue($key);
     }
 
     /**
@@ -44,13 +44,13 @@ trait Enumerable
      *
      * @return mixed
      */
-    public function getAttribute($key)
+    public function getEnumAttribute($key)
     {
         if ($this->isEnumAttribute($key)) {
-            return $this->getAttributeValue($key);
+            return $this->getEnumAttributeValue($key);
         }
 
-        return parent::getAttribute($key);
+        return parent::getEnumAttribute($key);
     }
 
     /**
