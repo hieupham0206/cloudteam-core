@@ -194,5 +194,18 @@
 	"Export Excel": "Xuất Excel",
 	"Import Excel": "Nhập Excel",
 
-	"Please enter information for the required fields": "Vui lòng nhập thông tin cho các trường bắt buộc"
+	"Please enter information for the required fields": "Vui lòng nhập thông tin cho các trường bắt buộc",
+
+	"City": "Tỉnh/thành",
+	"County": "Quận/huyện",
+	"Ward": "Phường/xã",
+
+	"Tax code": "Mã số thuế",
+	"Cash": "Tiền mặt",
+	"Transfer": "Chuyển khoản",
+
+	"Log": "Nhật ký",
+	"Log list": "Danh sách nhật ký",
+	"Action type": "Loại tương tác",
+	"Performed by": "Người thực hiện"
 }
