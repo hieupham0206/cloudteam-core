@@ -18,14 +18,14 @@ class HtmlAction
             $btnClass, $dataTitle, $deleteLink, __('Delete'), $icon);
     }
 
-    public static function generateButtonEdit(string $editLink, string $btnClass = 'btn-primary', $icon = 'far fa-sm fa-edit'): string
+    public static function generateButtonEdit(string $editLink, string $btnClass = 'btn-primary', $icon = 'far fa-sm fa-edit', $target = '_self'): string
     {
-        return sprintf(" <a href='%s' class='btn btn-sm btn-icon btn-action-edit %s' title='%s'><i class='%s'></i></a>", $editLink, $btnClass, __('Edit'), $icon);
+        return sprintf(" <a href='%s' class='btn btn-sm btn-icon btn-action-edit %s' title='%s' target='%s'><i class='%s'></i></a>", $editLink, $btnClass, __('Edit'), $target, $icon);
     }
 
-    public static function generateButtonView(string $viewLink, string $btnClass = 'btn-info', $icon = 'far fa-sm fa-eye'): string
+    public static function generateButtonView(string $viewLink, string $btnClass = 'btn-info', $icon = 'far fa-sm fa-eye', $target = '_self'): string
     {
-        return sprintf(' <a href="%s" class="btn btn-sm btn-icon btn-action-view %s" title="%s"><i class="%s"></i></a>', $viewLink, $btnClass, __('View'), $icon);
+        return sprintf(' <a href="%s" class="btn btn-sm btn-icon btn-action-view %s" title="%s" target="%s"><i class="%s"></i></a>', $viewLink, $btnClass, __('View'), $target, $icon);
     }
 
     public static function generateCustomButton(array $params): string
