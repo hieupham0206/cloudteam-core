@@ -430,11 +430,12 @@ if ( ! function_exists('normalizeSerializeArray')) {
 	/**
 	 * @param $queryDatas
 	 *
+	 * @throws JsonException
 	 * @return array
 	 */
 	function normalizeSerializeArray($queryDatas)
 	{
-		$filters      = json_decode($queryDatas, JSON_FORCE_OBJECT);
+		$filters      = json_decode($queryDatas, JSON_FORCE_OBJECT, 512, JSON_THROW_ON_ERROR);
 		$finalFilters = [];
 		foreach ($filters as $filter) {
 			if (isset($finalFilters[$filter['name']])) {
@@ -458,14 +459,17 @@ if ( ! function_exists('logToFile')) {
 	/**
 	 * Log hành động theo file tương ứng.
 	 *
-	 * @param $channel
-	 * @param $api
-	 * @param $request
-	 * @param $response
-	 * @param array $times
-	 * @param null $requestUuid
+	 * @param string $channel
+	 * @param        $api
+	 * @param        $request
+	 * @param        $response
+	 * @param array  $times
+	 * @param null   $requestUuid
+	 * @param string $level
+	 *
+	 * @throws JsonException
 	 */
-	function logToFile(string $channel, $api, $request, $response, $times = [], $requestUuid = null)
+	function logToFile(string $channel, $api, $request, $response, $times = [], $requestUuid = null, $level = 'info')
 	{
 		if ( ! $times) {
 			$requestedAt = $responsedAt = date('d-m-Y H:i:s');
@@ -473,12 +477,12 @@ if ( ! function_exists('logToFile')) {
 			[$requestedAt, $responsedAt] = $times;
 		}
 
-		if (is_array($request)) {
-			$request = json_encode($request);
+		if ($request && is_array($request)) {
+			$request = json_encode($request, JSON_THROW_ON_ERROR);
 		}
 
-		if (is_array($response)) {
-			$response = json_encode($response);
+		if ($response && is_array($response)) {
+			$response = json_encode($response, JSON_THROW_ON_ERROR);
 		}
 
 		if ( ! $requestUuid) {
@@ -490,7 +494,18 @@ if ( ! function_exists('logToFile')) {
 		} else {
 			$uuid = $requestUuid;
 		}
-		Log::channel($channel)->info("\r\n-Request: $api - $uuid - At $requestedAt\r\n$request \r\n-Response: $responsedAt\r\n$response \r\n");
+
+		if ($request && $response) {
+			Log::channel($channel)->log($level,"\r\n-Request: $api - $uuid - At $requestedAt\r\n$request \r\n-Response: $responsedAt\r\n$response \r\n");
+		}
+
+		if ($request && ! $response) {
+			Log::channel($channel)->log($level,"\r\n-Request: $api - $uuid - At $requestedAt\r\n$request \r\n");
+		}
+
+		if (! $request && $response) {
+			Log::channel($channel)->log($level, "\r\n-Response: $api - $uuid - At $responsedAt\r\n$response \r\n");
+		}
 
 		if ( ! empty(config('logging.elasticsearch_enable'))) {
 			$context = [
