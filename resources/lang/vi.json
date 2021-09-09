@@ -49,6 +49,7 @@
 	"Choose": "Chọn",
 	"Search": "Tìm kiếm",
 	"Reset": "Đặt lại",
+	"Refresh": "Làm mới",
 
 	"Add new": "Tạo mới",
 	"Create": "Tạo mới",
@@ -199,6 +200,7 @@
 	"City": "Tỉnh/thành",
 	"County": "Quận/huyện",
 	"Ward": "Phường/xã",
+	"Country": "Quốc gia",
 
 	"Tax code": "Mã số thuế",
 	"Cash": "Tiền mặt",
