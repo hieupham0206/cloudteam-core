@@ -24,7 +24,9 @@ trait Filterable
         if ( ! blank($value) || is_array($operator)) {
             [$column, $value] = $this->preparedParam($operator, $column, $value, $filterDatas);
 
-            $this->conditions[] = [$column, $value, $boolean, $operator];
+			if ($value) {
+				$this->conditions[] = [$column, $value, $boolean, $operator];
+			}
         }
     }
 
@@ -102,14 +104,16 @@ trait Filterable
             if ($operatorType === 'date_between') {
                 $values = [];
                 foreach ($params as $param) {
-                    $values[] = $filterDatas[$param];
+					if (isset($filterDatas[$param])) {
+						$values[] = $filterDatas[$param];
+					}
                 }
 
                 $value = $values;
             }
-        } elseif (strtolower($operator) === 'like') {
-            $value = "%$value%";
-        }
+		} elseif (is_string($operator) && strtolower($operator) === 'like') {
+			$value = "%$value%";
+		}
 
         return [$column, $value];
     }

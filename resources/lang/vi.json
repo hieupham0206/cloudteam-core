@@ -209,5 +209,11 @@
 	"Log": "Nhật ký",
 	"Log list": "Danh sách nhật ký",
 	"Action type": "Loại tương tác",
-	"Performed by": "Người thực hiện"
+	"Performed by": "Người thực hiện",
+
+	"Latitude": "Vĩ độ",
+	"Longitude": "Kinh độ",
+
+	"Sunrise": "Mặt trời mọc",
+	"Sunset": "Mặt trời lặn"
 }
