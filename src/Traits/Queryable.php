@@ -90,7 +90,7 @@ trait Queryable
 	 *
 	 * @return mixed
 	 */
-	public function scopeFilters($query, $filterDatas, $boolean = 'and', array $filterConfigs = null)
+	public function scopeFilters($query, $filterDatas, $boolean = 'and', array $filterConfigs = null, $insertTableName = true)
 	{
 		if ( ! property_exists($this, 'filters') || blank($filterDatas)) {
 			return $query;
@@ -105,7 +105,7 @@ trait Queryable
 		foreach ($filters as $column => $operator) {
 			if (isset($filterDatas[$column]) || is_array($operator)) {
 				$filterVal = $filterDatas[$column] ?? '';
-				$this->addCondition([$column, $operator, $filterVal], $boolean, $filterDatas);
+				$this->addCondition([$column, $operator, $filterVal], $boolean, $filterDatas, $insertTableName);
 			}
 		}
 
