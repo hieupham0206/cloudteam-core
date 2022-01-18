@@ -24,12 +24,11 @@ trait ModelDetailable
 
 			foreach ($detailDatas as $detailData) {
 				$modelDetailId = $detailData['id'] ?? '';
+				$modelDetail = array_merge($detailData, $extraDatas);
 				if ( ! $modelDetailId) {
-					$modelDetail = array_merge($detailData, $extraDatas);
-
 					$detailModel::create($modelDetail);
 				} else {
-					$detailModel::find($modelDetailId)->update($detailData);
+					$detailModel::find($modelDetailId)->update($modelDetail);
 				}
 			}
 		}
