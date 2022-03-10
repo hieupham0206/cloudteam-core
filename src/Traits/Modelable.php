@@ -67,9 +67,9 @@ trait Modelable
 		$ip       = request()->getClientIp();
 
 		if ($this->logMessage) {
-			return sprintf('%s %s%s %s %s %s', $this->classLabel(), $displayText, __(" has been {$eventName} by "), $username, " vào lúc $dateTime từ địa chỉ IP $ip. Chi tiết:", $this->logMessage);
+			return sprintf('%s %s%s%s %s %s', $this->classLabel(), $displayText, __(" has been {$eventName} by "), $username, __('at') . " $dateTime " .  __('from') . " IP $ip.", $this->logMessage);
 		}
 
-		return sprintf('%s %s%s %s %s', $this->classLabel(), $displayText, __(" has been {$eventName} by "), $username, " vào lúc $dateTime từ địa chỉ IP $ip.");
+		return sprintf('%s %s%s%s %s', $this->classLabel(), $displayText, __(" has been {$eventName} by "), $username, __('at') . " $dateTime " .  __('from') . " IP $ip. ");
 	}
 }
