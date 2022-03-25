@@ -1,6 +1,6 @@
 <?php
 
-namespace Cloudteam\Core\Utils;
+namespace App\Classes\Core;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
@@ -8,101 +8,113 @@ use Illuminate\Support\Str;
 
 class ModelFilter
 {
-    public $query;
-    public $page;
-    public $with;
-    public $excludeIds;
-    public $includeIds;
-    public $orderBy;
-    public $queryBy;
-    public $direction;
-    public $limit;
-    public $offset;
+	public $query;
 
-    /**
-     * @var Builder
-     */
-    public $builder;
+	public $page;
 
-    public $configs = [
-        'query'      => '',
-        'page'       => 1,
-        'excludeIds' => [],
-        'includeIds' => [],
-        'orderBy'    => 'id',
-        'queryBy'    => 'name',
-        'direction'  => 'desc',
-        'limit'      => 10,
-        'with'       => '',
-    ];
+	public $with;
 
-    public function __construct($builder, $options = [])
-    {
-        $this->builder = $builder;
+	public $excludeIds;
 
-        $this->configs = array_merge($this->configs, $options);
+	public $includeIds;
 
-        $this->prepareConfig();
+	public $orderBy;
 
-	    $this->excludeIds = array_filter(Arr::wrap($this->excludeIds));
-	    $this->includeIds = array_filter(Arr::wrap($this->includeIds));
+	public $queryBy;
 
-        $this->offset = ($this->page - 1) * $this->limit;
-    }
+	public $direction;
 
-    private function prepareConfig()
-    {
-        $request = request();
+	public $limit;
 
-        $configs = $this->configs;
-        foreach ($configs as $key => $config) {
-            $this->{$key} = $request->input($key, $config);
-        }
-    }
+	public $offset;
 
-    public function filter()
-    {
-    	if ($this->excludeIds) {
-		    $this->builder->exclude($this->excludeIds);
-	    }
+	/**
+	 * @var Builder
+	 */
+	public $builder;
 
-    	if ($this->includeIds) {
-		    $this->builder->include($this->includeIds);
-	    }
+	public $configs = [
+		'query'      => '',
+		'page'       => 1,
+		'excludeIds' => [],
+		'includeIds' => [],
+		'orderBy'    => 'id',
+		'queryBy'    => 'name',
+		'direction'  => 'desc',
+		'limit'      => 10,
+		'with'       => '',
+	];
 
-        $query   = $this->query;
-        $queryBy = $this->queryBy;
+	public function __construct($builder, $options = [])
+	{
+		$this->builder = $builder;
 
-        if ($query) {
-            $this->builder->when(Str::contains($this->queryBy, ','), static function (Builder $builder) use ($query, $queryBy) {
-                $fields = explode(',', $queryBy);
+		$this->configs = array_merge($this->configs, $options);
 
-                $filters = collect($fields)->mapWithKeys(static function ($key, $idx) use ($query) {
-                    return [$idx => [$key, 'like', $query]];
-                })->all();
+		$this->prepareConfig();
 
-                $builder->orFilterWhere($filters);
+		$this->excludeIds = array_filter(Arr::wrap($this->excludeIds));
+		$this->includeIds = array_filter(Arr::wrap($this->includeIds));
 
-            }, static function (Builder $builder) use ($query, $queryBy) {
-                $builder->where($queryBy, 'like', "%{$query}%");
-            });
-        }
+		$this->offset = ($this->page - 1) * $this->limit;
+	}
 
-        if ($this->with) {
-            $this->builder->with(array_map('trim', explode(',', $this->with)));
-        }
+	private function prepareConfig()
+	{
+		$request = request();
 
-        return $this->builder;
-    }
+		$configs = $this->configs;
+		foreach ($configs as $key => $config) {
+			$this->{$key} = $request->input($key, $config);
+		}
+	}
 
-    public function getData($builder)
-    {
-        $builder->offset($this->offset)->limit($this->limit);
+	public function filter()
+	{
+		if ($this->excludeIds) {
+			$this->builder->exclude($this->excludeIds);
+		}
 
-        if ($this->orderBy) {
-            $builder->orderBy($this->orderBy, $this->direction);
-        }
+		if ($this->includeIds) {
+			$this->builder->include($this->includeIds);
+		}
 
-        return $builder->get();
-    }
+		$query   = $this->query;
+		$queryBy = $this->queryBy;
+
+		if ($query) {
+			$this->builder->when(Str::contains($this->queryBy, ','), static function (Builder $builder) use ($query, $queryBy) {
+				$fields = explode(',', $queryBy);
+
+				$filters = collect($fields)->mapWithKeys(static function ($key, $idx) use ($query) {
+					return [$idx => [$key, 'like', "%$query%"]];
+				})->all();
+
+				$builder->where(function($query) use($filters) {
+					foreach ($filters as $filter) {
+						$query->orWhere([$filter]);
+					}
+				});
+			}, static function (Builder $builder) use ($query, $queryBy) {
+				$builder->where($queryBy, 'like', "%{$query}%");
+			});
+		}
+
+		if ($this->with) {
+			$this->builder->with(array_map('trim', explode(',', $this->with)));
+		}
+
+		return $this->builder;
+	}
+
+	public function getData($builder)
+	{
+		$builder->offset($this->offset)->limit($this->limit);
+
+		if ($this->orderBy) {
+			$builder->orderBy($this->orderBy, $this->direction);
+		}
+
+		return $builder->get();
+	}
 }

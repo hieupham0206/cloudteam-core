@@ -518,3 +518,17 @@ if ( ! function_exists('logToFile')) {
 		}
 	}
 }
+
+if (! function_exists('isMultidimensionalArray')) {
+	/**
+	 * Log hành động theo file tương ứng.
+	 *
+	 * @param array $array
+	 *
+	 * @return bool
+	 */
+	function isMultidimensionalArray(array $array)
+	{
+		return count($array) !== count($array, COUNT_RECURSIVE);
+	}
+}
