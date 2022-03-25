@@ -34,19 +34,19 @@ class XmlCoreTT78
 	/**
 	 * @var string|array
 	 */
-	public mixed $datas;
+	public array $datas;
 	/**
 	 * @var BaseXmlRender|mixed
 	 */
-	public mixed $xmlRender;
+	public $xmlRender;
 	/**
 	 * @var string
 	 */
-	private mixed $keyFilePath;
+	private $keyFilePath;
 	/**
 	 * @var string
 	 */
-	private mixed $certFilePath;
+	private $certFilePath;
 	/**
 	 * @var bool
 	 */
