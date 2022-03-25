@@ -4,12 +4,11 @@
  * Date: 14/01/2020 4:38 CH
  */
 
-namespace App\Xml;
+namespace Cloudteam\Core\Xml;
 
 use Cloudteam\Core\Xml\Providers\BaseXmlRender;
 use Cloudteam\Core\Xml\Providers\MInvoiceXmlRender;
 use Cloudteam\Core\Xml\Providers\ViettelXmlRender;
-use Cloudteam\Core\Xml\XMLSecurityDSig;
 use DOMDocument;
 use Illuminate\Support\Facades\Log;
 use RobRichards\XMLSecLibs\XMLSecEnc;

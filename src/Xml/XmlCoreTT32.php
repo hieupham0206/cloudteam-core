@@ -4,9 +4,8 @@
  * Date: 14/01/2020 4:38 CH
  */
 
-namespace App\Xml;
+namespace Cloudteam\Core\Xml;
 
-use App\Models\Store;
 use DOMDocument;
 use Illuminate\Support\Facades\Log;
 use RobRichards\XMLSecLibs\XMLSecEnc;
@@ -50,7 +49,7 @@ class XmlCoreTT32
      */
     private $isKeyFile = false;
 
-    public function __construct($datas = [], Store $store = null)
+    public function __construct($datas = [], $signatures = [])
     {
         $this->domDocument                     = new DOMDocument('1.0', 'utf-8');
         $this->domDocument->preserveWhiteSpace = false;
@@ -59,11 +58,8 @@ class XmlCoreTT32
 
         $this->datas = $datas;
 
-        if ($store && $store->company->signature) {
-            $company = $store->company;
-
-            $this->keyFilePath  = $company->signature->private_key;
-            $this->certFilePath = $company->signature->certificate;
+        if ($signatures) {
+			[$this->keyFilePath, $this->certFilePath] = $signatures;
         } else {
             $this->isKeyFile    = true;
             $this->keyFilePath  = app_path('Xml/files/0106026495-998.key');
