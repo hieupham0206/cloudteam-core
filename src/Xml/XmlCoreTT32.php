@@ -14,7 +14,6 @@ use RuntimeException;
 
 /**
  * Class XmlCore
- * @package App\Xml
  *
  * @SuppressWarnings(PHPMD)
  */

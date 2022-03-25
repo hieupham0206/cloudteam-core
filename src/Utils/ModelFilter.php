@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Classes\Core;
+namespace Cloudteam\Core\Utils;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
