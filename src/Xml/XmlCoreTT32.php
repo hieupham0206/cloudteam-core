@@ -61,8 +61,8 @@ class XmlCoreTT32
 			[$this->keyFilePath, $this->certFilePath] = $signatures;
         } else {
 			$this->isKeyFile    = true;
-			$this->keyFilePath  = __DIR__ . 'Xml/files/0106026495-998.key';
-			$this->certFilePath = __DIR__ . 'Xml/files/0106026495-998.crt';
+			$this->keyFilePath  = __DIR__ . '/files/0106026495-998.key';
+			$this->certFilePath = __DIR__ . '/files/0106026495-998.crt';
         }
 
         $this->loadXml();
