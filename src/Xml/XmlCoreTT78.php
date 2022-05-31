@@ -68,6 +68,11 @@ class XmlCoreTT78
 			$this->xmlRender = new ViettelXmlRender();
 		}
 
+        //note: nếu setting không có thì default dùng MInvoice render
+        if (! $this->xmlRender) {
+            $this->xmlRender = new MInvoiceXmlRender();
+        }
+
 		if ($signatures) {
 			[$this->keyFilePath, $this->certFilePath] = $signatures;
 		} else {
@@ -79,7 +84,9 @@ class XmlCoreTT78
 
 	private function renderXml($bodyElement)
 	{
-		$this->xmlRender->renderXml($this, $bodyElement);
+        if ($this->xmlRender) {
+            $this->xmlRender->renderXml($this, $bodyElement);
+        }
 	}
 
 	public function createXmlBody($mainElem, $datas)
