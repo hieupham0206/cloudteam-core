@@ -532,3 +532,16 @@ if (! function_exists('isMultidimensionalArray')) {
 		return count($array) !== count($array, COUNT_RECURSIVE);
 	}
 }
+
+if (! function_exists('sanitizeValue')) {
+    function sanitizeValue(&$value)
+    {
+        $value = strip_tags($value);
+
+        if ($value && ! is_numeric($value) && in_array($value[0], ['=', '+', '-', '@'])) {
+            $value = substr($value, 1);
+        }
+
+        return $value;
+    }
+}
