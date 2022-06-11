@@ -538,7 +538,7 @@ if (! function_exists('sanitizeValue')) {
     {
         $value = strip_tags($value);
 
-        if ($value && ! is_numeric($value) && in_array($value[0], ['=', '+', '-', '@'])) {
+        if ($value && ! is_numeric($value) && in_array($value[0], ['=', '+', '-', '@']) && ! in_array($value[1], ['=', '+', '-', '@'])) {
             $value = substr($value, 1);
         }
 
