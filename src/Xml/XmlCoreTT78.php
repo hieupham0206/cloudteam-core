@@ -267,9 +267,9 @@ class XmlCoreTT78
 
             $data = $this->domDocument->saveXML();
 
-            $data = str_replace(["\t", "\n\r", "\n", "\r", "    ",], '', $data);
+            $data = str_replace(["\t", "\n\r", "\n", "\r"], '', $data);
 
-            return str_replace(['>  <'], '><', $data);
+            return str_replace(['>  <', '>    <'], '><', $data);
         } catch (\RuntimeException|\Exception $exception) {
             $this->errMsg = "{$exception->getMessage()} - {$exception->getFile()} - {$exception->getLine()}";
             Log::error($this->errMsg);
