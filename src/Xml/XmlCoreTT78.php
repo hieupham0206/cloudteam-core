@@ -149,7 +149,7 @@ class XmlCoreTT78
                                 if (is_array($subItemVal)) {
                                     $this->createXmlBody($tempElem, $subItemVal);
                                 } else {
-                                    $tempElem->appendChild($this->domDocument->createElement($subItemValKey, $subItemVal));
+                                    $tempElem->appendChild($this->domDocument->createElement($subItemValKey, htmlspecialchars($subItemVal)));
                                 }
                             }
 
@@ -157,7 +157,7 @@ class XmlCoreTT78
                         }
 
                         if ($subItem) {
-                            $subOfSubMainElem->appendChild($this->domDocument->createElement($subKey, $subItem));
+                            $subOfSubMainElem->appendChild($this->domDocument->createElement($subKey, htmlspecialchars($subItem)));
                         }
                     }
                 }
@@ -172,7 +172,7 @@ class XmlCoreTT78
             }
 
             foreach ($items as $subKey => $itemDatas) {
-                $subMainElem->appendChild($this->domDocument->createElement($subKey, $itemDatas));
+                $subMainElem->appendChild($this->domDocument->createElement($subKey, htmlspecialchars($itemDatas)));
             }
         }
     }
