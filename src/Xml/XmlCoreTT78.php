@@ -329,7 +329,8 @@ class XmlCoreTT78
     public static function verify($xmlData)
     {
         try {
-            $xmlData = str_replace(["\t", "\n\r", "\n", "\r", '  '], '', $xmlData);
+            $xmlData = str_replace(["\t", "\n\r", "\n", "\r"], '', $xmlData);
+            $xmlData = str_replace(['>  <', '>    <'], '', $xmlData);
 
             $doc = new DOMDocument();
             if (@$doc->loadXML($xmlData)) {
