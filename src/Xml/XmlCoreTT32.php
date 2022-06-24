@@ -265,17 +265,10 @@ class XmlCoreTT32
     public static function verify($xmlData)
     {
         try {
-            $xmlData = str_replace(["\t", "\n\r", "\n", "\r"], '', $xmlData);
-
             $doc = new DOMDocument();
             if (@$doc->loadXML($xmlData)) {
-                //$objXMLSecDSig = new XMLSecurityDSig();
-                //return self::validateXml($objXMLSecDSig, $doc);
-//                // ** TAM DISABLE TINH NĂNG NÀY ** /
-                return [
-                    'message' => 'Signature validated.',
-                    'result'  => true,
-                ];
+                $objXMLSecDSig = new XMLSecurityDSig();
+                return self::validateXml($objXMLSecDSig, $doc);
             }
 
             Log::error("Can not load XML data: $xmlData");
