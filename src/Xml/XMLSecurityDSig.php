@@ -35,7 +35,8 @@ class XMLSecurityDSig extends BaseXMLSecurityDSig
      */
     public function signData($objKey, $data)
     {
-        $data = str_replace(["\t", "\n\r", "\n", "\r", '  '], '', $data);
+        $data = str_replace(["\t", "\n\r", "\n", "\r"], '', $data);
+        $data = str_replace(['>  <', '>    <'], '', $data);
 
         return $objKey->signData($data);
     }
