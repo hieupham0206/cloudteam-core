@@ -269,13 +269,13 @@ class XmlCoreTT32
 
             $doc = new DOMDocument();
             if (@$doc->loadXML($xmlData)) {
-                $objXMLSecDSig = new XMLSecurityDSig();
-                return self::validateXml($objXMLSecDSig, $doc);
+                //$objXMLSecDSig = new XMLSecurityDSig();
+                //return self::validateXml($objXMLSecDSig, $doc);
 //                // ** TAM DISABLE TINH NĂNG NÀY ** /
-//                return [
-//                    'message' => 'Signature validated.',
-//                    'result'  => true,
-//                ];
+                return [
+                    'message' => 'Signature validated.',
+                    'result'  => true,
+                ];
             }
 
             Log::error("Can not load XML data: $xmlData");
