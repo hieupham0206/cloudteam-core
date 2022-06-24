@@ -156,7 +156,7 @@ class XmlCoreTT78
                             continue;
                         }
 
-                        if ($subItem) {
+                        if ($subItem || is_int($subItem)) {
                             $subOfSubMainElem->appendChild($this->domDocument->createElement($subKey, htmlspecialchars($subItem)));
                         }
                     }
