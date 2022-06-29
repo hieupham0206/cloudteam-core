@@ -9,6 +9,7 @@ trait Filterable
 	private $conditions = [];
 
 	private $foreignRelation = false;
+	private $foreignRelations = [];
 
 	/**
 	 * @param        $configs
@@ -41,7 +42,7 @@ trait Filterable
 			foreach ($this->conditions as $condition) {
 				[$column, $value, $boolean, $operator] = $condition;
 
-				if ($relation = $this->foreignRelation) {
+				if (isset($this->foreignRelations[$column]) && $relation = $this->foreignRelations[$column]) {
 					$self = $this;
 					$subQuery->whereHas($relation, static function (Builder $q) use ($column, $value, $operator, $boolean, $self) {
 						$self->addQueryCondition($q, $value, $operator, $column, $boolean);
@@ -61,7 +62,7 @@ trait Filterable
 			if (is_array($operator)) {
 				$subQuery->dateBetween($value, $column);
 			} else {
-                if ($this->foreignRelation) {
+                if ($this->foreignRelations) {
                     $columns = explode('.', $column);
                     $subQuery->whereIn(end($columns), $value, $boolean, $operator === '!=');
                 } else {
@@ -69,7 +70,7 @@ trait Filterable
                 }
 			}
 		} else {
-			if ($this->foreignRelation) {
+			if ($this->foreignRelations) {
 				$columns = explode('.', $column);
 				$subQuery->where(end($columns), $operator, $value, $boolean);
 			} else {
@@ -94,9 +95,10 @@ trait Filterable
 			$columns = explode('.', $column);
 			$column  = array_pop($columns);
 
-			$relation              = implode('.', $columns);
-			$column                = "$relation.$column";
-			$this->foreignRelation = $relation;
+            $relation                        = implode('.', $columns);
+            $column                          = "$relation.$column";
+            $this->foreignRelation           = $relation;
+            $this->foreignRelations[$column] = $relation;
 		} elseif ($insertTableName) {
 			$column = "$tableName.$column";
 		}
