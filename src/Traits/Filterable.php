@@ -61,7 +61,12 @@ trait Filterable
 			if (is_array($operator)) {
 				$subQuery->dateBetween($value, $column);
 			} else {
-				$subQuery->whereIn($column, $value, $boolean, $operator === '!=');
+                if ($this->foreignRelation) {
+                    $columns = explode('.', $column);
+                    $subQuery->whereIn(end($columns), $value, $boolean, $operator === '!=');
+                } else {
+                    $subQuery->whereIn($column, $value, $boolean, $operator === '!=');
+                }
 			}
 		} else {
 			if ($this->foreignRelation) {
