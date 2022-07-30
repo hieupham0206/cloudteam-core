@@ -82,8 +82,8 @@ class ModelFilter
 		$query   = $this->query;
 		$queryBy = $this->queryBy;
 
-		if ($query) {
-			$this->builder->when(Str::contains($this->queryBy, ','), static function (Builder $builder) use ($query, $queryBy) {
+		if ($query && $queryBy) {
+			$this->builder->when(Str::contains($queryBy, ','), static function (Builder $builder) use ($query, $queryBy) {
 				$fields = explode(',', $queryBy);
 
 				$filters = collect($fields)->mapWithKeys(static function ($key, $idx) use ($query) {
