@@ -219,5 +219,11 @@
 	"Sunset": "Mặt trời lặn",
 
 	"at": "vào lúc",
-	"from": "từ"
+	"from": "từ",
+
+	"Change status successfully": "Cập nhật trạng thái thành công",
+	"Change status unsuccessfully": "Cập nhật trạng thái không thành công",
+
+	"English": "Tiếng Anh",
+	"Vietnamese": "Tiếng Việt"
 }

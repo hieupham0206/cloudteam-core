@@ -536,14 +536,16 @@ if (! function_exists('isMultidimensionalArray')) {
 if (! function_exists('sanitizeValue')) {
     function sanitizeValue(&$value)
     {
-        if ($value === null) {
+        if (empty($value)) {
             return $value;
         }
 
         $value = strip_tags($value);
 
-        if ($value && ! is_numeric($value) && in_array($value[0], ['=', '+', '-', '@']) && ! in_array($value[1], ['=', '+', '-', '@'])) {
-            $value = substr($value, 1);
+        if ($value && ! is_numeric($value) && in_array($value[0], ['=', '+', '-', '@'])) {
+            if (isset($value[1]) && ! in_array($value[1], ['=', '+', '-', '@'])) {
+                $value = substr($value, 1);
+            }
         }
 
         return $value;
