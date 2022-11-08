@@ -28,6 +28,11 @@ class XmlCoreTT78
     public string $errMsg;
 
     /**
+     * @var int
+     */
+    public int $errCode = -99;
+
+    /**
      * @var DOMDocument
      */
     public DOMDocument $domDocument;
@@ -270,9 +275,15 @@ class XmlCoreTT78
             $data = str_replace(["\t", "\n\r", "\n", "\r"], '', $data);
 
             return str_replace(['>  <', '>    <'], '><', $data);
-        } catch (\RuntimeException|\Exception $exception) {
-            $this->errMsg = "{$exception->getMessage()} - {$exception->getFile()} - {$exception->getLine()}";
-            Log::error($this->errMsg);
+        } catch (\RuntimeException $exception) {
+            $this->errMsg = "{$exception->getMessage()}";
+            $this->errCode = -15;
+            Log::error("{$exception->getMessage()} - {$exception->getFile()} - {$exception->getLine()}");
+
+            return null;
+        } catch (\Exception $exception) {
+            $this->errMsg = "{$exception->getMessage()}";
+            Log::error("{$exception->getMessage()} - {$exception->getFile()} - {$exception->getLine()}");
 
             return false;
         }
