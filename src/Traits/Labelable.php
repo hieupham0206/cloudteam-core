@@ -42,7 +42,8 @@ trait Labelable
             $reflect = new ReflectionClass($this);
 
             if (property_exists(get_class($this), 'logName')) {
-                $nameInModel = $reflect->getStaticPropertyValue('logName');
+                //$nameInModel = $reflect->getStaticPropertyValue('logName');
+                $nameInModel = $reflect->getProperty('logName')->getValue($this);
                 $tableName   = __($nameInModel);
 
                 if (is_array($tableName)) {
