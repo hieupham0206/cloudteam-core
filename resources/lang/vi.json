@@ -42,6 +42,7 @@
 	"Success": "Thành công",
 	"Warning": "Cảnh báo",
 	"Fail": "Thất bại",
+	"Danger": "Nguy hiểm",
 
 	"Yes": "Có",
 	"No": "Không",
@@ -109,10 +110,10 @@
 	"Transaction": "Giao dịch",
 
 	"Created at": "Ngày tạo",
-	"Updated at": "Ngày cập nhật",
-	"Deleted at": "Ngày xóa",
 	"Created by": "Người tạo",
+	"Updated at": "Ngày cập nhật",
 	"Updated by": "Người cập nhật",
+	"Deleted at": "Ngày xóa",
 	"Deleted by": "Người xóa",
 
 	" has been created by ": " đã được tạo bởi",
@@ -131,6 +132,7 @@
 	"Data deleted unsuccessfully": "Xóa dữ liệu không thành công",
 
 	"Gender": "Giới tính",
+	"Sex": "Giới tính",
 	"Male": "Nam",
 	"Female": "Nữ",
 
@@ -160,12 +162,8 @@
 	"Please confirm your password before continuing.": "Vui lòng xác nhận lại mật khẩu để tiếp tục.",
 	"Reset Password": "Đặt lại mật khẩu",
 
-	"Your OTP is: ": "Mã OTP của bạn là: ",
-	"OTP code has been sent to ": "Mã OTP đã được gửi tới ",
 	"Password reset notification": "Thông báo đặt lại mật khẩu",
 	"The new password of the account ": "Mật khẩu mới của tài khoản ",
-	"Resend OTP": "Gửi lại OTP",
-	"Confirm OTP": "Xác nhận OTP",
 
 	"New": "Mới",
 	"Confirmed": "Đã xác nhận",
@@ -209,7 +207,7 @@
 
 	"Log": "Nhật ký",
 	"Log list": "Danh sách nhật ký",
-	"Action type": "Loại tương tác",
+	"Action type": "Loại hành động",
 	"Performed by": "Người thực hiện",
 
 	"Latitude": "Vĩ độ",
@@ -225,5 +223,35 @@
 	"Change status unsuccessfully": "Cập nhật trạng thái không thành công",
 
 	"English": "Tiếng Anh",
-	"Vietnamese": "Tiếng Việt"
+	"Vietnamese": "Tiếng Việt",
+	"Japanese": "Tiếng Nhật",
+
+	"Two-factor authentication": "Bảo mật hai lớp",
+	"Increase your account's security by enabling two-factor authentication (2FA).": "Tăng cường bảo mật cho tài khoản của bạn bằng cách kích hoạt xác thực hai lớp (2FA).",
+	"If you lose your recovery codes you can generate new ones, invalidating all previous codes.": "Nếu bạn mất mã khôi phục, bạn có thể tạo mã mới và vô hiệu hóa tất cả các mã trước đó.",
+	"Manage two-factor authentication": "Quản lý xác thực hai lớp",
+	"Enable two-factor authentication": "Kích hoạt xác thực hai lớp",
+	"Register Two-Factor Authenticator": "Đăng ký xác thực hai lớp",
+	"You've already enabled two-factor authentication using one time password authenticators. In order to register a different device, you must first disable two-factor authentication.": "Bạn đã kích hoạt xác thực hai yếu tố bằng trình xác thực mật khẩu một lần. Để đăng ký một thiết bị khác, trước tiên bạn phải tắt xác thực hai yếu tố.",
+	"Use a one-time password authenticator on your mobile device or computer to enable two-factor authentication (2FA).": "Sử dụng xác thực mật khẩu một lần trên thiết bị di động hoặc máy tính của bạn để bật xác thực hai yếu tố (2FA).",
+	"We recommend using cloud-based authenticator applications that can restore access if you lose your hardware device.": "Chúng tôi khuyên bạn nên sử dụng các ứng dụng xác thực trên ứng dụng đám mây có thể khôi phục quyền truy cập nếu bạn khi bị mất thiết bị.",
+	"Can't scan the code?": "Không thể quét mã?",
+	"To add the entry manually, provide the following details to the application on your phone.": "Để thêm mới thủ công, hãy nhập các nội dung sau vào ứng dụng trên điện thoại của bạn.",
+	"Pin code": "Mã pin",
+	"Please input the pin code": "Vui lòng nhập mã pin",
+	"Register with two-factor app": "Đăng ký xác thực hai lớp trên ứng dụng",
+	"Two-factor Authentication Recovery codes": "Mã khôi phục xác thực hai lớp",
+	"Please copy or download your recovery codes before proceeding.": "Vui lòng sao chép hoặc tải xuống mã khôi phục của bạn.",
+	"Should you ever lose your phone or access to your one time password secret, each of these recovery codes can be used one time each to regain access to your account. Please save them in a safe place, or you will lose access to your account.": "Nếu bạn từng bị mất điện thoại hoặc quyền truy cập vào mật khẩu dùng một lần của mình, mỗi mã khôi phục này có thể được sử dụng một lần để lấy lại quyền truy cập vào tài khoản của bạn. Vui lòng lưu chúng ở một nơi an toàn, nếu không bạn sẽ mất quyền truy cập vào tài khoản của mình.",
+	"Copy codes": "Sao chép mã",
+	"Download codes": "Tải xuống mã",
+	"Proceed": "Tiếp tục",
+	"Disabled": "Vô hiệu hóa",
+	"Enabled": "Kích hoạt",
+	"Not enabled": "Chưa kích hoạt",
+	"Disable two-factor authentication": "Tắt xác thực hai lớp",
+	"Regenerate recovery codes": "Tạo lại mã khôi phục",
+	"Confirm and enable two-factor authentication": "Xác nhận và Kích hoạt xác thực hai lớp",
+	"Two-factor authentication code": "Mã xác thực hai lớp",
+	"Enter the code from the two-factor app on your mobile device. If you've lost your device, you may enter one of your recovery codes.": "Nhập mã từ ứng dụng hai yếu tố trên thiết bị di động của bạn. Nếu bị mất thiết bị, bạn có thể nhập một trong các mã khôi phục của mình."
 }

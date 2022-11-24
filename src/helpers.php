@@ -415,11 +415,6 @@ if ( ! function_exists('decreaseByPercentage')) {
 //END NUMBER HELPER
 
 if ( ! function_exists('user')) {
-	/**
-	 * Get user đang đăng nhập
-	 *
-	 * @return string
-	 */
 	function user()
 	{
 		return auth()->user();
@@ -496,18 +491,18 @@ if ( ! function_exists('logToFile')) {
 		}
 
 		if ($request && $response) {
-			Log::channel($channel)->log($level,"\r\n-Request: $api - $uuid - At $requestedAt\r\n$request \r\n-Response: $responsedAt\r\n$response \r\n");
-		}
+			Log::channel($channel)->log($level,"\n-Request: $api - $uuid - At $requestedAt\n$request\n-Response: $responsedAt\n$response\n");
+		} else {
+            if ($request && ! $response) {
+                Log::channel($channel)->log($level,"\n-Request: $api - $uuid - At $requestedAt\n$request\n");
+            }
 
-		if ($request && ! $response) {
-			Log::channel($channel)->log($level,"\r\n-Request: $api - $uuid - At $requestedAt\r\n$request \r\n");
-		}
+            if (! $request && $response) {
+                Log::channel($channel)->log($level, "\n-Response: $api - $uuid - At $responsedAt\n$response\n");
+            }
+        }
 
-		if (! $request && $response) {
-			Log::channel($channel)->log($level, "\r\n-Response: $api - $uuid - At $responsedAt\r\n$response \r\n");
-		}
-
-		if ( ! empty(config('logging.elasticsearch_enable'))) {
+        if ( ! empty(config('logging.elasticsearch_enable'))) {
 			$context = [
 				'app_url'     => config('app.url'),
 				'app_name'    => config('logging.elasticsearch_name'),
@@ -521,14 +516,14 @@ if ( ! function_exists('logToFile')) {
 
 if (! function_exists('isMultidimensionalArray')) {
 	/**
-	 * Log hành động theo file tương ứng.
+	 * Function check mảng đa chiều
 	 *
 	 * @param array $array
 	 *
 	 * @return bool
 	 */
-	function isMultidimensionalArray(array $array)
-	{
+	function isMultidimensionalArray(array $array): bool
+    {
 		return count($array) !== count($array, COUNT_RECURSIVE);
 	}
 }
@@ -549,5 +544,69 @@ if (! function_exists('sanitizeValue')) {
         }
 
         return $value;
+    }
+}
+
+if (! function_exists('realFileSize')) {
+    /**
+     * Return file size (even for file > 2 Gb)
+     * For file size over PHP_INT_MAX (2 147 483 647), PHP filesize function loops from -PHP_INT_MAX to PHP_INT_MAX.
+     *
+     * @param string $path Path of the file
+     * @return mixed File size or false if error
+     */
+    function realFileSize($path)
+    {
+        if (! file_exists($path)) {
+            return false;
+        }
+
+        $size = filesize($path);
+
+        if (! ($file = fopen($path, 'rb'))) {
+            return false;
+        }
+
+        if ($size >= 0) {//Check if it really is a small file (< 2 GB)
+            if (fseek($file, 0, SEEK_END) === 0) {//It really is a small file
+                fclose($file);
+
+                return $size;
+            }
+        }
+
+        //Quickly jump the first 2 GB with fseek. After that fseek is not working on 32 bit php (it uses int internally)
+        $size = PHP_INT_MAX - 1;
+        if (fseek($file, PHP_INT_MAX - 1) !== 0) {
+            fclose($file);
+
+            return false;
+        }
+
+        $length = 1024 * 1024;
+        while (! feof($file)) {//Read the file until end
+            $read = fread($file, $length);
+            $size = bcadd($size, $length);
+        }
+        $size = bcsub($size, $length);
+        $size = bcadd($size, strlen($read));
+
+        fclose($file);
+
+        return $size;
+    }
+}
+
+if (! function_exists('tailShell')) {
+    function tailShell($filepath, $lines = 1, $search = '', $order = '')
+    {
+        ob_start();
+        if ($search) {
+            passthru("tail $order -n ".$lines.' '.escapeshellarg($filepath)." | grep -A 3 -B 3 '$search'");
+        } else {
+            passthru("tail $order -n ".$lines.' '.escapeshellarg($filepath));
+        }
+
+        return trim(ob_get_clean());
     }
 }

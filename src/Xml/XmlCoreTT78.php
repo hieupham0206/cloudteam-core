@@ -62,7 +62,7 @@ class XmlCoreTT78
      */
     private bool $isKeyFile = false;
 
-    public function __construct($datas = [], $signatures = [], $invoiceProviderName = '')
+    public function __construct($datas = [], $signatures = [], $invoiceProviderName = 'MInvoice')
     {
         $this->domDocument                     = new DOMDocument('1.0', 'utf-8');
         $this->domDocument->preserveWhiteSpace = false;
