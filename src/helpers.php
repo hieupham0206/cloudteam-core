@@ -459,18 +459,22 @@ if ( ! function_exists('logToFile')) {
 	 * @param        $request
 	 * @param        $response
 	 * @param array  $times
-	 * @param null   $requestUuid
 	 * @param string $level
 	 *
 	 * @throws JsonException
 	 */
-	function logToFile(string $channel, $api, $request, $response, $times = [], $requestUuid = null, $level = 'info')
+	function logToFile(string $channel, $api, $request, $response, $times = [], $level = 'info')
 	{
-		if ( ! $times) {
-			$requestedAt = $responsedAt = date('d-m-Y H:i:s');
-		} else {
-			[$requestedAt, $responsedAt] = $times;
-		}
+        if (! $times) {
+            $requestedAt = $responsedAt = date('d-m-Y H:i:s');
+        } else {
+            $requestedAt = $times[0];
+            $responsedAt = date('d-m-Y H:i:s');
+
+            if (isset($times[1])) {
+                $responsedAt = $times[1];
+            }
+        }
 
 		if ($request && is_array($request)) {
 			$request = json_encode($request, JSON_THROW_ON_ERROR);
@@ -480,25 +484,17 @@ if ( ! function_exists('logToFile')) {
 			$response = json_encode($response, JSON_THROW_ON_ERROR);
 		}
 
-		if ( ! $requestUuid) {
-			if ( ! empty(request()->header('Uuid'))) {
-				$uuid = '[' . request()->header('Uuid') . "]\r\n";
-			} else {
-				$uuid = '';
-			}
-		} else {
-			$uuid = $requestUuid;
-		}
+        $ipAddress = request()->getClientIp();
 
 		if ($request && $response) {
-			Log::channel($channel)->log($level,"\n-Request: $api - $uuid - At $requestedAt\n$request\n-Response: $responsedAt\n$response\n");
+			Log::channel($channel)->log($level,"\n-Request: $api - $ipAddress - At $requestedAt\n$request\n-Response: $responsedAt\n$response\n");
 		} else {
             if ($request && ! $response) {
-                Log::channel($channel)->log($level,"\n-Request: $api - $uuid - At $requestedAt\n$request\n");
+                Log::channel($channel)->log($level,"\n-Request: $api - $ipAddress - At $requestedAt\n$request\n");
             }
 
             if (! $request && $response) {
-                Log::channel($channel)->log($level, "\n-Response: $api - $uuid - At $responsedAt\n$response\n");
+                Log::channel($channel)->log($level, "\n-Response: $api - $ipAddress - At $responsedAt\n$response\n");
             }
         }
 
@@ -509,7 +505,7 @@ if ( ! function_exists('logToFile')) {
 				'log_channel' => $channel,
 				'log_group'   => config('consul.name'),
 			];
-			Log::channel('elasticsearch')->info("\r\n-Request: $api - $uuid - At $requestedAt\r\n$request \r\n-Response: $responsedAt\r\n$response \r\n", $context);
+			Log::channel('elasticsearch')->info("\r\n-Request: $api - $ipAddress - At $requestedAt\r\n$request \r\n-Response: $responsedAt\r\n$response \r\n", $context);
 		}
 	}
 }
