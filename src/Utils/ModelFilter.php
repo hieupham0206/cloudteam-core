@@ -64,9 +64,9 @@ class ModelFilter
 		$request = request();
 
 		$configs = $this->configs;
-		foreach ($configs as $key => $config) {
-			$this->{$key} = $request->input($key, $config);
-		}
+        foreach ($configs as $key => $config) {
+            $this->{$key} = empty($configs[$key]) ? $request->input($key, $config) : $configs[$key];
+        }
 	}
 
 	public function filter()
