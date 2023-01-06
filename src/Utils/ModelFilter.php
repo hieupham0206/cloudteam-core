@@ -109,12 +109,16 @@ class ModelFilter
         return $this->builder;
     }
 
-    public function getData($builder)
+    public function getData($builder, $isToBase = false)
     {
         $builder->offset($this->offset)->limit($this->limit);
 
         if ($this->orderBy) {
             $builder->orderBy($this->orderBy, $this->direction);
+        }
+
+        if ($isToBase) {
+            return $builder->toBase()->get();
         }
 
         return $builder->get();
