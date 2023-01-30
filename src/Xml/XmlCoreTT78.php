@@ -134,10 +134,20 @@ class XmlCoreTT78
                             $tempMainElem = $subOfSubMainElem->appendChild($this->domDocument->createElement($subKey));
 
                             foreach ($subItem as $subItemValKey => $subItemVal) {
-                                $tempElem = $tempMainElem->appendChild($this->domDocument->createElement($subItemValKey));
+                                if ($subItemValKey === 'LTSuat') {
+                                    foreach ($subItemVal as $ltsuatItems) {
+                                        $tempElem = $tempMainElem->appendChild($this->domDocument->createElement($subItemValKey));
 
-                                foreach ($subItemVal as $tempKey => $lastItem) {
-                                    $tempElem->appendChild($this->domDocument->createElement($tempKey, htmlspecialchars($lastItem)));
+                                        foreach ($ltsuatItems as $tempKey => $lastItem) {
+                                            $tempElem->appendChild($this->domDocument->createElement($tempKey, htmlspecialchars($lastItem)));
+                                        }
+                                    }
+                                } else {
+                                    $tempElem = $tempMainElem->appendChild($this->domDocument->createElement($subItemValKey));
+
+                                    foreach ($subItemVal as $tempKey => $lastItem) {
+                                        $tempElem->appendChild($this->domDocument->createElement($tempKey, htmlspecialchars($lastItem)));
+                                    }
                                 }
                             }
 
