@@ -134,7 +134,7 @@ class XmlCoreTT78
                             $tempMainElem = $subOfSubMainElem->appendChild($this->domDocument->createElement($subKey));
 
                             foreach ($subItem as $subItemValKey => $subItemVal) {
-                                if ($subItemValKey === 'LTSuat') {
+                                if ($subItemValKey === 'LTSuat' && is_array($subItemVal)) {
                                     foreach ($subItemVal as $ltsuatItems) {
                                         $tempElem = $tempMainElem->appendChild($this->domDocument->createElement($subItemValKey));
 
