@@ -144,7 +144,7 @@ if ( ! function_exists('numberToWord')) {
 				12                  => 'mười hai',
 				13                  => 'mười ba',
 				14                  => 'mười bốn',
-				15                  => 'mười năm',
+				15                  => 'mười lăm',
 				16                  => 'mười sáu',
 				17                  => 'mười bảy',
 				18                  => 'mười tám',
