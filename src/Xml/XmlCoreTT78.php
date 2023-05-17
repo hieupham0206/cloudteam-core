@@ -139,14 +139,14 @@ class XmlCoreTT78
                                         $tempElem = $tempMainElem->appendChild($this->domDocument->createElement($subItemValKey));
 
                                         foreach ($ltsuatItems as $tempKey => $lastItem) {
-                                            $tempElem->appendChild($this->domDocument->createElement($tempKey, htmlspecialchars($lastItem)));
+                                            $tempElem->appendChild($this->domDocument->createElement($tempKey, htmlspecialchars($lastItem ?? '')));
                                         }
                                     }
                                 } else {
                                     $tempElem = $tempMainElem->appendChild($this->domDocument->createElement($subItemValKey));
 
                                     foreach ($subItemVal as $tempKey => $lastItem) {
-                                        $tempElem->appendChild($this->domDocument->createElement($tempKey, htmlspecialchars($lastItem)));
+                                        $tempElem->appendChild($this->domDocument->createElement($tempKey, htmlspecialchars($lastItem ?? '')));
                                     }
                                 }
                             }
@@ -164,7 +164,7 @@ class XmlCoreTT78
                                 if (is_array($subItemVal)) {
                                     $this->createXmlBody($tempElem, $subItemVal);
                                 } else {
-                                    $tempElem->appendChild($this->domDocument->createElement($subItemValKey, htmlspecialchars($subItemVal)));
+                                    $tempElem->appendChild($this->domDocument->createElement($subItemValKey, htmlspecialchars($subItemVal ?? '')));
                                 }
                             }
 
@@ -172,7 +172,7 @@ class XmlCoreTT78
                         }
 
                         if ($subItem || is_int($subItem) || $subItem == 0) {
-                            $subOfSubMainElem->appendChild($this->domDocument->createElement($subKey, htmlspecialchars($subItem)));
+                            $subOfSubMainElem->appendChild($this->domDocument->createElement($subKey, htmlspecialchars($subItem ?? '')));
                         }
                     }
                 }
@@ -187,7 +187,7 @@ class XmlCoreTT78
             }
 
             foreach ($items as $subKey => $itemDatas) {
-                $subMainElem->appendChild($this->domDocument->createElement($subKey, htmlspecialchars($itemDatas)));
+                $subMainElem->appendChild($this->domDocument->createElement($subKey, htmlspecialchars($itemDatas ?? '')));
             }
         }
     }
