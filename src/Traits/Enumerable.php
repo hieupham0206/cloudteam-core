@@ -23,7 +23,7 @@ trait Enumerable
      *
      * @return mixed
      */
-    public function getAttributeValue($key)
+    public function getAttributeValue($key): mixed
     {
         if ($this->isEnumAttribute($key)) {
             $class = $this->getEnumClass($this->enumAttribute);
