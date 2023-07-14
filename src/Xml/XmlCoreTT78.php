@@ -240,13 +240,15 @@ class XmlCoreTT78
 
         $objNode = $objDSig->addCustomObject($signingTimeObject, 'signtime');
 
+        //note: $subBodyElem => thẻ cần ký
         $subBodyElem = "DL$bodyElement";
         if ($bodyElement === 'BTHDLieu') {
             $subBodyElem = 'DLBTHop';
         }
 
         $objDSig->addReference(
-            $this->domDocument->getElementsByTagName($subBodyElem)->item(0), \RobRichards\XMLSecLibs\XMLSecurityDSig::SHA1, ['http://www.w3.org/2000/09/xmldsig#enveloped-signature'], ['overwrite' => false]
+            $this->domDocument->getElementsByTagName($subBodyElem)->item(0),
+            \RobRichards\XMLSecLibs\XMLSecurityDSig::SHA1, ['http://www.w3.org/2000/09/xmldsig#enveloped-signature'], ['overwrite' => false]
         );
         $objDSig->addReference(
             $objNode, \RobRichards\XMLSecLibs\XMLSecurityDSig::SHA1, null, ['overwrite' => false]
