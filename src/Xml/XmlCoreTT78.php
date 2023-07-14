@@ -241,9 +241,15 @@ class XmlCoreTT78
         $objNode = $objDSig->addCustomObject($signingTimeObject, 'signtime');
 
         //note: $subBodyElem => thẻ cần ký
-        $subBodyElem = "DL$bodyElement";
-        if ($bodyElement === 'BTHDLieu') {
-            $subBodyElem = 'DLBTHop';
+        if ($signElement !== 'TDiep') {
+            $subBodyElem = "DL$bodyElement";
+            if ($bodyElement === 'BTHDLieu') {
+                $subBodyElem = 'DLBTHop';
+            }
+        } else {
+            $subBodyElem   = 'DLieu';
+            $signElement   = 'CKSNNT';
+            $signElemIndex = 0;
         }
 
         $objDSig->addReference(
