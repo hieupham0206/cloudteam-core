@@ -22,24 +22,15 @@ use RuntimeException;
  */
 class XmlCoreTT78
 {
-    /**
-     * @var string
-     */
     public string $errMsg;
 
-    /**
-     * @var int
-     */
+    public string $xmlFormat;
+
     public int $errCode = -99;
 
-    /**
-     * @var DOMDocument
-     */
     public DOMDocument $domDocument;
 
-    /**
-     * @var string|array
-     */
+
     public array $datas;
 
     /**
@@ -62,22 +53,23 @@ class XmlCoreTT78
      */
     private bool $isKeyFile = false;
 
-    public function __construct($datas = [], $signatures = [], $invoiceProviderName = 'MInvoice')
+    public function __construct($datas = [], $signatures = [], $invoiceProviderName = 'MInvoice', $xmlFormat = '')
     {
         $this->domDocument                     = new DOMDocument('1.0', 'utf-8');
         $this->domDocument->preserveWhiteSpace = false;
         $this->domDocument->formatOutput       = false;
         $this->domDocument->encoding           = 'UTF-8';
 
-        $this->datas = $datas;
+        $this->datas     = $datas;
+        $this->xmlFormat = $xmlFormat;
 
         if ($invoiceProviderName === 'MInvoice') {
             $this->xmlRender = new MInvoiceXmlRender();
         }
 
-        if ($invoiceProviderName === 'Viettel') {
-            $this->xmlRender = new ViettelXmlRender();
-        }
+        //if ($invoiceProviderName === 'Viettel') {
+        //    $this->xmlRender = new ViettelXmlRender();
+        //}
 
         //note: nếu setting không có thì default dùng MInvoice render
         if (! $this->xmlRender) {
@@ -96,7 +88,7 @@ class XmlCoreTT78
     private function renderXml($bodyElement)
     {
         if ($this->xmlRender) {
-            $this->xmlRender->renderXml($this, $bodyElement);
+            $this->xmlRender->renderXml($this, $bodyElement, $this->xmlFormat);
         }
     }
 
