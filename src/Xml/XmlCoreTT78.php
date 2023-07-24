@@ -8,7 +8,6 @@ namespace Cloudteam\Core\Xml;
 
 use Cloudteam\Core\Xml\Providers\BaseXmlRender;
 use Cloudteam\Core\Xml\Providers\MInvoiceXmlRender;
-use Cloudteam\Core\Xml\Providers\ViettelXmlRender;
 use DOMDocument;
 use Illuminate\Support\Facades\Log;
 use RobRichards\XMLSecLibs\XMLSecEnc;
