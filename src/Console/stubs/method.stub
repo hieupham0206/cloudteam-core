@@ -4,5 +4,8 @@ namespace DummyNamespace;
 
 trait DummyClass
 {
-
+	public function getChangeStateLink(): string
+	{
+		return route('.change_state', $this, false);
+	}
 }
