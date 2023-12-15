@@ -532,6 +532,8 @@ if (! function_exists('sanitizeValue')) {
         }
 
         $value = strip_tags($value);
+        //note: remove dấu , cho các case chữ số âm có format (VD: -90,000)
+        $value = str_replace(',', '', $value);
 
         if ($value && ! is_numeric($value) && in_array($value[0], ['=', '+', '-', '@'])) {
             if (isset($value[1]) && ! in_array($value[1], ['=', '+', '-', '@'])) {
