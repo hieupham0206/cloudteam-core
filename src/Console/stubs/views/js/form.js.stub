@@ -6,11 +6,12 @@ $(function() {
 	const ${{ modelNameUnCap }}Form = $('#{{ modelName }}_form')
 	const form = ${{ modelNameUnCap }}Form[0]
 	const isConfirm = ${{ modelNameUnCap }}Form.data('confirm')
+	const htmlLang = document.documentElement.lang
 
     let validation = FormValidation.formValidation(form,
         {
-            locale: 'vi_VN',
-            localization: FormValidation.locales.vi_VN,
+            locale: htmlLang === 'en' ? 'en_US' : 'vi_VN',
+            localization: htmlLang === 'en' ? FormValidation.locales.en_US : FormValidation.locales.vi_VN,
             fields: {
                 name: {
                     validators: {
