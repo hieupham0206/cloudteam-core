@@ -46,7 +46,7 @@ trait Modelable
 
     public function getCreatedAtTextAttribute()
     {
-        return $this->created_at->format(config('basecore.datetime_format', 'd-m-Y H:i:s'));
+        return optional($this->created_at)->format(config('basecore.datetime_format', 'd-m-Y H:i:s'));
     }
 
     public function getUpdatedAtTextAttribute()
