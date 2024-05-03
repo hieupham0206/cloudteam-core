@@ -66,18 +66,22 @@ trait Modelable
         $dateTime = now()->format('d-m-Y H:i:s');
         $ip       = request()->getClientIp();
 
+        $subject  = $this->getLogName();
+        $action   = "has been {$eventName} by";
+        $byObject = "at $dateTime from IP $ip.";
+
         if ($this->logMessage) {
             return sprintf(
-                '%s %s%s%s %s %s',
-                $this->classLabel(),
-                $displayText,
-                __(" has been {$eventName} by ", [], 'vi'),
+                '%s %s %s %s %s %s',
+                $subject,
+                $displayText ?? '',
+                $action,
                 $username,
-                __('at', [], 'vi')." $dateTime ".__('from', [], 'vi')." IP $ip.",
+                $byObject,
                 $this->logMessage
             );
         }
 
-        return sprintf('%s %s%s%s %s', $this->classLabel(), $displayText, __(" has been {$eventName} by ", [], 'vi'), $username, __('at', [], 'vi')." $dateTime ".__('from', [], 'vi')." IP $ip. ");
+        return sprintf('%s %s %s %s %s', $subject, $displayText ?? '', $action, $username, $byObject);
     }
 }
