@@ -121,11 +121,11 @@ class XmlCoreTT78
                             $subOfSubMainElem = $subMainElem->appendChild($this->domDocument->createElement($itemKey));
                         }
 
-                        if (is_array($subItem) && isMultidimensionalArray($subItem) && $itemKey == 'TToan') {
+                        if (is_array($subItem) && isMultidimensionalArray($subItem) && ($itemKey == 'TToan' || $subKey == 'TTKhac')) {
                             $tempMainElem = $subOfSubMainElem->appendChild($this->domDocument->createElement($subKey));
 
                             foreach ($subItem as $subItemValKey => $subItemVal) {
-                                if ($subItemValKey === 'LTSuat' && isset($subItemVal[0]) && is_array($subItemVal[0])) {
+                                if (($subItemValKey === 'LTSuat' || $subItemValKey === 'TTin') && isset($subItemVal[0]) && is_array($subItemVal[0])) {
                                     foreach ($subItemVal as $ltsuatItems) {
                                         $tempElem = $tempMainElem->appendChild($this->domDocument->createElement($subItemValKey));
 
