@@ -4,7 +4,7 @@ namespace Cloudteam\Core\Xml;
 
 use Ramsey\Uuid\Uuid;
 
-class ProcessXml
+trait ProcessXml
 {
     //https://thuvienphapluat.vn/van-ban/Thue-Phi-Le-Phi/Quyet-dinh-1450-QD-TCT-2021-thanh-phan-chua-du-lieu-nghiep-vu-hoa-don-dien-tu-490526.aspx
     private static string $version = '2.0.1';
