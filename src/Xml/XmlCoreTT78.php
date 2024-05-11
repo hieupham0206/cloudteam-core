@@ -48,11 +48,16 @@ class XmlCoreTT78
     private $certFilePath;
 
     /**
+     * @var string
+     */
+    private $fileID;
+
+    /**
      * @var bool
      */
     private bool $isKeyFile = false;
 
-    public function __construct($datas = [], $signatures = [], $invoiceProviderName = 'MInvoice', $xmlFormat = '')
+    public function __construct($datas = [], $signatures = [], $invoiceProviderName = 'MInvoice', $xmlFormat = '', $fileID = '')
     {
         $this->domDocument                     = new DOMDocument('1.0', 'utf-8');
         $this->domDocument->preserveWhiteSpace = false;
@@ -61,6 +66,7 @@ class XmlCoreTT78
 
         $this->datas     = $datas;
         $this->xmlFormat = $xmlFormat;
+        $this->fileID    = $fileID;
 
         if ($invoiceProviderName === 'MInvoice') {
             $this->xmlRender = new MInvoiceXmlRender();
@@ -87,7 +93,7 @@ class XmlCoreTT78
     private function renderXml($bodyElement)
     {
         if ($this->xmlRender) {
-            $this->xmlRender->renderXml($this, $bodyElement, $this->xmlFormat);
+            $this->xmlRender->renderXml($this, $bodyElement, $this->xmlFormat, $this->fileID);
         }
     }
 
@@ -112,58 +118,68 @@ class XmlCoreTT78
 
                     $subItems = $item;
 
-                    if ($itemKey !== 'HDon') {
+                    if ($itemKey !== 'HDon' && ($key !== 'TTKhac' && $itemKey !== 'TTin')) {
                         $subOfSubMainElem = $subMainElem->appendChild($this->domDocument->createElement($itemKey));
                     }
 
-                    foreach ($subItems as $subKey => $subItem) {
-                        if ($itemKey === 'HDon') {
-                            $subOfSubMainElem = $subMainElem->appendChild($this->domDocument->createElement($itemKey));
-                        }
-
-                        if (is_array($subItem) && isMultidimensionalArray($subItem) && ($itemKey == 'TToan' || $subKey == 'TTKhac')) {
-                            $tempMainElem = $subOfSubMainElem->appendChild($this->domDocument->createElement($subKey));
+                    if ($key === 'TTKhac' && isMultidimensionalArray($subItems)) {
+                        foreach ($subItems as $subItem) {
+                            $tempMainElem = $subMainElem->appendChild($this->domDocument->createElement('TTin'));
 
                             foreach ($subItem as $subItemValKey => $subItemVal) {
-                                if (($subItemValKey === 'LTSuat' || $subItemValKey === 'TTin') && isset($subItemVal[0]) && is_array($subItemVal[0])) {
-                                    foreach ($subItemVal as $ltsuatItems) {
+                                $tempMainElem->appendChild($this->domDocument->createElement($subItemValKey, htmlspecialchars($subItemVal)));
+                            }
+                        }
+                    } else {
+                        foreach ($subItems as $subKey => $subItem) {
+                            if ($itemKey === 'HDon') {
+                                $subOfSubMainElem = $subMainElem->appendChild($this->domDocument->createElement($itemKey));
+                            }
+
+                            if (is_array($subItem) && isMultidimensionalArray($subItem) && ($itemKey == 'TToan' || $subKey == 'TTKhac')) {
+                                $tempMainElem = $subOfSubMainElem->appendChild($this->domDocument->createElement($subKey));
+
+                                foreach ($subItem as $subItemValKey => $subItemVal) {
+                                    if (($subItemValKey === 'LTSuat' || $subItemValKey === 'TTin') && isset($subItemVal[0]) && is_array($subItemVal[0])) {
+                                        foreach ($subItemVal as $ltsuatItems) {
+                                            $tempElem = $tempMainElem->appendChild($this->domDocument->createElement($subItemValKey));
+
+                                            foreach ($ltsuatItems as $tempKey => $lastItem) {
+                                                $tempElem->appendChild($this->domDocument->createElement($tempKey, htmlspecialchars($lastItem ?? '')));
+                                            }
+                                        }
+                                    } else {
                                         $tempElem = $tempMainElem->appendChild($this->domDocument->createElement($subItemValKey));
 
-                                        foreach ($ltsuatItems as $tempKey => $lastItem) {
+                                        foreach ($subItemVal as $tempKey => $lastItem) {
                                             $tempElem->appendChild($this->domDocument->createElement($tempKey, htmlspecialchars($lastItem ?? '')));
                                         }
                                     }
-                                } else {
-                                    $tempElem = $tempMainElem->appendChild($this->domDocument->createElement($subItemValKey));
+                                }
 
-                                    foreach ($subItemVal as $tempKey => $lastItem) {
-                                        $tempElem->appendChild($this->domDocument->createElement($tempKey, htmlspecialchars($lastItem ?? '')));
+                                continue;
+                            }
+
+                            if (is_array($subItem)) {
+                                foreach ($subItem as $subItemValKey => $subItemVal) {
+                                    if (is_int($subKey)) {
+                                        $tempElem = $subOfSubMainElem;
+                                    } else {
+                                        $tempElem = $subOfSubMainElem->appendChild($this->domDocument->createElement($subKey));
+                                    }
+                                    if (is_array($subItemVal)) {
+                                        $this->createXmlBody($tempElem, $subItemVal);
+                                    } else {
+                                        $tempElem->appendChild($this->domDocument->createElement($subItemValKey, htmlspecialchars($subItemVal ?? '')));
                                     }
                                 }
+
+                                continue;
                             }
 
-                            continue;
-                        }
-
-                        if (is_array($subItem)) {
-                            foreach ($subItem as $subItemValKey => $subItemVal) {
-                                if (is_int($subKey)) {
-                                    $tempElem = $subOfSubMainElem;
-                                } else {
-                                    $tempElem = $subOfSubMainElem->appendChild($this->domDocument->createElement($subKey));
-                                }
-                                if (is_array($subItemVal)) {
-                                    $this->createXmlBody($tempElem, $subItemVal);
-                                } else {
-                                    $tempElem->appendChild($this->domDocument->createElement($subItemValKey, htmlspecialchars($subItemVal ?? '')));
-                                }
+                            if ($subItem || is_int($subItem) || $subItem == 0) {
+                                $subOfSubMainElem->appendChild($this->domDocument->createElement($subKey, htmlspecialchars($subItem ?? '')));
                             }
-
-                            continue;
-                        }
-
-                        if ($subItem || is_int($subItem) || $subItem == 0) {
-                            $subOfSubMainElem->appendChild($this->domDocument->createElement($subKey, htmlspecialchars($subItem ?? '')));
                         }
                     }
                 }

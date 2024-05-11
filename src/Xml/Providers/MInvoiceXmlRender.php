@@ -4,7 +4,7 @@ namespace Cloudteam\Core\Xml\Providers;
 
 class MInvoiceXmlRender extends BaseXmlRender
 {
-    public function renderXml($class, $bodyElement, $xmlFormat = '')
+    public function renderXml($class, $bodyElement, $xmlFormat = '', $fileID = '')
     {
         $datas = $class->datas;
 
@@ -25,11 +25,11 @@ class MInvoiceXmlRender extends BaseXmlRender
 
             $cksNntElem = $root->appendChild($class->domDocument->createElement('CKSNNT'));
 
-            $this->renderCommonXml($class, $hDonElem, $bodyElement);
+            $this->renderCommonXml($class, $hDonElem, $bodyElement, $fileID);
         } else {
             $hDonElem = $class->domDocument->appendChild($class->domDocument->createElement($bodyElement));
 
-            $this->renderCommonXml($class, $hDonElem, $bodyElement);
+            $this->renderCommonXml($class, $hDonElem, $bodyElement, $fileID);
         }
     }
 }
