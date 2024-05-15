@@ -83,7 +83,7 @@ trait ProcessXml
             $hdonGeneralInfos['MHSo'] = $options['DLHDon']['TTChung']['MHSo'];
         }
 
-        $ttoanInfos = $infos['DLHDon']['NDHDon']['TToan'] ?? [];
+        $ttoanInfos = $options['DLHDon']['NDHDon']['TToan'] ?? [];
         if ($isSaleInvoice) {
             $hdonGeneralInfos['HDDCKPTQuan'] = 0;
 
@@ -101,6 +101,7 @@ trait ProcessXml
                     'NBan' => $options['DLHDon']['NDHDon']['NBan'],
                     'NMua' => $options['DLHDon']['NDHDon']['NMua'],
                 ],
+                'TToan'   => $options['DLHDon']['TToan'] ?? [],
                 'TTKhac'  => $options['DLHDon']['TTKhac'] ?? '',
             ],
             'DSCKS'  => ['NBan' => []],
