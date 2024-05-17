@@ -146,7 +146,7 @@ trait ProcessXml
 
         $hdonGeneralInfos = [
             'PBan'      => self::$version,
-            'THDon'     => $options['TTChung']['THDon'],
+            'THDon'     => $options['THDon'] ?? '',
             'KHMSHDon'  => $KHMSHDon,
             'KHHDon'    => $options['KHHDon'] ?? '',
             'SHDon'     => $options['SHDon'] ?? '',
