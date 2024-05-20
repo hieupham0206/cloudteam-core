@@ -176,10 +176,10 @@ class BaseHandleXmlData
                 $DLieu   = $ttKhacs['DLieu'] ?? null;
                 if ($TTruong && $DLieu) {
                     if ($TTruong == mb_strtolower($xmlOtherField['ofPartner'] ?? '')) {
-                        $dataInvoices['DeliveryOrderBy'] = $DLieu;
+                        $dataInvoices['DeliveryOrderBy'] = htmlspecialchars_decode($DLieu);
                     }
                     if ($TTruong == mb_strtolower($xmlOtherField['reference'] ?? '')) {
-                        $dataInvoices['DeliveryOrderAbout'] = $DLieu;
+                        $dataInvoices['DeliveryOrderAbout'] = htmlspecialchars_decode($DLieu);
                     }
                     if ($TTruong == mb_strtolower($xmlOtherField['storeName'] ?? '')) {
                         $dataInvoices['StoreName'] = $DLieu;
@@ -188,19 +188,19 @@ class BaseHandleXmlData
                         $dataInvoices['StoreTaxCode'] = $DLieu;
                     }
                     if ($TTruong == mb_strtolower($xmlOtherField['storeAddress'] ?? '')) {
-                        $dataInvoices['StoreAddress'] = $DLieu;
+                        $dataInvoices['StoreAddress'] = htmlspecialchars_decode($DLieu);
                     }
                     if ($TTruong == mb_strtolower($xmlOtherField['comPhone'] ?? '')) {
                         $dataInvoices['ComPhone'] = $DLieu;
                     }
                     if ($TTruong == mb_strtolower($xmlOtherField['oriComName'] ?? '')) {
-                        $companyMain['tax_name'] = $DLieu;
+                        $companyMain['tax_name'] = htmlspecialchars_decode($DLieu);
                     }
                     if ($TTruong == mb_strtolower($xmlOtherField['oriComTaxCode'] ?? '')) {
                         $companyMain['tax_code'] = $DLieu;
                     }
                     if ($TTruong == mb_strtolower($xmlOtherField['oriComAddress'] ?? '')) {
-                        $companyMain['address'] = $DLieu;
+                        $companyMain['address'] = htmlspecialchars_decode($DLieu);
                     }
                     if ($TTruong == mb_strtolower($xmlOtherField['oriComPhone'] ?? '')) {
                         $companyMain['phone'] = $DLieu;
