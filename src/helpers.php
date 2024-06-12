@@ -531,7 +531,15 @@ if (! function_exists('sanitizeValue')) {
             return $value;
         }
 
+        //note: HTML Tags and Attributes
         $value = strip_tags($value);
+
+        //note: Regular expression to match Event Handlers: on* attributes like onclick, onerror, etc.
+        $pattern = '/\bon[a-z]+\s*=\s*(["\'])(.*?)\1/i';
+
+        //note: Replace matched attributes with an empty string
+        $value = preg_replace($pattern, '', $value);
+
         //note: remove dấu , cho các case chữ số âm có format (VD: -90,000)
         $valueRemoveText = str_replace(',', '', $value);
 
