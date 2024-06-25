@@ -534,11 +534,17 @@ if (! function_exists('sanitizeValue')) {
         //note: HTML Tags and Attributes
         $value = strip_tags($value);
 
-        //note: Regular expression to match Event Handlers: on* attributes like onclick, onerror, etc.
-        $pattern = '/\bon[a-z]+\s*=\s*(["\'])(.*?)\1/i';
+        $value = (function () use ($value) {
+            // Regular expression pattern to match JavaScript event attributes
+            // This pattern matches attributes with single quotes, double quotes, or no closing quote
+            $pattern = '/\s*on\w+=(?:"[^"]*"|\'[^\']*\'|[^\s>]+)/i';
 
-        //note: Replace matched attributes with an empty string
-        $value = preg_replace($pattern, '', $value);
+            // Replace all occurrences of the pattern with an empty string
+            $cleanedHtml = preg_replace($pattern, '', $value);
+
+            // Remove attributes that have empty quotes (e.g., autofocus="", autofocus=")
+            return preg_replace('/\s+\w+=""|\s+\w+="/', '', $cleanedHtml);
+        })();
 
         //note: remove dấu , cho các case chữ số âm có format (VD: -90,000)
         $valueRemoveText = str_replace(',', '', $value);
@@ -547,6 +553,11 @@ if (! function_exists('sanitizeValue')) {
             if (isset($value[1]) && ! in_array($value[1], ['=', '+', '-', '@'])) {
                 $value = substr($value, 1);
             }
+        }
+
+        $firstTwoCharacter = substr($value, 0, 2);
+        if (in_array($firstTwoCharacter, ['">'])) {
+            $value = substr($value, 2);
         }
 
         return $value;
