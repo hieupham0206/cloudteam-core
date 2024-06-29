@@ -90,20 +90,35 @@ class BaseHandleXmlData
                             if (empty($product['THHDVu'])) {
                                 return [];
                             }
-                            $quantity = $product['SLuong'] ?? 0;
-                            $price    = $product['DGia'] ?? 0;
-                            $vatRate  = $product['TSuat'] ?? 0;
-                            $amount   = MoneyHelper::getAmountAfterTax($price, (int)$vatRate);
-                            return [
-                                'ItemName'        => $product['THHDVu'],
-                                'ItemCode'        => $product['MHHDVu'] ?? '',
-                                'ItemUnitName'    => $product['DVTinh'] ?? '',
-                                'ItemQuantity'    => $quantity,
-                                'ItemUnitAmount'  => $amount,
-                                'ItemVatRate'     => $product['TSuat'] ?? '',
-                                'VATRate'         => $product['TSuat'] ?? '',
-                                'ItemTotalAmount' => $quantity * $amount,
-                            ];
+                            if (($TChat = $product['TChat'] ?? null) && $TChat == 4) {
+                                return [
+                                    'TChat'           => $TChat,
+                                    'ItemName'        => $product['THHDVu'],
+                                    'ItemCode'        => '',
+                                    'ItemUnitName'    => '',
+                                    'ItemQuantity'    => '',
+                                    'ItemUnitAmount'  => '',
+                                    'ItemVatRate'     => '',
+                                    'VATRate'         => '',
+                                    'ItemTotalAmount' => '',
+                                ];
+                            } else {
+                                $quantity = $product['SLuong'] ?? 0;
+                                $price    = $product['DGia'] ?? 0;
+                                $vatRate  = $product['TSuat'] ?? 0;
+                                $amount   = MoneyHelper::getAmountAfterTax($price, (int)$vatRate);
+
+                                return [
+                                    'ItemName'        => $product['THHDVu'],
+                                    'ItemCode'        => $product['MHHDVu'] ?? '',
+                                    'ItemUnitName'    => $product['DVTinh'] ?? '',
+                                    'ItemQuantity'    => $quantity,
+                                    'ItemUnitAmount'  => $amount,
+                                    'ItemVatRate'     => $product['TSuat'] ?? '',
+                                    'VATRate'         => $product['TSuat'] ?? '',
+                                    'ItemTotalAmount' => $quantity * $amount,
+                                ];
+                            }
                         }, $products);
                     }
                     if (!empty($contentInvoice['TToan'])) {
