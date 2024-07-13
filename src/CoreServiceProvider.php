@@ -17,8 +17,6 @@ use Cloudteam\{Core\Console\Commands\CreateMultipleMigration,
 	Core\Console\Commands\MakeModelServiceCommand,
 	Core\Console\Commands\MakeMultipleMigration,
 	Core\Console\Commands\MakeMultipleModel,
-	Core\Console\Commands\RegisterService,
-	Core\Console\Commands\StartServer
 };
 use Illuminate\Support\ServiceProvider;
 
@@ -34,7 +32,7 @@ class CoreServiceProvider extends ServiceProvider
 //		 $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'cloudteam');
 		 $this->loadJsonTranslationsFrom(__DIR__.'/../resources/lang');
 		// $this->loadViewsFrom(__DIR__.'/../resources/views', 'cloudteam');
-		 $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+		// $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 		// $this->loadRoutesFrom(__DIR__.'/routes.php');
 
 		// Publishing is only necessary when using the CLI.
@@ -51,9 +49,9 @@ class CoreServiceProvider extends ServiceProvider
 	public function register()
 	{
 		$this->mergeConfigFrom(__DIR__ . '/../config/core.php', 'core');
-		$this->mergeConfigFrom(__DIR__ . '/../config/consul.php', 'consul');
-		$this->mergeConfigFrom(__DIR__ . '/../config/payment.php', 'payment');
-		$this->mergeConfigFrom(__DIR__ . '/../config/shipping.php', 'shipping');
+		//$this->mergeConfigFrom(__DIR__ . '/../config/consul.php', 'consul');
+		//$this->mergeConfigFrom(__DIR__ . '/../config/payment.php', 'payment');
+		//$this->mergeConfigFrom(__DIR__ . '/../config/shipping.php', 'shipping');
 
 		// Register the service the package provides.
 		$this->app->singleton(
@@ -73,7 +71,12 @@ class CoreServiceProvider extends ServiceProvider
 	 */
 	public function provides()
 	{
-		return ['core', 'consul', 'payment', 'shipping'];
+		return [
+            'core',
+            //'consul',
+            //'payment',
+            //'shipping'
+        ];
 	}
 
 	/**
@@ -92,12 +95,12 @@ class CoreServiceProvider extends ServiceProvider
 		);
 
 		// Publishing the configuration file.
-		$this->publishes(
-			[
-				__DIR__ . '/../config/consul.php' => config_path('consul.php'),
-			],
-			'consul.config'
-		);
+		//$this->publishes(
+		//	[
+		//		__DIR__ . '/../config/consul.php' => config_path('consul.php'),
+		//	],
+		//	'consul.config'
+		//);
 
 		// Publishing the views.
 		/*$this->publishes([
@@ -135,9 +138,6 @@ class CoreServiceProvider extends ServiceProvider
 
 				CreateMultipleMigration::class,
 				GenerateMultipleModel::class,
-
-				RegisterService::class,
-				StartServer::class,
 			]
 		);
 	}
