@@ -93,26 +93,21 @@ if ( ! function_exists('camelize')) {
 }
 
 if ( ! function_exists('formatBytes')) {
-	/**
-	 * Format and convert "bytes" to its optimal higher metric unit
-	 *
-	 * @param double $bytes      number of bytes
-	 * @param integer $precision the number of decimal places to round off
-	 *
-	 * @return string
-	 */
-	function formatBytes($bytes, $precision = 2)
-	{
-		$units = ['B', 'KB', 'MB', 'GB', 'TB'];
+    function formatBytes($bytes, $precision = 2) {
+        $kilobyte = 1024;
+        $megabyte = $kilobyte * 1024;
+        $gigabyte = $megabyte * 1024;
 
-		$bytes = max($bytes, 0);
-		$pow   = floor(($bytes ? log($bytes) : 0) / log(1024));
-		$pow   = min($pow, count($units) - 1);
-
-		$bytes /= $pow ** 1024;
-
-		return round($bytes, $precision) . ' ' . $units[$pow];
-	}
+        if ($bytes < $kilobyte) {
+            return $bytes . ' B';
+        } elseif ($bytes < $megabyte) {
+            return round($bytes / $kilobyte, $precision) . ' KB';
+        } elseif ($bytes < $gigabyte) {
+            return round($bytes / $megabyte, $precision) . ' MB';
+        } else {
+            return round($bytes / $gigabyte, $precision) . ' GB';
+        }
+    }
 }
 
 if ( ! function_exists('numberToWord')) {
