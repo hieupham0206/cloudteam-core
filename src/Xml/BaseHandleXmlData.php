@@ -68,6 +68,10 @@ class BaseHandleXmlData
         $digitalSign = $dataInvoice = $general = $generalInvoice = $contentInvoice = $salesman = $buyer = $products = $payment = $dataAnnouncement = $invoiceList = [];
         $DSCKS       = $TTChung = $TCTTNhap = $NNT = $TTNCNKTru = [];
         if ($dataValues) {
+            //note: trường hợp XML có cả thẻ TDiep => lấy dữ liệu bat dau từ thẻ HDon
+            if (!empty($dataValues['DLieu'])) {
+                $dataValues = $dataValues['DLieu']['HDon'];
+            }
             if (!empty($dataValues['DLHDon'])) {
                 $dataInvoice = $dataValues['DLHDon'];
                 if (!empty($dataInvoice['TTChung'])) {
