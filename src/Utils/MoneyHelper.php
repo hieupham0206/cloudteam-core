@@ -34,7 +34,7 @@ class MoneyHelper
         if (!is_numeric($vatRate)) {
             $vatRate = 0;
         }
-        $mutiple         = $amountBeforeTax / $amountBeforeTax;
+        $mutiple         = $amountBeforeTax / abs($amountBeforeTax);
         $amountBeforeTax = abs($amountBeforeTax);
         $taxValue        = VATRate::getTaxValue($vatRate);
 
@@ -43,10 +43,10 @@ class MoneyHelper
 
         if (substr($amount, -1) == 5) {
             if ($amount % 10 >= 5) {
-                return ceil($amount);
+                return $mutiple * ceil($amount);
             }
 
-            return floor($amount);
+            return $mutiple * floor($amount);
         }
 
         return $mutiple * (substr($amount, -1) < 5 ? floor($amount) : ceil($amount));
