@@ -31,11 +31,12 @@ class MoneyHelper
      */
     public static function getAmountAfterTax($amountBeforeTax, $vatRate, $precision = 1): float
     {
-        if (! is_numeric($vatRate)) {
+        if (!is_numeric($vatRate)) {
             $vatRate = 0;
         }
-
-        $taxValue = VATRate::getTaxValue($vatRate);
+        $mutiple         = $amountBeforeTax / $amountBeforeTax;
+        $amountBeforeTax = abs($amountBeforeTax);
+        $taxValue        = VATRate::getTaxValue($vatRate);
 
         $tmpValue = $amountBeforeTax * $taxValue;
         $amount   = round($tmpValue, $precision);
@@ -48,7 +49,7 @@ class MoneyHelper
             return floor($amount);
         }
 
-        return substr($amount, -1) < 5 ? floor($amount) : ceil($amount);
+        return $mutiple * (substr($amount, -1) < 5 ? floor($amount) : ceil($amount));
     }
 
     /**
