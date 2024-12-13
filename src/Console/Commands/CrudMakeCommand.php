@@ -24,6 +24,7 @@ class CrudMakeCommand extends Command
                             {--validations= : Khai báo field validation trong controller. (Default: --validations=name#required).}
                             {--namespace= : Tên namespace của controller (Default: --namespace=Common).}
                             {--permissions= : Quyền của model (Default: --permissions=view,create,edit,delete).}
+                            {--connection= : DB connection.}
     ';
 
     protected $description = 'Trigger all CRUD command';
@@ -41,23 +42,24 @@ class CrudMakeCommand extends Command
         $cruds = explode(',', $this->option('crud'));
 
         $namespace  = $this->option('namespace');
+        $connection = $this->option('connection');
         $namespaces = $namespace !== '' ? explode(',', $namespace) : ['Common'];
         $namespaces = array_map('ucfirst', $namespaces);
 
         foreach ($cruds as $key => $crud) {
             $namespace = $namespaces[$key] ?? $namespace;
 
-            $this->generateCrud($crud, $namespace);
+            $this->generateCrud($crud, $namespace, $connection);
         }
     }
 
     /**
      * @param $crud
      * @param $namespace
-     *
-     * @throws FileNotFoundException
+     * @param  null  $connection
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function generateCrud($crud, $namespace): void
+    public function generateCrud($crud, $namespace, $connection = null): void
     {
         $model          = Str::studly(Str::singular($crud));
         $table          = $crud;
@@ -85,13 +87,13 @@ class CrudMakeCommand extends Command
 
         $this->makePermission($namespace, $table, $permissions);
 
-        $this->makeModel($table);
+        $this->makeModel($table, $connection);
 
         $this->makeController($crud, $namespace, $controllerName, $model, $validations);
 
         $this->makeIndexTable($crud, $namespace, $model, $fields);
 
-        $this->makeModelTest($crud, $model);
+        //$this->makeModelTest($crud, $model);
 
         $this->makeView($namespace, $route, $fields, $validations);
 
@@ -358,11 +360,18 @@ class CrudMakeCommand extends Command
         ]);
     }
 
-    private function makeModel($table): void
+    private function makeModel($table, $connection = null): void
     {
-        $this->call('code:models', [
-            '--table' => $table,
-        ]);
+        if ($connection) {
+            $this->call('code:models', [
+                '--table'      => $table,
+                '--connection' => $connection,
+            ]);
+        } else {
+            $this->call('code:models', [
+                '--table' => $table,
+            ]);
+        }
     }
 
     private function makeIdeHelper($model): void

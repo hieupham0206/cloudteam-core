@@ -110,7 +110,11 @@ class BaseHandleXmlData
                                 $quantity = $product['SLuong'] ?? 0;
                                 $price    = $product['DGia'] ?? 0;
                                 $vatRate  = $product['TSuat'] ?? 0;
-                                $amount   = MoneyHelper::getAmountAfterTax($price, (int)$vatRate);
+                                if ($price != 0) {
+                                    $amount = MoneyHelper::getAmountAfterTax($price, (int) $vatRate);
+                                } else {
+                                    $amount = 0;
+                                }
 
                                 return [
                                     'ItemName'        => $product['THHDVu'],
