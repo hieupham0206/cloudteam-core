@@ -216,6 +216,9 @@ class BaseHandleXmlData
                     if ($TTruong == mb_strtolower($xmlOtherField['comPhone'] ?? '')) {
                         $dataInvoices['ComPhone'] = $DLieu;
                     }
+                    if ($TTruong == mb_strtolower($xmlOtherField['comEnglishName'] ?? '')) {
+                        $dataInvoices['ComEnglishName'] = $DLieu;
+                    }
                     if ($TTruong == mb_strtolower($xmlOtherField['oriComName'] ?? '')) {
                         $companyMain['tax_name'] = htmlspecialchars_decode($DLieu);
                     }
