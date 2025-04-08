@@ -116,14 +116,16 @@ class BaseHandleXmlData
                                     $amount = 0;
                                 }
 
+                                $tSuat = $product['TSuat'] ?? '';
+
                                 return [
                                     'ItemName'        => $product['THHDVu'],
                                     'ItemCode'        => $product['MHHDVu'] ?? '',
                                     'ItemUnitName'    => $product['DVTinh'] ?? '',
                                     'ItemQuantity'    => $quantity,
                                     'ItemUnitAmount'  => $amount,
-                                    'ItemVatRate'     => $product['TSuat'] ?? '',
-                                    'VATRate'         => $product['TSuat'] ?? '',
+                                    'ItemVatRate'     => is_array($tSuat) && ! $tSuat ? null : $tSuat,
+                                    'VATRate'         => is_array($tSuat) && ! $tSuat ? null : $tSuat,
                                     'ItemTotalAmount' => $quantity * $amount,
                                 ];
                             }
