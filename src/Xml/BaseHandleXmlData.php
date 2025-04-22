@@ -108,12 +108,16 @@ class BaseHandleXmlData
                                 ];
                             } else {
                                 $quantity = $product['SLuong'] ?? 0;
-                                $price    = $product['DGia'] ?? 0;
-                                $vatRate  = $product['TSuat'] ?? 0;
-                                if ($price != 0) {
-                                    $amount = MoneyHelper::getAmountAfterTax($price, (int) $vatRate);
+                                $price    = empty($product['DGia']) ? '' : $product['DGia'];
+                                $vatRate  = empty($product['TSuat']) ? '' : $product['TSuat'];
+                                if (is_numeric($price)) {
+                                    if ($price != 0) {
+                                        $amount = MoneyHelper::getAmountAfterTax($price, (int)$vatRate);
+                                    } else {
+                                        $amount = 0;
+                                    }
                                 } else {
-                                    $amount = 0;
+                                    $amount = '';
                                 }
 
                                 $tSuat = $product['TSuat'] ?? '';
@@ -124,9 +128,9 @@ class BaseHandleXmlData
                                     'ItemUnitName'    => $product['DVTinh'] ?? '',
                                     'ItemQuantity'    => $quantity,
                                     'ItemUnitAmount'  => $amount,
-                                    'ItemVatRate'     => is_array($tSuat) && ! $tSuat ? null : $tSuat,
-                                    'VATRate'         => is_array($tSuat) && ! $tSuat ? null : $tSuat,
-                                    'ItemTotalAmount' => $quantity * $amount,
+                                    'ItemVatRate'     => is_array($tSuat) && !$tSuat ? null : $tSuat,
+                                    'VATRate'         => is_array($tSuat) && !$tSuat ? null : $tSuat,
+                                    'ItemTotalAmount' => is_numeric($price) ? $quantity * $amount : '',
                                 ];
                             }
                         }, $products);
