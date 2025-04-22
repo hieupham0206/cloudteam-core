@@ -178,6 +178,8 @@ trait ProcessXml
                         'HVTNXHang' => $options['DLHDon']['NDHDon']['NBan']['HVTNXHang'] ?? '',
                         'TNVChuyen' => $options['DLHDon']['NDHDon']['NBan']['TNVChuyen'] ?? '',
                         'TTKhac'    => $options['DLHDon']['NDHDon']['NBan']['TTKhac'] ?? '',
+                        'HDKTSo'    => $options['DLHDon']['NDHDon']['NBan']['HDKTSo'] ?? '',
+                        'HDKTNgay'  => $options['DLHDon']['NDHDon']['NBan']['HDKTNgay'] ?? '',
                     ],
                     'NMua'    => [
                         'Ten'       => $options['DLHDon']['NDHDon']['NMua']['Ten'] ?? '',
