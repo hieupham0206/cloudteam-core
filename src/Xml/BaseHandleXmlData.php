@@ -201,6 +201,9 @@ class BaseHandleXmlData
     {
         if ($salesmanTTKhacs = $this->salesman['TTKhac']['TTin'] ?? null) {
             foreach ($salesmanTTKhacs as $ttKhacs) {
+                if (isset($salesmanTTKhacs['TTruong']) && is_string($ttKhacs)) {
+                    $ttKhacs = $salesmanTTKhacs;
+                }
                 $TTruong = mb_strtolower($ttKhacs['TTruong'] ?? null);
                 $DLieu   = $ttKhacs['DLieu'] ?? null;
                 if ($TTruong && $DLieu) {
@@ -245,6 +248,9 @@ class BaseHandleXmlData
         }
         if ($invoiceTTKhacs = $this->dataInvoice['TTKhac']['TTin'] ?? null) {
             foreach ($invoiceTTKhacs as $ttKhacs) {
+                if (isset($invoiceTTKhacs['TTruong']) && is_string($ttKhacs)) {
+                    $ttKhacs = $invoiceTTKhacs;
+                }
                 $TTruong = mb_strtolower($ttKhacs['TTruong'] ?? null);
                 $DLieu   = $ttKhacs['DLieu'] ?? null;
                 if ($TTruong && $DLieu) {
@@ -262,6 +268,9 @@ class BaseHandleXmlData
         }
         if ($buyerTTKhacs = $this->buyer['TTKhac']['TTin'] ?? null) {
             foreach ($buyerTTKhacs as $ttKhacs) {
+                if (isset($buyerTTKhacs['TTruong']) && is_string($ttKhacs)) {
+                    $ttKhacs = $buyerTTKhacs;
+                }
                 $TTruong = mb_strtolower($ttKhacs['TTruong'] ?? null);
                 $DLieu   = $ttKhacs['DLieu'] ?? null;
                 if ($TTruong && $DLieu) {
@@ -281,6 +290,7 @@ class BaseHandleXmlData
             }
         }
     }
+
 
     protected function getExplainText(int $value): string
     {
