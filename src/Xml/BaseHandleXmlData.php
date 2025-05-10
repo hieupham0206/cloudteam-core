@@ -260,6 +260,26 @@ class BaseHandleXmlData
                 }
             }
         }
+        if ($buyerTTKhacs = $this->buyer['TTKhac']['TTin'] ?? null) {
+            foreach ($buyerTTKhacs as $ttKhacs) {
+                $TTruong = mb_strtolower($ttKhacs['TTruong'] ?? null);
+                $DLieu   = $ttKhacs['DLieu'] ?? null;
+                if ($TTruong && $DLieu) {
+                    if ($TTruong == mb_strtolower($xmlOtherField['HVTNMHang'] ?? '')) {
+                        $dataInvoices['Buyer'] = $DLieu;
+                    }
+                    if ($TTruong == mb_strtolower($xmlOtherField['DChi'] ?? '')) {
+                        $dataInvoices['CusAddress'] = $DLieu;
+                    }
+                    if ($TTruong == mb_strtolower($xmlOtherField['DCTDTu'] ?? '')) {
+                        $dataInvoices['CusEmail'] = $DLieu;
+                    }
+                    if ((empty($dataInvoices['CusTaxCode']) || !$dataInvoices['CusTaxCode']) && ($TTruong == mb_strtolower($xmlOtherField['MSTNNNgoai'] ?? ''))) {
+                        $dataInvoices['CusTaxCode'] = $DLieu;
+                    }
+                }
+            }
+        }
     }
 
     protected function getExplainText(int $value): string
