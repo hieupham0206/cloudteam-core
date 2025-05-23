@@ -27,19 +27,17 @@ class MoneyHelper
      * @param $vatRate : Thuế suất [0,5,8,10]
      * @param $precision : Số phần thập phân, default là 0
      *
-     * @return float
      */
     public static function getAmountAfterTax($amountBeforeTax, $vatRate, $precision = 1): float
     {
-        if (!is_numeric($vatRate)) {
+        if (! is_numeric($vatRate)) {
             $vatRate = 0;
         }
-        $mutiple         = $amountBeforeTax / abs($amountBeforeTax);
+        $mutiple         = $amountBeforeTax == 0 ? $amountBeforeTax : $amountBeforeTax / abs($amountBeforeTax);
         $amountBeforeTax = abs($amountBeforeTax);
-        $taxValue        = VATRate::getTaxValue($vatRate);
-
-        $tmpValue = $amountBeforeTax * $taxValue;
-        $amount   = round($tmpValue, $precision);
+        $taxValue        = VATRate::getTaxValue(VatRate::getValue($vatRate));
+        $tmpValue        = $amountBeforeTax * $taxValue;
+        $amount          = round($tmpValue, $precision);
 
         if (substr($amount, -1) == 5) {
             if ($amount % 10 >= 5) {
@@ -49,12 +47,17 @@ class MoneyHelper
             return $mutiple * floor($amount);
         }
 
-        return $mutiple * (substr($amount, -1) < 5 ? floor($amount) : ceil($amount));
+        if (substr($amount, -1) < 5) {
+            return $mutiple * floor($amount);
+        }
+
+        return $mutiple * ceil($amount);
+        //return $mutiple * (substr($amount, -1) < 5 ? floor($amount) : ceil($amount));
     }
 
     /**
-     * @param $amountAfterTax : Số tiền sau thuế
-     * @param $vatRate : Thuế suất [0,5,8,10]
+     * @param     $amountAfterTax : Số tiền sau thuế
+     * @param     $vatRate : Thuế suất [0,5,8,10]
      * @param int $precision : Số phần thập phân, default là 0
      *
      * @return float
