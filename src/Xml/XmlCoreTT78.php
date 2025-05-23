@@ -194,7 +194,14 @@ class XmlCoreTT78
             }
 
             foreach ($items as $subKey => $itemDatas) {
-                $subMainElem->appendChild($this->domDocument->createElement($subKey, htmlspecialchars($itemDatas ?? '')));
+                $finalValue = $itemDatas;
+                if (is_string($finalValue)) {
+                    $finalValue = htmlspecialchars($finalValue ?? '');
+                }
+                if (is_array($finalValue)) {
+                    $finalValue = '';
+                }
+                $subMainElem->appendChild($this->domDocument->createElement($subKey, $finalValue));
             }
         }
     }
