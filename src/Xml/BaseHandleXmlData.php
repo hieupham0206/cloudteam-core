@@ -67,6 +67,8 @@ class BaseHandleXmlData
         $dataValues  = json_decode($xml2String, true);
         $digitalSign = $dataInvoice = $general = $generalInvoice = $contentInvoice = $salesman = $buyer = $products = $payment = $dataAnnouncement = $invoiceList = [];
         $DSCKS       = $TTChung = $TCTTNhap = $NNT = $TTNCNKTru = [];
+        $DVTTe       = 'VND';
+
         if ($dataValues) {
             //note: trường hợp XML có cả thẻ TDiep => lấy dữ liệu bat dau từ thẻ HDon
             if (!empty($dataValues['DLieu'])) {
@@ -76,6 +78,7 @@ class BaseHandleXmlData
                 $dataInvoice = $dataValues['DLHDon'];
                 if (!empty($dataInvoice['TTChung'])) {
                     $generalInvoice = $dataInvoice['TTChung'];
+                    $DVTTe          = $generalInvoice['DVTTe'] ?? 'VND';
                 }
                 if (!empty($dataInvoice['NDHDon'])) {
                     $contentInvoice = $dataInvoice['NDHDon'];
@@ -90,7 +93,7 @@ class BaseHandleXmlData
                         if (empty($products[0])) {
                             $products = [$products];
                         }
-                        $products = array_map(function ($product) {
+                        $products = array_map(function ($product) use ($DVTTe) {
                             if (empty($product['THHDVu'])) {
                                 return [];
                             }
@@ -112,7 +115,7 @@ class BaseHandleXmlData
                                 $vatRate  = empty($product['TSuat']) ? '' : $product['TSuat'];
                                 if (is_numeric($price)) {
                                     if ($price != 0) {
-                                        $amount = MoneyHelper::getAmountAfterTax($price, (int)$vatRate);
+                                        $amount = MoneyHelper::getAmountAfterTax($price, (int)$vatRate, $DVTTe !== 'VND' ? 2 : 1);
                                     } else {
                                         $amount = 0;
                                     }
