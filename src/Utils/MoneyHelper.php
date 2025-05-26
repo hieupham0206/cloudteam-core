@@ -39,6 +39,10 @@ class MoneyHelper
         $tmpValue        = $amountBeforeTax * $taxValue;
         $amount          = round($tmpValue, $precision);
 
+        if ($precision > 1) {
+            return $mutiple * $amount;
+        }
+
         if (substr($amount, -1) == 5) {
             if ($amount % 10 >= 5) {
                 return $mutiple * ceil($amount);
