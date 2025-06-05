@@ -127,8 +127,8 @@ class BaseHandleXmlData
 
                                 return [
                                     'ItemName'        => $product['THHDVu'],
-                                    'ItemCode'        => $product['MHHDVu'] ?? '',
-                                    'ItemUnitName'    => $product['DVTinh'] ?? '',
+                                    'ItemCode'        => empty($product['MHHDVu']) ? '' : $product['MHHDVu'],
+                                    'ItemUnitName'    => empty($product['DVTinh']) ? '' : $product['DVTinh'],
                                     'ItemQuantity'    => $quantity,
                                     'ItemUnitAmount'  => $amount,
                                     'ItemVatRate'     => is_array($tSuat) && !$tSuat ? null : $tSuat,
