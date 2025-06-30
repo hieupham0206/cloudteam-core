@@ -118,7 +118,7 @@ class XmlCoreTT78
 
                     $subItems = $item;
 
-                    if ($itemKey !== 'HDon' && ($key !== 'TTKhac' && $itemKey !== 'TTin')) {
+                    if (($itemKey !== 'HDon' && $itemKey !== 'CTu') && ($key !== 'TTKhac' && $itemKey !== 'TTin')) {
                         $subOfSubMainElem = $subMainElem->appendChild($this->domDocument->createElement($itemKey));
                     }
 
@@ -132,7 +132,7 @@ class XmlCoreTT78
                         }
                     } else {
                         foreach ($subItems as $subKey => $subItem) {
-                            if ($itemKey === 'HDon') {
+                            if ($itemKey === 'HDon' || $itemKey === 'CTu') {
                                 $subOfSubMainElem = $subMainElem->appendChild($this->domDocument->createElement($itemKey));
                             }
 
