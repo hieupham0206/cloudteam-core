@@ -63,7 +63,7 @@ class BaseHandleXmlData
 
     protected function handleData($simpleXMLElement): void
     {
-        $xml2String  = $this->xml2String = json_encode((array)$simpleXMLElement);
+        $xml2String  = $this->xml2String = json_encode((array) $simpleXMLElement);
         $dataValues  = json_decode($xml2String, true);
         $digitalSign = $dataInvoice = $general = $generalInvoice = $contentInvoice = $salesman = $buyer = $products = $payment = $dataAnnouncement = $invoiceList = [];
         $DSCKS       = $TTChung = $TCTTNhap = $NNT = $TTNCNKTru = [];
@@ -71,24 +71,24 @@ class BaseHandleXmlData
 
         if ($dataValues) {
             //note: trường hợp XML có cả thẻ TDiep => lấy dữ liệu bat dau từ thẻ HDon
-            if (!empty($dataValues['DLieu'])) {
+            if (! empty($dataValues['DLieu'])) {
                 $dataValues = $dataValues['DLieu']['HDon'];
             }
-            if (!empty($dataValues['DLHDon'])) {
+            if (! empty($dataValues['DLHDon'])) {
                 $dataInvoice = $dataValues['DLHDon'];
-                if (!empty($dataInvoice['TTChung'])) {
+                if (! empty($dataInvoice['TTChung'])) {
                     $generalInvoice = $dataInvoice['TTChung'];
                     $DVTTe          = $generalInvoice['DVTTe'] ?? 'VND';
                 }
-                if (!empty($dataInvoice['NDHDon'])) {
+                if (! empty($dataInvoice['NDHDon'])) {
                     $contentInvoice = $dataInvoice['NDHDon'];
-                    if (!empty($contentInvoice['NBan'])) {
+                    if (! empty($contentInvoice['NBan'])) {
                         $salesman = $contentInvoice['NBan'];
                     }
-                    if (!empty($contentInvoice['NMua'])) {
+                    if (! empty($contentInvoice['NMua'])) {
                         $buyer = $contentInvoice['NMua'];
                     }
-                    if (!empty($contentInvoice['DSHHDVu']['HHDVu'])) {
+                    if (! empty($contentInvoice['DSHHDVu']['HHDVu'])) {
                         $products = $contentInvoice['DSHHDVu']['HHDVu'];
                         if (empty($products[0])) {
                             $products = [$products];
@@ -111,11 +111,12 @@ class BaseHandleXmlData
                                 ];
                             } else {
                                 $quantity = $product['SLuong'] ?? 0;
-                                $price    = empty($product['DGia']) ? '' : $product['DGia'];
-                                $vatRate  = empty($product['TSuat']) ? '' : $product['TSuat'];
+                                $price    = (isset($product['DGia']) && $product['DGia'] !== '') ? $product['DGia'] : '';
+                                $vatRate  = (isset($product['TSuat']) && $product['TSuat'] !== '') ? $product['TSuat'] : '';
+
                                 if (is_numeric($price)) {
                                     if ($price != 0) {
-                                        $amount = MoneyHelper::getAmountAfterTax($price, (int)$vatRate, $DVTTe !== 'VND' ? 2 : 1);
+                                        $amount = MoneyHelper::getAmountAfterTax($price, (int) $vatRate, $DVTTe !== 'VND' ? 2 : 1);
                                     } else {
                                         $amount = 0;
                                     }
@@ -131,45 +132,45 @@ class BaseHandleXmlData
                                     'ItemUnitName'    => empty($product['DVTinh']) ? '' : $product['DVTinh'],
                                     'ItemQuantity'    => $quantity,
                                     'ItemUnitAmount'  => $amount,
-                                    'ItemVatRate'     => is_array($tSuat) && !$tSuat ? null : $tSuat,
-                                    'VATRate'         => is_array($tSuat) && !$tSuat ? null : $tSuat,
+                                    'ItemVatRate'     => is_array($tSuat) && ! $tSuat ? null : $tSuat,
+                                    'VATRate'         => is_array($tSuat) && ! $tSuat ? null : $tSuat,
                                     'ItemTotalAmount' => is_numeric($price) ? $quantity * $amount : '',
                                 ];
                             }
                         }, $products);
                     }
-                    if (!empty($contentInvoice['TToan'])) {
+                    if (! empty($contentInvoice['TToan'])) {
                         $payment = $contentInvoice['TToan'];
                     }
                 }
             }
-            if (!empty($dataValues['DSCKS'])) {
+            if (! empty($dataValues['DSCKS'])) {
                 $digitalSign = $dataValues['DSCKS'];
             }
-            if (!empty($dataValues['DLTBao'])) {
+            if (! empty($dataValues['DLTBao'])) {
                 $dataAnnouncement = $dataValues['DLTBao'];
-                if (!empty($dataAnnouncement['DSHDon']['HDon'])) {
+                if (! empty($dataAnnouncement['DSHDon']['HDon'])) {
                     $invoiceList = $dataAnnouncement['DSHDon']['HDon'];
                     if (empty($invoiceList[0])) {
                         $invoiceList = [$invoiceList];
                     }
                 }
             }
-            if (!empty($dataValues['DLCTu'])) {
+            if (! empty($dataValues['DLCTu'])) {
                 $DLCTu = $dataValues['DLCTu'];
                 $DSCKS = $dataValues['DSCKS'];
-                if (!empty($DLCTu['TTChung'])) {
+                if (! empty($DLCTu['TTChung'])) {
                     $TTChung = $DLCTu['TTChung'];
                 }
-                if (!empty($DLCTu['NDCTu'])) {
+                if (! empty($DLCTu['NDCTu'])) {
                     $NDCTu = $DLCTu['NDCTu'];
-                    if (!empty($NDCTu['TCTTNhap'])) {
+                    if (! empty($NDCTu['TCTTNhap'])) {
                         $TCTTNhap = $NDCTu['TCTTNhap'];
                     }
-                    if (!empty($NDCTu['NNT'])) {
+                    if (! empty($NDCTu['NNT'])) {
                         $NNT = $NDCTu['NNT'];
                     }
-                    if (!empty($NDCTu['TTNCNKTru'])) {
+                    if (! empty($NDCTu['TTNCNKTru'])) {
                         $TTNCNKTru = $NDCTu['TTNCNKTru'];
                     }
                 }
@@ -286,14 +287,13 @@ class BaseHandleXmlData
                     if ($TTruong == mb_strtolower($xmlOtherField['DCTDTu'] ?? '')) {
                         $dataInvoices['CusEmail'] = $DLieu;
                     }
-                    if ((empty($dataInvoices['CusTaxCode']) || !$dataInvoices['CusTaxCode']) && ($TTruong == mb_strtolower($xmlOtherField['MSTNNNgoai'] ?? ''))) {
+                    if ((empty($dataInvoices['CusTaxCode']) || ! $dataInvoices['CusTaxCode']) && ($TTruong == mb_strtolower($xmlOtherField['MSTNNNgoai'] ?? ''))) {
                         $dataInvoices['CusTaxCode'] = $DLieu;
                     }
                 }
             }
         }
     }
-
 
     protected function getExplainText(int $value): string
     {
