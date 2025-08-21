@@ -8,6 +8,7 @@ namespace Cloudteam\Core\Xml;
 
 use Cloudteam\Core\Xml\Providers\BaseXmlRender;
 use Cloudteam\Core\Xml\Providers\MInvoiceXmlRender;
+use Cloudteam\Core\Xml\Providers\ViettelXmlRender;
 use DOMDocument;
 use Illuminate\Support\Facades\Log;
 use RobRichards\XMLSecLibs\XMLSecEnc;
@@ -376,7 +377,7 @@ class XmlCoreTT78
             //$xmlData = str_replace(['>  <', '>    <'], '', $xmlData);
 
             $doc = new DOMDocument();
-            if (@$doc->loadXML($xmlData)) {
+            if ($xmlData && @$doc->loadXML($xmlData)) {
                 $objXMLSecDSig = new XMLSecurityDSig();
 
                 return self::validateXml($objXMLSecDSig, $doc);
