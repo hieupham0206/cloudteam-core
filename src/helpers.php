@@ -550,7 +550,12 @@ if (! function_exists('sanitizeValue')) {
 
         if ($value && ! is_numeric($valueRemoveText) && in_array($value[0], ['=', '+', '-', '@'])) {
             if (isset($value[1]) && ! in_array($value[1], ['=', '+', '-', '@'])) {
-                $value = substr($value, 1);
+                //note: check case nhập số tiền với định dạng VN(.)
+                $pattern = '/^(-?)(\d{1,3}(?:\.\d{3})*|\d+)(?:,(\d{1,4}))?$/';
+
+                if (!preg_match($pattern, $value)) {
+                    $value = substr($value, 1);
+                }
             }
         }
 
