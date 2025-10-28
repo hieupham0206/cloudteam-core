@@ -305,17 +305,24 @@ class XmlCoreTT78
                 ->item($signElemIndex);
 
             if ($parentNode) {
+                $sigId      = 'NBan-data123';
+                $propId     = 'SignatureProperty-' . $sigId;
+
                 // ===== 2) Signature #2 (NBan) — CHỈ có signtime-NBan (không có signtime)
                 $objDSig2 = new XMLSecurityDSig('');
                 $objDSig2->setCanonicalMethod(\RobRichards\XMLSecLibs\XMLSecurityDSig::C14N);
+
+                $objDSig2->sigNode->setAttribute('Id', $sigId);
 
                 $signingTimeNbanObject  = $this->domDocument->createElement('SignatureProperties');
                 $signPropertyNbanObject = $signingTimeNbanObject->appendChild($this->domDocument->createElement('SignatureProperty'));
                 $signPropertyNbanObject->appendChild($this->domDocument->createElement('SigningTime', now()->toDateTimeLocalString()));
                 $signPropertyNbanObject->setAttribute('Target', '#signtime-NBan');
+                $signPropertyNbanObject->setAttribute('Id', $propId);
+
                 $sigtimeNBanNode = $objDSig2->addCustomObject(data: $signingTimeNbanObject, objectId: 'signtime-NBan');
 
-                $objDSig2->addReference(node: $this->domDocument->getElementsByTagName($subBodyElem)->item(0), algorithm: XMLSecurityDSig::SHA1, arTransforms: ['http://www.w3.org/2000/09/xmldsig#enveloped-signature'], options: ['overwrite' => false]);
+                $objDSig2->addReference(node: $this->domDocument->getElementsByTagName($subBodyElem)->item(0), algorithm: \RobRichards\XMLSecLibs\XMLSecurityDSig::SHA1, arTransforms: ['http://www.w3.org/2000/09/xmldsig#enveloped-signature'], options: ['overwrite' => false]);
                 $objDSig2->addReference(node: $sigtimeNBanNode, algorithm: \RobRichards\XMLSecLibs\XMLSecurityDSig::SHA1, arTransforms: null, options: ['overwrite' => false]);
 
                 $k2 = new XMLSecurityKey(XMLSecurityKey::RSA_SHA1, ['type' => 'private']);
