@@ -8,7 +8,6 @@ namespace Cloudteam\Core\Xml;
 
 use Cloudteam\Core\Xml\Providers\BaseXmlRender;
 use Cloudteam\Core\Xml\Providers\MInvoiceXmlRender;
-use Cloudteam\Core\Xml\Providers\ViettelXmlRender;
 use DOMDocument;
 use Illuminate\Support\Facades\Log;
 use RobRichards\XMLSecLibs\XMLSecEnc;
@@ -238,7 +237,7 @@ class XmlCoreTT78
      * @noinspection PhpParamsInspection
      * @throws \Exception
      */
-    public function sign($signElement, $bodyElement, $signElemIndex = 0)
+    public function sign($signElement, $bodyElement, $signElemIndex = 0, $isXmlMTT = false)
     {
         if (! $this->isCertValid()) {
             throw new RuntimeException('CERTIFICATE EXPIRED');
@@ -247,14 +246,7 @@ class XmlCoreTT78
         $objDSig = new XMLSecurityDSig('');
         $objDSig->setCanonicalMethod(\RobRichards\XMLSecLibs\XMLSecurityDSig::C14N);
 
-        $signingTimeObject  = $this->domDocument->createElement('SignatureProperties');
-        $signPropertyObject = $signingTimeObject->appendChild($this->domDocument->createElement('SignatureProperty'));
-        $signPropertyObject->appendChild($this->domDocument->createElement('SigningTime', now()->toDateTimeLocalString()));
-
-        $signPropertyObject->setAttribute('Target', '#signtime');
-
-        $objNode = $objDSig->addCustomObject($signingTimeObject, 'signtime');
-
+        $signElementNban = $subSignElementNban = $subBodyElemNBan = $signElemNbanIndex = null;
         //note: $subBodyElem => thẻ cần ký
         if ($signElement !== 'TDiep') {
             $subBodyElem = "DL$bodyElement";
@@ -262,10 +254,32 @@ class XmlCoreTT78
                 $subBodyElem = 'DLBTHop';
             }
         } else {
-            $subBodyElem   = 'DLieu';
-            $signElement   = 'CKSNNT';
-            $signElemIndex = 0;
+            if ($isXmlMTT) {
+                //note: ký MTT thì kí 2 lần. 1 vào CKSNNT(thuộc the TDiep), 2 vào DSCKS->NBan (thuộc thẻ HDon)
+                //$subBodyElem     = 'DLieu';
+
+                $subBodyElem     = 'DLHDon';
+                $signElement     = 'CKSNNT';
+                $signElemIndex   = 0;
+
+                $subBodyElemNBan    = 'DLHDon';
+                $signElementNban    = 'DSCKS';
+                $subSignElementNban = 'NBan';
+                $signElemNbanIndex  = 0;
+            } else {
+                $subBodyElem   = 'DLieu';
+                //$subBodyElem   = 'DLHDon';
+                $signElement   = 'CKSNNT';
+                $signElemIndex = 0;
+            }
         }
+
+        $signingTimeObject  = $this->domDocument->createElement('SignatureProperties');
+        $signPropertyObject = $signingTimeObject->appendChild($this->domDocument->createElement('SignatureProperty'));
+        $signPropertyObject->appendChild($this->domDocument->createElement('SigningTime', now()->toDateTimeLocalString()));
+        $signPropertyObject->setAttribute('Target', '#signtime');
+
+        $objNode         = $objDSig->addCustomObject($signingTimeObject, 'signtime');
 
         $objDSig->addReference(
             $this->domDocument->getElementsByTagName($subBodyElem)->item(0),
@@ -277,14 +291,43 @@ class XmlCoreTT78
 
         $objKey = new XMLSecurityKey(XMLSecurityKey::RSA_SHA1, ['type' => 'private']);
         $objKey->loadKey($this->keyFilePath, $this->isKeyFile);
-
         $objDSig->sign($objKey);
-
         $objDSig->add509Cert($this->getCertificateContent(), true, false, ['subjectName' => true]);
-
         $objDSig->appendSignature(
             $this->domDocument->documentElement->getElementsByTagName($signElement)->item($signElemIndex)
         );
+
+        if ($subBodyElemNBan) {
+            $parentNode = $this->domDocument->documentElement
+                ->getElementsByTagName($signElementNban) // DSCKS
+                ->item($signElemNbanIndex)
+                ->getElementsByTagName($subSignElementNban) // NBan
+                ->item($signElemIndex);
+
+            if ($parentNode) {
+                // ===== 2) Signature #2 (NBan) — CHỈ có signtime-NBan (không có signtime)
+                $objDSig2 = new XMLSecurityDSig('');
+                $objDSig2->setCanonicalMethod(\RobRichards\XMLSecLibs\XMLSecurityDSig::C14N);
+
+                $signingTimeNbanObject  = $this->domDocument->createElement('SignatureProperties');
+                $signPropertyNbanObject = $signingTimeNbanObject->appendChild($this->domDocument->createElement('SignatureProperty'));
+                $signPropertyNbanObject->appendChild($this->domDocument->createElement('SigningTime', now()->toDateTimeLocalString()));
+                $signPropertyNbanObject->setAttribute('Target', '#signtime-NBan');
+                $sigtimeNBanNode = $objDSig2->addCustomObject(data: $signingTimeNbanObject, objectId: 'signtime-NBan');
+
+                $objDSig2->addReference(node: $this->domDocument->getElementsByTagName($subBodyElem)->item(0), algorithm: XMLSecurityDSig::SHA1, arTransforms: ['http://www.w3.org/2000/09/xmldsig#enveloped-signature'], options: ['overwrite' => false]);
+                $objDSig2->addReference(node: $sigtimeNBanNode, algorithm: \RobRichards\XMLSecLibs\XMLSecurityDSig::SHA1, arTransforms: null, options: ['overwrite' => false]);
+
+                $k2 = new XMLSecurityKey(XMLSecurityKey::RSA_SHA1, ['type' => 'private']);
+                $k2->loadKey($this->keyFilePath, $this->isKeyFile);
+                $objDSig2->sign($k2);
+                $objDSig2->add509Cert($this->getCertificateContent(), true, false, ['subjectName' => true]);
+
+                $objDSig2->appendSignature($parentNode);
+            } else {
+                info("Khong tim thay parentNode: $signElementNban-$signElemNbanIndex-$subSignElementNban");
+            }
+        }
 
         return $this;
     }
@@ -294,13 +337,13 @@ class XmlCoreTT78
      *
      * @return bool|string|string[]
      */
-    public function getRawData($signElement, $bodyElement, $signElemIndex = 0, $sign = true)
+    public function getRawData($signElement, $bodyElement, $signElemIndex = 0, $sign = true, $isXmlMTT = false)
     {
         try {
             $this->renderXml($bodyElement);
 
             if ($sign) {
-                $this->sign($signElement, $bodyElement, $signElemIndex);
+                $this->sign($signElement, $bodyElement, $signElemIndex, $isXmlMTT);
             }
 
             $data = $this->domDocument->saveXML();
