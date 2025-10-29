@@ -274,6 +274,12 @@ class XmlCoreTT78
             }
         }
 
+        $keyType   = XMLSecurityKey::RSA_SHA1;
+        $algorithm = \RobRichards\XMLSecLibs\XMLSecurityDSig::SHA1;
+
+        //$keyType   = XMLSecurityKey::RSA_SHA256;
+        //$algorithm = \RobRichards\XMLSecLibs\XMLSecurityDSig::SHA256;
+
         $signingTimeObject  = $this->domDocument->createElement('SignatureProperties');
         $signPropertyObject = $signingTimeObject->appendChild($this->domDocument->createElement('SignatureProperty'));
         $signPropertyObject->appendChild($this->domDocument->createElement('SigningTime', now()->toDateTimeLocalString()));
@@ -283,13 +289,13 @@ class XmlCoreTT78
 
         $objDSig->addReference(
             $this->domDocument->getElementsByTagName($subBodyElem)->item(0),
-            \RobRichards\XMLSecLibs\XMLSecurityDSig::SHA1, ['http://www.w3.org/2000/09/xmldsig#enveloped-signature'], ['overwrite' => false]
+            $algorithm, ['http://www.w3.org/2000/09/xmldsig#enveloped-signature'], ['overwrite' => false]
         );
         $objDSig->addReference(
-            $objNode, \RobRichards\XMLSecLibs\XMLSecurityDSig::SHA1, null, ['overwrite' => false]
+            $objNode, $algorithm, null, ['overwrite' => false]
         );
 
-        $objKey = new XMLSecurityKey(XMLSecurityKey::RSA_SHA1, ['type' => 'private']);
+        $objKey = new XMLSecurityKey($keyType, ['type' => 'private']);
         $objKey->loadKey($this->keyFilePath, $this->isKeyFile);
         $objDSig->sign($objKey);
         $objDSig->add509Cert($this->getCertificateContent(), true, false, ['subjectName' => true]);
@@ -322,10 +328,10 @@ class XmlCoreTT78
 
                 $sigtimeNBanNode = $objDSig2->addCustomObject(data: $signingTimeNbanObject, objectId: 'signtime-NBan');
 
-                $objDSig2->addReference(node: $this->domDocument->getElementsByTagName($subBodyElem)->item(0), algorithm: \RobRichards\XMLSecLibs\XMLSecurityDSig::SHA1, arTransforms: ['http://www.w3.org/2000/09/xmldsig#enveloped-signature'], options: ['overwrite' => false]);
-                $objDSig2->addReference(node: $sigtimeNBanNode, algorithm: \RobRichards\XMLSecLibs\XMLSecurityDSig::SHA1, arTransforms: null, options: ['overwrite' => false]);
+                $objDSig2->addReference(node: $this->domDocument->getElementsByTagName($subBodyElem)->item(0), algorithm: $algorithm, arTransforms: ['http://www.w3.org/2000/09/xmldsig#enveloped-signature'], options: ['overwrite' => false]);
+                $objDSig2->addReference(node: $sigtimeNBanNode, algorithm: $algorithm, arTransforms: null, options: ['overwrite' => false]);
 
-                $k2 = new XMLSecurityKey(XMLSecurityKey::RSA_SHA1, ['type' => 'private']);
+                $k2 = new XMLSecurityKey($keyType, ['type' => 'private']);
                 $k2->loadKey($this->keyFilePath, $this->isKeyFile);
                 $objDSig2->sign($k2);
                 $objDSig2->add509Cert($this->getCertificateContent(), true, false, ['subjectName' => true]);
