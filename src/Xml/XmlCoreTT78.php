@@ -29,7 +29,6 @@ class XmlCoreTT78
 
     public DOMDocument $domDocument;
 
-
     public array $datas;
 
     /**
@@ -53,20 +52,26 @@ class XmlCoreTT78
     private $fileID;
 
     /**
+     * @var string
+     */
+    private $usingNewAlgo;
+
+    /**
      * @var bool
      */
     private bool $isKeyFile = false;
 
-    public function __construct($datas = [], $signatures = [], $invoiceProviderName = 'MInvoice', $xmlFormat = '', $fileID = '')
+    public function __construct($datas = [], $signatures = [], $invoiceProviderName = 'MInvoice', $xmlFormat = '', $fileID = '', $usingNewAlgo = false)
     {
         $this->domDocument                     = new DOMDocument('1.0', 'utf-8');
         $this->domDocument->preserveWhiteSpace = false;
         $this->domDocument->formatOutput       = false;
         $this->domDocument->encoding           = 'UTF-8';
 
-        $this->datas     = $datas;
-        $this->xmlFormat = $xmlFormat;
-        $this->fileID    = $fileID;
+        $this->datas        = $datas;
+        $this->xmlFormat    = $xmlFormat;
+        $this->fileID       = $fileID;
+        $this->usingNewAlgo = $usingNewAlgo;
 
         if ($invoiceProviderName === 'MInvoice') {
             $this->xmlRender = new MInvoiceXmlRender();
@@ -258,16 +263,16 @@ class XmlCoreTT78
                 //note: ký MTT thì kí 2 lần. 1 vào CKSNNT(thuộc the TDiep), 2 vào DSCKS->NBan (thuộc thẻ HDon)
                 //$subBodyElem     = 'DLieu';
 
-                $subBodyElem     = 'DLHDon';
-                $signElement     = 'CKSNNT';
-                $signElemIndex   = 0;
+                $subBodyElem   = 'DLHDon';
+                $signElement   = 'CKSNNT';
+                $signElemIndex = 0;
 
                 $subBodyElemNBan    = 'DLHDon';
                 $signElementNban    = 'DSCKS';
                 $subSignElementNban = 'NBan';
                 $signElemNbanIndex  = 0;
             } else {
-                $subBodyElem   = 'DLieu';
+                $subBodyElem = 'DLieu';
                 //$subBodyElem   = 'DLHDon';
                 $signElement   = 'CKSNNT';
                 $signElemIndex = 0;
@@ -276,6 +281,10 @@ class XmlCoreTT78
 
         $keyType   = XMLSecurityKey::RSA_SHA1;
         $algorithm = \RobRichards\XMLSecLibs\XMLSecurityDSig::SHA1;
+        if ($this->usingNewAlgo) {
+            $keyType   = XMLSecurityKey::RSA_SHA256;
+            $algorithm = \RobRichards\XMLSecLibs\XMLSecurityDSig::SHA256;
+        }
 
         //$keyType   = XMLSecurityKey::RSA_SHA256;
         //$algorithm = \RobRichards\XMLSecLibs\XMLSecurityDSig::SHA256;
@@ -285,7 +294,7 @@ class XmlCoreTT78
         $signPropertyObject->appendChild($this->domDocument->createElement('SigningTime', now()->toDateTimeLocalString()));
         $signPropertyObject->setAttribute('Target', '#signtime');
 
-        $objNode         = $objDSig->addCustomObject($signingTimeObject, 'signtime');
+        $objNode = $objDSig->addCustomObject($signingTimeObject, 'signtime');
 
         $objDSig->addReference(
             $this->domDocument->getElementsByTagName($subBodyElem)->item(0),
@@ -311,8 +320,8 @@ class XmlCoreTT78
                 ->item($signElemIndex);
 
             if ($parentNode) {
-                $sigId      = 'NBan-data123';
-                $propId     = 'SignatureProperty-' . $sigId;
+                $sigId  = 'NBan-data123';
+                $propId = 'SignatureProperty-'.$sigId;
 
                 // ===== 2) Signature #2 (NBan) — CHỈ có signtime-NBan (không có signtime)
                 $objDSig2 = new XMLSecurityDSig('');
@@ -328,7 +337,8 @@ class XmlCoreTT78
 
                 $sigtimeNBanNode = $objDSig2->addCustomObject(data: $signingTimeNbanObject, objectId: 'signtime-NBan');
 
-                $objDSig2->addReference(node: $this->domDocument->getElementsByTagName($subBodyElem)->item(0), algorithm: $algorithm, arTransforms: ['http://www.w3.org/2000/09/xmldsig#enveloped-signature'], options: ['overwrite' => false]);
+                $objDSig2->addReference(node: $this->domDocument->getElementsByTagName($subBodyElem)->item(0), algorithm: $algorithm,
+                    arTransforms: ['http://www.w3.org/2000/09/xmldsig#enveloped-signature'], options: ['overwrite' => false]);
                 $objDSig2->addReference(node: $sigtimeNBanNode, algorithm: $algorithm, arTransforms: null, options: ['overwrite' => false]);
 
                 $k2 = new XMLSecurityKey($keyType, ['type' => 'private']);
@@ -346,7 +356,7 @@ class XmlCoreTT78
     }
 
     /**
-     * @param bool $sign
+     * @param  bool  $sign
      *
      * @return bool|string|string[]
      */
@@ -365,7 +375,7 @@ class XmlCoreTT78
 
             return str_replace(['>  <', '>    <'], '><', $data);
         } catch (\RuntimeException $exception) {
-            $this->errMsg = "{$exception->getMessage()}";
+            $this->errMsg  = "{$exception->getMessage()}";
             $this->errCode = -15;
             Log::error("{$exception->getMessage()} - {$exception->getFile()} - {$exception->getLine()}");
 
@@ -379,8 +389,8 @@ class XmlCoreTT78
     }
 
     /**
-     * @param XMLSecurityDSig $objXMLSecDSig
-     * @param DOMDocument     $doc
+     * @param  XMLSecurityDSig  $objXMLSecDSig
+     * @param  DOMDocument  $doc
      *
      * @return array
      * @throws \Exception
