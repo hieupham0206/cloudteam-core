@@ -71,8 +71,11 @@ class BaseHandleXmlData
 
         if ($dataValues) {
             //note: trường hợp XML có cả thẻ TDiep => lấy dữ liệu bat dau từ thẻ HDon
-            if (! empty($dataValues['DLieu'])) {
-                $dataValues = $dataValues['DLieu']['HDon'];
+            if (!empty($dataValues['DLieu'])) {
+                $dataValues = $dataValues['DLieu'];
+            }
+            if (!empty($dataValues['HDon'])) {
+                $dataValues = $dataValues['HDon'];
             }
             if (! empty($dataValues['DLHDon'])) {
                 $dataInvoice = $dataValues['DLHDon'];
